@@ -98,7 +98,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
               <?php } ?>
             </td>
           </tr>
-          <tr class="blank_row"><td bgcolor="lightskyblue" colspan="3">&nbsp;</tr>
+          <tr class="blank_row"><td bgcolor="azure" colspan="3">&nbsp;</tr>
             <td>Top 5 Skills</td>
           </tr>
           <tr>
@@ -121,7 +121,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
             <td>Skill 5: </td>
             <td><input type = "search" name = "recskill5" placeholder = "Skill 5" value="<?php print isset($recskill5) ? $recskill5 : ''; ?>"></td>
           </tr>
-          <tr class="blank_row"><td bgcolor="lightskyblue" colspan="3">&nbsp;</tr>
+          <tr class="blank_row"><td bgcolor="azure" colspan="3">&nbsp;</tr>
 
           <tr>
           <td>Starting Date:</td>

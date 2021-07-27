@@ -32,7 +32,7 @@ if (isset($_POST['search'])) {
   $conn = new mysqli($host, $dbUsername, $dbPassword, $dbName);
 
   if ($conn->query("UPDATE position SET Position = '$recposition', Type = '$rectype', Skill1 = '$recskill1', Skill2 = '$recskill2', Skill3 = '$recskill3', Skill4 = '$recskill4', Skill5 = '$recskill5', Start = '$recdate' WHERE Email = '$email'")) {
-    echo "Works";
+    //echo "Works";
     if ($conn->query("UPDATE position SET Level = '$reclevel', Year = '$recyear', Program1 = '$recprog1', Program2  = '$recprog2', Program3 = '$recprog3', GPA = '$recgpa', Remote = '$recremote' WHERE Email = '$email'")) {
       if ($conn->query("UPDATE position SET Address = '$recaddress', City = '$reccity', Region = '$recregion', Country = '$reccountry' WHERE Email = '$email'")) {
         $updated = True;
@@ -74,6 +74,12 @@ if (isset($_POST['search'])) {
     }
     if (strcmp($recskill5, strtolower(preg_replace('/\s+/', '', $row['Skill1']))) == 0 or strcmp($recskill5, strtolower(preg_replace('/\s+/', '', $row['Skill2'])))==0 or strcmp($recskill5, strtolower(preg_replace('/\s+/', '', $row['Skill3'])))==0 or strcmp($recskill5, strtolower(preg_replace('/\s+/', '', $row['Skill4'])))==0 or strcmp($recskill5, strtolower(preg_replace('/\s+/', '', $row['Skill5'])))==0) {
       $score += 5;
+    }
+    if ($row['Level'] >= $reclevel) {
+      $score += 15;
+    }
+    if ($row['Year'] >= $recyear) {
+      $score += 10;
     }
     if ($conn->query("UPDATE user_login SET Score = '$score' WHERE Email = '$row['Email']'")) {
       $updated = True;

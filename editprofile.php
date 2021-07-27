@@ -96,7 +96,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                 <label for="fileupload" class="customfileupload">
                   <i class="fa fa-cloud-upload" class = "customfileupload"></i> Change Image
                 </label>
-                <input id="fileupload" type="file"/>
+                <input id="fileupload" type="file" name = "image"/>
               </div>
             </div>
             <div class = "bio">
@@ -169,20 +169,20 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                   ?>
                   <select id="lev" name="Level">
                     <option value="NULL">Select</option>
-                    <option value="HS">High School</option>
-                    <option value="AS">Associates</option>
-                    <option value="BA">Bachelor's</option>
-                    <option value="MS">Master's</option>
-                    <option value="DR">Doctorate</option>
+                    <option value="1">High School</option>
+                    <option value="2">Associates</option>
+                    <option value="3">Bachelor's</option>
+                    <option value="4">Master's</option>
+                    <option value="5">Doctorate</option>
                   </select>
                   <?php } else {?>
                   <select id="lev" name="Level">
                     <option value="NULL"<?php if ($level== "NULL"): ?> selected="selected"<?php endif; ?>>Select</option>
-                    <option value="HS"<?php if ($level== "HS"): ?> selected="selected"<?php endif; ?>>High School</option>
-                    <option value="AS"<?php if ($level== "AS"): ?> selected="selected"<?php endif; ?>>Associates</option>
-                    <option value="BA"<?php if ($level== "BA"): ?> selected="selected"<?php endif; ?>>Bachelor's</option>
-                    <option value="MS"<?php if ($level== "MS"): ?> selected="selected"<?php endif; ?>>Master's</option>
-                    <option value="DR"<?php if ($level== "DR"): ?> selected="selected"<?php endif; ?>>Doctorate</option>
+                    <option value="1"<?php if ($level== "1"): ?> selected="selected"<?php endif; ?>>High School</option>
+                    <option value="2"<?php if ($level== "2"): ?> selected="selected"<?php endif; ?>>Associates</option>
+                    <option value="3"<?php if ($level== "3"): ?> selected="selected"<?php endif; ?>>Bachelor's</option>
+                    <option value="4"<?php if ($level== "4"): ?> selected="selected"<?php endif; ?>>Master's</option>
+                    <option value="5"<?php if ($level== "5"): ?> selected="selected"<?php endif; ?>>Doctorate</option>
                   </select>
                   <?php } ?>
                 </td>
@@ -323,8 +323,8 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                   }
                   else { ?>
                     <script>
-                    $("#experience").append('<tr class="blank_row"><td bgcolor="lightskyblue" colspan="3">&nbsp;</tr>');
-                    $("#experience").append('<tr class="blank_row"><td bgcolor="lightskyblue" colspan="3">&nbsp;</tr>');
+                    $("#experience").append('<tr class="blank_row"><td bgcolor="azure" colspan="3">&nbsp;</tr>');
+                    $("#experience").append('<tr class="blank_row"><td bgcolor="azure" colspan="3">&nbsp;</tr>');
                     $("#experience").append('<tr><td><input type="text" class="role" name = "Role[]" value = "<?php print isset(unserialize($row[$i])->role) ? unserialize($row[$i])->role : ''; ?>" placeholder="Role"/><td><input type="text" class="company" name = "Company[]" value = "<?php print isset(unserialize($row[$i])->company) ? unserialize($row[$i])->company : ''; ?>"placeholder="Company"/><td><input type = "button" value="Delete" onclick="deleteexperience()"></tr>');
                     $("#experience").append('<tr><td>Start Date <td>End Date');
                     $("#experience").append('<tr><td><input type="date" class="start" name = "StartDate[]" value = "<?php print isset(unserialize($row[$i])->start) ? unserialize($row[$i])->start : ''; ?>" placeholder="Start Date"/><td><input type="date" class="end" name = "EndDate[]" value = "<?php print isset(unserialize($row[$i])->end) ? unserialize($row[$i])->end : ''; ?>" placeholder="End Date"/>');
@@ -341,8 +341,8 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
             $('.addexperience').click(function() {
 
               if (numexperience < 5) {
-                $("#experience").append('<tr class="blank_row"><td bgcolor="lightskyblue" colspan="3">&nbsp;</tr>');
-                $("#experience").append('<tr class="blank_row"><td bgcolor="lightskyblue" colspan="3">&nbsp;</tr>');
+                $("#experience").append('<tr class="blank_row"><td bgcolor="azure" colspan="3">&nbsp;</tr>');
+                $("#experience").append('<tr class="blank_row"><td bgcolor="azure" colspan="3">&nbsp;</tr>');
                 $("#experience").append('<tr><td><input type="text" class="role" name = "Role[]" placeholder="Role"/> <td><input type="text" class="company" name = "Company[]" placeholder="Company"/><td><input type = "button" value="Delete" onclick="deleteexperience()"></tr>');
                 $("#experience").append('<tr><td>Start Date <td>End Date');
                 $("#experience").append('<tr><td><input type="date" class="start" name = "StartDate[]" placeholder="Start Date"/> <td><input type="date" class="end" name = "EndDate[]" placeholder="End Date"/>');
