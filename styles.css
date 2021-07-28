@@ -1,4 +1,4 @@
-
+/*Navigation bars*/
 .topnav {
   background-color: darkblue;
   overflow: hidden;
@@ -61,6 +61,8 @@
   color: white
 }
 
+
+/*Major containers, forms, tables*/
 .signupcontainer, .searchcontainer {
 
   margin: 8;
@@ -88,18 +90,30 @@
   font-family: 'Yanone Kaffeesatz', sans-serif;
   border-spacing: 5rem;
 }
+
+.logincontainer {
+
+  margin: 8;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  background: Azure;
+
+  margin: 1rem;
+  padding: 2rem;
+  font-family: 'Yanone Kaffeesatz', sans-serif;
+}
 .form {
   width: 60%;
 }
-.profileimage {
-  margin-bottom: 20px;
-  display: flex;
+table {
+  font-size: 1.3rem;
 }
 
-.basicinfo {
-  font-size: 20px;
-  font-family: 'Yanone Kaffeesatz', sans-serif;
-}
+
+/*Input field and buttons*/
 input[type=text], input[type=date], select, input[type=password], input[type=email], input[type=search]  {
   border-radius: 5px;
   border: 2px solid darkblue;
@@ -143,29 +157,6 @@ button:hover, input[type = "button"]:hover {
   font-size: 20px;
   font-family: 'Yanone Kaffeesatz', sans-serif;
 }
-.imagefile {
-  align-self: center;
-  margin-top: 10px;
-  width: 100%;
-}
-.customfileupload {
-  border-radius: 5px;
-  border: 2px solid darkblue;
-  width: 130px;
-  /*height: 35px;*/
-  font-size: 20px;
-  font-family: 'Yanone Kaffeesatz', sans-serif;
-  transition-duration: 0.4s;
-  background-color: white;
-  display: inline-block;
-  text-align: center;
-  padding: 7px;
-  margin-left: 30px;
-}
-
-.customfileupload:hover {
-    background-color: lightgray;
-}
 
 #saveprofile, #search {
   border-radius: 7px;
@@ -183,47 +174,6 @@ button:hover, input[type = "button"]:hover {
   background-color: lightgray;
 }
 
-
-@media only screen and (min-width: 660px) {
-  #bio{
-    /*display: inline-block;*/
-    border-radius: 7px;
-    border: 2px solid darkblue;
-    width: 100%;
-    height: 200px;
-    margin-bottom: 30px;
-    margin-left: 10px;
-    font-size: 20px;
-    font-family: 'Yanone Kaffeesatz';
-  }
- }
-
-.basicinfo {
-  margin-bottom: 50px;
-  margin-top: 20px;
-  float: center;
-}
-
-.bio {
-  float: left;
-  margin-left: 10px;
-  min-width: 200px;
-  flex-grow: 1;
-}
-
-.changeimage {
-  float: left;
-  margin-left: 10px;
-  margin-bottom: 20px;
-}
-
-.showimage {
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-}
-
-table {
-  font-size: 1.3rem;
-}
 #submit {
   border-radius: 7px;
   border: 2px solid darkblue;
@@ -261,17 +211,75 @@ a.button, a.button:link {
   background-color: gray;
 }
 
-.logincontainer {
 
-  margin: 8;
-  height: auto;
+/*bio and profile image section*/
+@media only screen and (min-width: 660px) {
+  #bio{
+    /*display: inline-block;*/
+    border-radius: 7px;
+    border: 2px solid darkblue;
+    width: 100%;
+    height: 200px;
+    margin-bottom: 30px;
+    margin-left: 10px;
+    font-size: 20px;
+    font-family: 'Yanone Kaffeesatz';
+  }
+ }
+
+.basicinfo {
+  margin-bottom: 50px;
+  margin-top: 20px;
+  float: center;
+}
+
+.bio {
+  float: left;
+  margin-left: 10px;
+  min-width: 200px;
+  flex-grow: 1;
+}
+
+.changeimage {
+  float: left;
+  margin-left: 10px;
+  margin-bottom: 20px;
+}
+
+.showimage {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.profileimage {
+  margin-bottom: 20px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  background: Azure;
+}
 
-  margin: 1rem;
-  padding: 2rem;
+.imagefile {
+  align-self: center;
+  margin-top: 10px;
+  width: 100%;
+}
+.customfileupload {
+  border-radius: 5px;
+  border: 2px solid darkblue;
+  width: 130px;
+  /*height: 35px;*/
+  font-size: 20px;
+  font-family: 'Yanone Kaffeesatz', sans-serif;
+  transition-duration: 0.4s;
+  background-color: white;
+  display: inline-block;
+  text-align: center;
+  padding: 7px;
+  margin-left: 30px;
+}
+
+.customfileupload:hover {
+    background-color: lightgray;
+}
+
+
+.basicinfo {
+  font-size: 20px;
   font-family: 'Yanone Kaffeesatz', sans-serif;
 }
