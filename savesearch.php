@@ -10,6 +10,11 @@ if (isset($_POST['search'])) {
   $recskill3 = $_POST["recskill3"];
   $recskill4 = $_POST["recskill4"];
   $recskill5 = $_POST["recskill5"];
+  $skillyear1 = $_POST["skillyear1"];
+  $skillyear2 = $_POST["skillyear2"];
+  $skillyear3 = $_POST["skillyear3"];
+  $skillyear4 = $_POST["skillyear4"];
+  $skillyear5 = $_POST["skillyear5"];
   $recdate = $_POST["recdate"];
   $reclevel = $_POST["reclevel"];
   $recyear = $_POST["recyear"];
@@ -32,12 +37,14 @@ if (isset($_POST['search'])) {
   $conn = new mysqli($host, $dbUsername, $dbPassword, $dbName);
 
   if ($conn->query("UPDATE position SET Position = '$recposition', Type = '$rectype', Skill1 = '$recskill1', Skill2 = '$recskill2', Skill3 = '$recskill3', Skill4 = '$recskill4', Skill5 = '$recskill5', Start = '$recdate' WHERE Email = '$email'")) {
-    //echo "Works";
-    if ($conn->query("UPDATE position SET Level = '$reclevel', Year = '$recyear', Program1 = '$recprog1', Program2  = '$recprog2', Program3 = '$recprog3', GPA = '$recgpa', Remote = '$recremote' WHERE Email = '$email'")) {
-      if ($conn->query("UPDATE position SET Address = '$recaddress', City = '$reccity', Region = '$recregion', Country = '$reccountry' WHERE Email = '$email'")) {
-        $updated = True;
-      }
+    if ($conn->query("UPDATE position SET Years1 = '$skillyear1', Years2 = '$skillyear2', Years3 = '$skillyear3', Years4 = '$skillyear4', Years5 = '$skillyear5' WHERE Email = '$email'")) {
 
+    //echo "Works";
+      if ($conn->query("UPDATE position SET Level = '$reclevel', Year = '$recyear', Program1 = '$recprog1', Program2  = '$recprog2', Program3 = '$recprog3', GPA = '$recgpa', Remote = '$recremote' WHERE Email = '$email'")) {
+        if ($conn->query("UPDATE position SET Address = '$recaddress', City = '$reccity', Region = '$recregion', Country = '$reccountry' WHERE Email = '$email'")) {
+          $updated = True;
+        }
+      }
     }
   }
   //echo "hi";
@@ -54,6 +61,30 @@ if (isset($_POST['search'])) {
     return (strtolower(preg_replace('/\s+/', '', $var)));
   }
 
+  function isMatch($name, $time, $skill1, $skill2, $skill3, $skill4, $skill5, $skill6, $skill7) {
+    $num = 0;
+
+    if (strictlyEqualAndNotNull($name, formatString($skill1->skill)) or strictlyEqualAndNotNull($name, formatString($skill2->skill)) or strictlyEqualAndNotNull($name, formatString($skill3->skill)) or strictlyEqualAndNotNull($name, formatString($skill4->skill)) or strictlyEqualAndNotNull($name, formatString($skill5->skill)) or strictlyEqualAndNotNull($name, formatString($skill6->skill)) or strictlyEqualAndNotNull($name, formatString($skill7->skill))) {
+      $num += 5;
+    }
+    if ((strictlyEqualAndNotNull($name, formatString($skill1->skill)) and $skill1->year >= $time) or (strictlyEqualAndNotNull($name, formatString($skill2->skill)) and $skill2->year >= $time) or (strictlyEqualAndNotNull($name, formatString($skill3->skill)) and $skill3->year >= $time) or (strictlyEqualAndNotNull($name, formatString($skill4->skill)) and $skill4->year >= $time) or (strictlyEqualAndNotNull($name, formatString($skill5->skill)) and $skill5->year >= $time) or (strictlyEqualAndNotNull($name, formatString($skill6->skill)) and $skill6->year >= $time) or (strictlyEqualAndNotNull($name, formatString($skill7->skill)) and $skill7->year >= $time)) {
+      $num += 2;
+    }
+    return ($num);
+  }
+
+  function unpackObject($object) {
+    if ($object === "NULL" or empty($object) or is_null($object)) {
+      $obj = new stdClass();
+      $obj->skill = "Hello World";
+      $obj->year = "0";
+      echo $obj->skill;
+      $object = serialize($obj);
+      //return ($obj);
+    }
+    return unserialize($object);
+  }
+
   $recposition = formatString($recposition);
   $recskill1 = formatString($recskill1);
   $recskill2 = formatString($recskill2);
@@ -67,7 +98,7 @@ if (isset($_POST['search'])) {
 
   while($row = $result -> fetch_array(MYSQLI_ASSOC)) {
     $score = 0;
-    //echo $row['Email'];
+    echo $row['Email'];
     if (strictlyEqualAndNotNull($recposition, formatString($row['Position1'])) or strictlyEqualAndNotNull($recposition, formatString($row['Position2'])) or strictlyEqualAndNotNull($recposition, formatString($row['Position3']))) {
       $score += 15;
     }
@@ -78,36 +109,36 @@ if (isset($_POST['search'])) {
     else {
       $score += 3;
     }
-    //echo $score;
-
-    if (strictlyEqualAndNotNull($recskill1, formatString($row['Skill1'])) or strictlyEqualAndNotNull($recskill1, formatString($row['Skill2'])) or strictlyEqualAndNotNull($recskill1, formatString($row['Skill3'])) or strictlyEqualAndNotNull($recskill1, formatString($row['Skill4'])) or strictlyEqualAndNotNull($recskill1, formatString($row['Skill5']))) {
-      $score += 5;
-
-    }
-    if (strictlyEqualAndNotNull($recskill2, formatString($row['Skill1'])) or strictlyEqualAndNotNull($recskill2, formatString($row['Skill2'])) or strictlyEqualAndNotNull($recskill2, formatString($row['Skill3'])) or strictlyEqualAndNotNull($recskill2, formatString($row['Skill4'])) or strictlyEqualAndNotNull($recskill2, formatString($row['Skill5']))) {
-      $score += 5;
-    }
-    if (strictlyEqualAndNotNull($recskill3, formatString($row['Skill1'])) or strictlyEqualAndNotNull($recskill3, formatString($row['Skill2'])) or strictlyEqualAndNotNull($recskill3, formatString($row['Skill3'])) or strictlyEqualAndNotNull($recskill3, formatString($row['Skill4'])) or strictlyEqualAndNotNull($recskill3, formatString($row['Skill5']))) {
-      $score += 5;
-    }
-    if (strictlyEqualAndNotNull($recskill4, formatString($row['Skill1'])) or strictlyEqualAndNotNull($recskill4, formatString($row['Skill2'])) or strictlyEqualAndNotNull($recskill4, formatString($row['Skill3'])) or strictlyEqualAndNotNull($recskill4, formatString($row['Skill4'])) or strictlyEqualAndNotNull($recskill4, formatString($row['Skill5']))) {
-      $score += 5;
-    }
-    if (strictlyEqualAndNotNull($recskill5, formatString($row['Skill1'])) or strictlyEqualAndNotNull($recskill5, formatString($row['Skill2'])) or strictlyEqualAndNotNull($recskill5, formatString($row['Skill3'])) or strictlyEqualAndNotNull($recskill5, formatString($row['Skill4'])) or strictlyEqualAndNotNull($recskill5, formatString($row['Skill5']))) {
-      $score += 5;
-    }
     if ($row['Level'] >= $reclevel) {
       $score += 15;
     }
     if ($row['Year'] >= $recyear) {
       $score += 10;
     }
-
-
     if (strictlyEqualAndNotNull($recprog1, formatString($row['Program'])) or strictlyEqualAndNotNull($recprog2, formatString($row['Program'])) or strictlyEqualAndNotNull($recprog3, formatString($row['Program']))) {
       $score += 10;
-
     }
+    if ($row['GPA'] >= $recgpa) {
+      $score += 10;
+    }
+    $skill1 = unpackObject($row['Skill1']);
+    $skill2 = unpackObject($row['Skill2']);
+    $skill3 = unpackObject($row['Skill3']);
+    $skill4 = unpackObject($row['Skill4']);
+    $skill5 = unpackObject($row['Skill5']);
+    $skill6 = unpackObject($row['Skill6']);
+    $skill7 = unpackObject($row['Skill7']);
+    //echo $skill1;
+
+    $score += isMatch($recskill1, $skillyear1, $skill1, $skill2, $skill3, $skill4, $skill5, $skill6, $skill7);
+    $score += isMatch($recskill2, $skillyear2, $skill1, $skill2, $skill3, $skill4, $skill5, $skill6, $skill7);
+    $score += isMatch($recskill3, $skillyear3, $skill1, $skill2, $skill3, $skill4, $skill5, $skill6, $skill7);
+    $score += isMatch($recskill4, $skillyear4, $skill1, $skill2, $skill3, $skill4, $skill5, $skill6, $skill7);
+    $score += isMatch($recskill5, $skillyear5, $skill1, $skill2, $skill3, $skill4, $skill5, $skill6, $skill7);
+
+
+
+
     $update = "UPDATE user_login SET Score = '$score' WHERE Email='".$row['Email']."' ";
     if ($conn->query($update)) {
       $updated = True;
@@ -118,7 +149,7 @@ if (isset($_POST['search'])) {
   }
 }
 if ($updated) {
-  echo "Success";
+  //echo "Success";
   header("Location: messages.html");
 }
 else {

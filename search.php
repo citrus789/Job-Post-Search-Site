@@ -20,6 +20,11 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
       $recskill3 = $row["Skill3"];
       $recskill4 = $row["Skill4"];
       $recskill5 = $row["Skill5"];
+      $skillyear1 = $row["Years1"];
+      $skillyear2 = $row["Years2"];
+      $skillyear3 = $row["Years3"];
+      $skillyear4 = $row["Years4"];
+      $skillyear5 = $row["Years5"];
       $recdate = $row["Start"];
       $reclevel = $row["Level"];
       $recyear = $row["Year"];
@@ -99,27 +104,32 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
             </td>
           </tr>
           <tr class="blank_row"><td bgcolor="azure" colspan="3">&nbsp;</tr>
-            <td>Top 5 Skills</td>
+            <td>Skills</td>
+            <td>Minumum Years Experience</td>
           </tr>
           <tr>
-            <td>Skill 1: </td>
             <td><input type = "search" name = "recskill1" placeholder = "Skill 1" value="<?php print isset($recskill1) ? $recskill1 : ''; ?>"></td>
+            <td><input type = "search" name = "skillyear1" placeholder = "Years of Experience" value="<?php print isset($skillyear1) ? $skillyear1 : ''; ?>"></td>
           </tr>
           <tr>
-            <td>Skill 2: </td>
             <td><input type = "search" name = "recskill2" placeholder = "Skill 2" value="<?php print isset($recskill2) ? $recskill2 : ''; ?>"></td>
+            <td><input type = "search" name = "skillyear2" placeholder = "Years of Experience" value="<?php print isset($skillyear2) ? $skillyear2 : ''; ?>"></td>
+
           </tr>
           <tr>
-            <td>Skill 3: </td>
             <td><input type = "search" name = "recskill3" placeholder = "Skill 3" value="<?php print isset($recskill3) ? $recskill3 : ''; ?>"></td>
+            <td><input type = "search" name = "skillyear3" placeholder = "Years of Experience" value="<?php print isset($skillyear3) ? $skillyear3 : ''; ?>"></td>
+
           </tr>
           <tr>
-            <td>Skill 4: </td>
             <td><input type = "search" name = "recskill4" placeholder = "Skill 4" value="<?php print isset($recskill4) ? $recskill4 : ''; ?>"></td>
+            <td><input type = "search" name = "skillyear4" placeholder = "Years of Experience" value="<?php print isset($skillyear4) ? $skillyear4 : ''; ?>"></td>
+
           </tr>
           <tr>
-            <td>Skill 5: </td>
             <td><input type = "search" name = "recskill5" placeholder = "Skill 5" value="<?php print isset($recskill5) ? $recskill5 : ''; ?>"></td>
+            <td><input type = "search" name = "skillyear5" placeholder = "Years of Experience" value="<?php print isset($skillyear5) ? $skillyear5 : ''; ?>"></td>
+
           </tr>
           <tr class="blank_row"><td bgcolor="azure" colspan="3">&nbsp;</tr>
 
