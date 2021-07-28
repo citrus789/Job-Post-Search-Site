@@ -109,6 +109,15 @@ input[type=text], input[type=date], select, input[type=password], input[type=ema
   font-family: 'Yanone Kaffeesatz', sans-serif;
   transition-duration: 0.4s;
 }
+input[type=number] {
+  border-radius: 5px;
+  border: 2px solid darkblue;
+  width: 100px;
+  height: 35px;
+  font-size: 20px;
+  font-family: 'Yanone Kaffeesatz', sans-serif;
+  transition-duration: 0.4s;
+}
 input[type="file"] {
     display: none;
 }

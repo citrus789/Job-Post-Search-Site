@@ -43,14 +43,6 @@ if (isset($_POST['saveprofile'])) {
     $positions = array();
     $types = array();
 
-    for ($i = 0; $i < 7; $i++) {
-      if (isset($_POST['Skill'][$i])) {
-        array_push($skills, $_POST['Skill'][$i]);
-      }
-      else {
-        array_push($skills, NULL);
-      }
-    }
 
     for ($i = 0; $i < 7; $i++) {
       if (isset($_POST['Award'][$i])) {
@@ -147,6 +139,26 @@ if (isset($_POST['saveprofile'])) {
       }
     }
 
+    $skll = $conn->query("SELECT Skill1, Skill2, Skill3, Skill4, Skill5, Skill6, Skill7 FROM user_login");
+    $row = $skll -> fetch_array(MYSQLI_NUM);
+    $skill = array();
+    $skillobject = array();
+    $count = 0;
+    for ($i = 0; $i < 7; $i++) {
+      if (empty($_POST['Skill'][$i])) {
+        $skillobject[$i] = "NULL";
+        continue;
+      }
+      else {
+        $skill[$i] = new stdClass();
+        $skill[$i]->skill = $_POST['Skill'][$i];
+        $skill[$i]->year = $_POST['YearsExp'][$i];
+        $skillobject[$i] = serialize($skill[$i]);
+
+        continue;
+      }
+    }
+
     //if (isset($image)) {
       //$conn->query("UPDATE user_login SET Image = '$image' WHERE Email = '$email'");
     //}
@@ -154,7 +166,7 @@ if (isset($_POST['saveprofile'])) {
 
       if ($conn->query("UPDATE user_login SET FirstName = '$firstname', LastName = '$lastname', Phone = '$phone', Country = '$country', Email2 = '$email2', Region = '$region', City = '$city', Level = '$level', School = '$school', Program = '$program', Year = '$year' WHERE Email = '$email' ")) {
         echo "Works";
-        if ($conn->query("UPDATE user_login SET Skill1 = '$skills[0]', Skill2 = '$skills[1]', Skill3 = '$skills[2]', Skill4 = '$skills[3]', Skill5 = '$skills[4]', Skill6 = '$skills[5]', Skill7 = '$skills[6]' WHERE Email = '$email' ")) {
+        if ($conn->query("UPDATE user_login SET Skill1 = '$skillobject[0]', Skill2 = '$skillobject[1]', Skill3 = '$skillobject[2]', Skill4 = '$skillobject[3]', Skill5 = '$skillobject[4]', Skill6 = '$skillobject[5]', Skill7 = '$skillobject[6]' WHERE Email = '$email' ")) {
           echo "Works";
           if ($conn->query("UPDATE user_login SET Award1 = '$awards[0]', Award2 = '$awards[1]', Award3 = '$awards[2]', Award4 = '$awards[3]', Award5 = '$awards[4]', Award6 = '$awards[5]', Award7 = '$awards[6]' WHERE Email = '$email' ")) {
             echo "Works";

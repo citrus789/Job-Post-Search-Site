@@ -27,7 +27,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
       $year = $row['Year'];
       $gpa = $row['GPA'];
       $experience1 = unserialize($row['Experience1']);
-      $skill1 = $row['Skill1'];
+      $skill1 = unserialize($row['Skill1']);
       $award1 = $row['Award1'];
       $position1 = $row['Position1'];
       $type = $row['Type1'];
@@ -244,8 +244,15 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
           <h3 class = "skillstitle">Skills</h3>
           <table class = "skills" id = "skills">
             <tr>
+              <td>Skill</td>
+              <td>Years Experience</td>
+            </tr>
+            <tr>
               <td>
-                <input type="text" class="skill" name = "Skill[]" value = "<?php print isset($skill1) ? $skill1 : ''; ?>"placeholder="Skill"/>
+                <input type="text" class="skill" name = "Skill[]" value = "<?php print isset($skill1->skill) ? $skill1->skill : ''; ?>"placeholder="Skill"/>
+              </td>
+              <td>
+                <input type="number" class="skill" name = "YearsExp[]" value = "<?php print isset($skill1->year) ? $skill1->year : ''; ?>"placeholder="Years of Experience" max="100" min = "0"/>
               </td>
               <td>
                 <button type="button" class="button addskill">New Skill</button>
@@ -256,12 +263,12 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
             while($row = $skll -> fetch_array(MYSQLI_NUM)) {
               if($row[0] == $email) {
                 for ($i = 1; $i < 7; $i++) {
-                  if (is_null($row[$i]) or empty($row[$i])) {
+                  if ($row[$i] === "NULL") {
                     continue;
                   }
                   else { ?>
                     <script>
-                    $("#skills").append('<tr><td><input type="text" class="skill" name = "Skill[]" value = "<?php print isset($row[$i]) ? $row[$i] : ''; ?>" placeholder="Skill"/><td><input type = "button" value="Delete" onclick="deleteskill()"></tr>');
+                    $("#skills").append('<tr><td><input type="text" class="skill" name = "Skill[]" value = "<?php print isset(unserialize($row[$i])->skill) ? unserialize($row[$i])->skill : ''; ?>" placeholder="Skill"/><td><input type="number" class="skill" name = "YearsExp[]" value = "<?php print isset(unserialize($row[$i])->year) ? unserialize($row[$i])->year : ''; ?>"placeholder="Years of Experience" max="100" min = "0"/><td><input type = "button" value="Delete" onclick="deleteskill()"></tr>');
                     numskills++;
                 </script>
         <?php }
@@ -273,7 +280,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
               $('.addskill').click(function() {
 
                 if (numskills < 7) {
-                  $("#skills").append('<tr><td><input type="text" class="skill" name = "Skill[]" placeholder="Skill"/><td><input type = "button" value="Delete" onclick="deleteskill()"></tr>');
+                  $("#skills").append('<tr><td><input type="text" class="skill" name = "Skill[]" placeholder="Skill"/><td><input type="number" class="skill" name = "YearsExp[]" placeholder="Years of Experience" max="100" min = "0"/><td><input type = "button" value="Delete" onclick="deleteskill()"></tr>');
                   numskills++;
                 }
               });

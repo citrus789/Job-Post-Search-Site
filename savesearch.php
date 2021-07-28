@@ -40,39 +40,60 @@ if (isset($_POST['search'])) {
 
     }
   }
+  //echo "hi";
   //Calculating match score
-  $result = $conn-> query("SELECT * FROM user_login");
-  $score = 0;
+  $select = "SELECT * FROM user_login";
+  $result = $conn-> query($select);
+
+
+  function strictlyEqualAndNotNull($var1, $var2) {
+    return (!empty($var1) && !is_null($var2) && $var1 === $var2);
+  }
+
+  function formatString($var) {
+    return (strtolower(preg_replace('/\s+/', '', $var)));
+  }
+
+  $recposition = formatString($recposition);
+  $recskill1 = formatString($recskill1);
+  $recskill2 = formatString($recskill2);
+  $recskill3 = formatString($recskill3);
+  $recskill4 = formatString($recskill4);
+  $recskill5 = formatString($recskill5);
+  $recprog1 = formatString($recprog1);
+  $recprog2 = formatString($recprog1);
+  $recprog3 = formatString($recprog1);
+
+
   while($row = $result -> fetch_array(MYSQLI_ASSOC)) {
-    $recposition = strtolower(preg_replace('/\s+/', '', $recposition));
-    if (strcmp($recposition, strtolower(preg_replace('/\s+/', '', $row['Position1']))) == 0 or strcmp($recposition, strtolower(preg_replace('/\s+/', '', $row['Position2'])))==0 or strcmp($recposition, strtolower(preg_replace('/\s+/', '', $row['Position3'])))==0) {
+    $score = 0;
+    //echo $row['Email'];
+    if (strictlyEqualAndNotNull($recposition, formatString($row['Position1'])) or strictlyEqualAndNotNull($recposition, formatString($row['Position2'])) or strictlyEqualAndNotNull($recposition, formatString($row['Position3']))) {
       $score += 15;
     }
-    if (strcmp($rectype, $row['Type1'])==0 or strcmp($rectype, $row['Type2'])==0 or strcmp($rectype, $row['Type3'])==0) {
+    if (strictlyEqualAndNotNull($rectype, $row['Type1']) or strictlyEqualAndNotNull($rectype, $row['Type2']) or strictlyEqualAndNotNull($rectype, $row['Type3'])) {
       $score += 5;
+      //echo $row['Email'];
     }
     else {
       $score += 3;
     }
-    $recskill1 = strtolower(preg_replace('/\s+/', '', $recskill1));
-    $recskill2 = strtolower(preg_replace('/\s+/', '', $recskill2));
-    $recskill3 = strtolower(preg_replace('/\s+/', '', $recskill3));
-    $recskill4 = strtolower(preg_replace('/\s+/', '', $recskill4));
-    $recskill5 = strtolower(preg_replace('/\s+/', '', $recskill5));
+    //echo $score;
 
-    if (strcmp($recskill1, strtolower(preg_replace('/\s+/', '', $row['Skill1']))) == 0 or strcmp($recskill1, strtolower(preg_replace('/\s+/', '', $row['Skill2'])))==0 or strcmp($recskill1, strtolower(preg_replace('/\s+/', '', $row['Skill3'])))==0 or strcmp($recskill1, strtolower(preg_replace('/\s+/', '', $row['Skill4'])))==0 or strcmp($recskill1, strtolower(preg_replace('/\s+/', '', $row['Skill5'])))==0) {
+    if (strictlyEqualAndNotNull($recskill1, formatString($row['Skill1'])) or strictlyEqualAndNotNull($recskill1, formatString($row['Skill2'])) or strictlyEqualAndNotNull($recskill1, formatString($row['Skill3'])) or strictlyEqualAndNotNull($recskill1, formatString($row['Skill4'])) or strictlyEqualAndNotNull($recskill1, formatString($row['Skill5']))) {
+      $score += 5;
+
+    }
+    if (strictlyEqualAndNotNull($recskill2, formatString($row['Skill1'])) or strictlyEqualAndNotNull($recskill2, formatString($row['Skill2'])) or strictlyEqualAndNotNull($recskill2, formatString($row['Skill3'])) or strictlyEqualAndNotNull($recskill2, formatString($row['Skill4'])) or strictlyEqualAndNotNull($recskill2, formatString($row['Skill5']))) {
       $score += 5;
     }
-    if (strcmp($recskill2, strtolower(preg_replace('/\s+/', '', $row['Skill1']))) == 0 or strcmp($recskill2, strtolower(preg_replace('/\s+/', '', $row['Skill2'])))==0 or strcmp($recskill2, strtolower(preg_replace('/\s+/', '', $row['Skill3'])))==0 or strcmp($recskill2, strtolower(preg_replace('/\s+/', '', $row['Skill4'])))==0 or strcmp($recskill2, strtolower(preg_replace('/\s+/', '', $row['Skill5'])))==0) {
+    if (strictlyEqualAndNotNull($recskill3, formatString($row['Skill1'])) or strictlyEqualAndNotNull($recskill3, formatString($row['Skill2'])) or strictlyEqualAndNotNull($recskill3, formatString($row['Skill3'])) or strictlyEqualAndNotNull($recskill3, formatString($row['Skill4'])) or strictlyEqualAndNotNull($recskill3, formatString($row['Skill5']))) {
       $score += 5;
     }
-    if (strcmp($recskill3, strtolower(preg_replace('/\s+/', '', $row['Skill1']))) == 0 or strcmp($recskill3, strtolower(preg_replace('/\s+/', '', $row['Skill2'])))==0 or strcmp($recskill3, strtolower(preg_replace('/\s+/', '', $row['Skill3'])))==0 or strcmp($recskill3, strtolower(preg_replace('/\s+/', '', $row['Skill4'])))==0 or strcmp($recskill3, strtolower(preg_replace('/\s+/', '', $row['Skill5'])))==0) {
+    if (strictlyEqualAndNotNull($recskill4, formatString($row['Skill1'])) or strictlyEqualAndNotNull($recskill4, formatString($row['Skill2'])) or strictlyEqualAndNotNull($recskill4, formatString($row['Skill3'])) or strictlyEqualAndNotNull($recskill4, formatString($row['Skill4'])) or strictlyEqualAndNotNull($recskill4, formatString($row['Skill5']))) {
       $score += 5;
     }
-    if (strcmp($recskill4, strtolower(preg_replace('/\s+/', '', $row['Skill1']))) == 0 or strcmp($recskill4, strtolower(preg_replace('/\s+/', '', $row['Skill2'])))==0 or strcmp($recskill4, strtolower(preg_replace('/\s+/', '', $row['Skill3'])))==0 or strcmp($recskill4, strtolower(preg_replace('/\s+/', '', $row['Skill4'])))==0 or strcmp($recskill4, strtolower(preg_replace('/\s+/', '', $row['Skill5'])))==0) {
-      $score += 5;
-    }
-    if (strcmp($recskill5, strtolower(preg_replace('/\s+/', '', $row['Skill1']))) == 0 or strcmp($recskill5, strtolower(preg_replace('/\s+/', '', $row['Skill2'])))==0 or strcmp($recskill5, strtolower(preg_replace('/\s+/', '', $row['Skill3'])))==0 or strcmp($recskill5, strtolower(preg_replace('/\s+/', '', $row['Skill4'])))==0 or strcmp($recskill5, strtolower(preg_replace('/\s+/', '', $row['Skill5'])))==0) {
+    if (strictlyEqualAndNotNull($recskill5, formatString($row['Skill1'])) or strictlyEqualAndNotNull($recskill5, formatString($row['Skill2'])) or strictlyEqualAndNotNull($recskill5, formatString($row['Skill3'])) or strictlyEqualAndNotNull($recskill5, formatString($row['Skill4'])) or strictlyEqualAndNotNull($recskill5, formatString($row['Skill5']))) {
       $score += 5;
     }
     if ($row['Level'] >= $reclevel) {
@@ -81,7 +102,14 @@ if (isset($_POST['search'])) {
     if ($row['Year'] >= $recyear) {
       $score += 10;
     }
-    if ($conn->query("UPDATE user_login SET Score = '$score' WHERE Email = '$row['Email']'")) {
+
+
+    if (strictlyEqualAndNotNull($recprog1, formatString($row['Program'])) or strictlyEqualAndNotNull($recprog2, formatString($row['Program'])) or strictlyEqualAndNotNull($recprog3, formatString($row['Program']))) {
+      $score += 10;
+
+    }
+    $update = "UPDATE user_login SET Score = '$score' WHERE Email='".$row['Email']."' ";
+    if ($conn->query($update)) {
       $updated = True;
     }
     else {
@@ -90,6 +118,7 @@ if (isset($_POST['search'])) {
   }
 }
 if ($updated) {
+  echo "Success";
   header("Location: messages.html");
 }
 else {
