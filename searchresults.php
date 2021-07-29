@@ -66,7 +66,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
       <a href="logout.php">Logout</a>
     </div>
     <div class = "searchcontainer">
-      <form action="savesearch.php" method = "POST">
+      <form action="savesearch.php" method = "POST" class = "previoussearch">
         <h3 class = "recjob">Position</h3>
         <table>
           <tr>
@@ -103,43 +103,43 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
               <?php } ?>
             </td>
           </tr>
-          <tr class="blank_row"><td bgcolor="azure" colspan="3">&nbsp;</tr>
+          <tr class="blank_row"><td bgcolor="lightskyblue" colspan="3">&nbsp;</tr>
             <td>Skills</td>
             <td>Minumum Years Experience</td>
           </tr>
           <tr>
             <td><input type = "search" name = "recskill1" placeholder = "Skill 1" value="<?php print isset($recskill1) ? $recskill1 : ''; ?>"></td>
-            <td><input type = "search" name = "skillyear1" placeholder = "Years of Experience" value="<?php print isset($skillyear1) ? $skillyear1 : ''; ?>"></td>
+            <td><input type = "number" name = "skillyear1" placeholder = "Years of Experience" value="<?php print isset($skillyear1) ? $skillyear1 : ''; ?>"></td>
           </tr>
           <tr>
             <td><input type = "search" name = "recskill2" placeholder = "Skill 2" value="<?php print isset($recskill2) ? $recskill2 : ''; ?>"></td>
-            <td><input type = "search" name = "skillyear2" placeholder = "Years of Experience" value="<?php print isset($skillyear2) ? $skillyear2 : ''; ?>"></td>
+            <td><input type = "number" name = "skillyear2" placeholder = "Years of Experience" value="<?php print isset($skillyear2) ? $skillyear2 : ''; ?>"></td>
 
           </tr>
           <tr>
             <td><input type = "search" name = "recskill3" placeholder = "Skill 3" value="<?php print isset($recskill3) ? $recskill3 : ''; ?>"></td>
-            <td><input type = "search" name = "skillyear3" placeholder = "Years of Experience" value="<?php print isset($skillyear3) ? $skillyear3 : ''; ?>"></td>
+            <td><input type = "number" name = "skillyear3" placeholder = "Years of Experience" value="<?php print isset($skillyear3) ? $skillyear3 : ''; ?>"></td>
 
           </tr>
           <tr>
             <td><input type = "search" name = "recskill4" placeholder = "Skill 4" value="<?php print isset($recskill4) ? $recskill4 : ''; ?>"></td>
-            <td><input type = "search" name = "skillyear4" placeholder = "Years of Experience" value="<?php print isset($skillyear4) ? $skillyear4 : ''; ?>"></td>
+            <td><input type = "number" name = "skillyear4" placeholder = "Years of Experience" value="<?php print isset($skillyear4) ? $skillyear4 : ''; ?>"></td>
 
           </tr>
           <tr>
             <td><input type = "search" name = "recskill5" placeholder = "Skill 5" value="<?php print isset($recskill5) ? $recskill5 : ''; ?>"></td>
-            <td><input type = "search" name = "skillyear5" placeholder = "Years of Experience" value="<?php print isset($skillyear5) ? $skillyear5 : ''; ?>"></td>
+            <td><input type = "number" name = "skillyear5" placeholder = "Years of Experience" value="<?php print isset($skillyear5) ? $skillyear5 : ''; ?>"></td>
 
           </tr>
-          <tr class="blank_row"><td bgcolor="azure" colspan="3">&nbsp;</tr>
+          <tr class="blank_row"><td bgcolor="lightskyblue" colspan="3">&nbsp;</tr>
 
           <tr>
           <td>Starting Date:</td>
           <td><input type = "date" name = "recdate" value = "<?php print isset($recdate) ? $recdate : ''; ?>"></td>
           </tr>
         </table>
-        <h3>Education</h3>
-        <table class = "receducation">
+        <h3 class = "receducation">Education</h3>
+        <table>
           <tr>
             <td>Minimum Education: </td>
             <td>
@@ -199,9 +199,14 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
         <tr>
           <td>Top 3 Program / Major: </td>
           <td><input type = "search" name = "recprog1" placeholder = "1" value="<?php print isset($recprog1) ? $recprog1 : ''; ?>"></td>
+        </tr>
+        <tr>
+          <td></td>
           <td><input type = "search" name = "recprog2" placeholder = "2" value="<?php print isset($recprog2) ? $recprog2 : ''; ?>"></td>
+        </tr>
+        <tr>
+          <td></td>
           <td><input type = "search" name = "recprog3" placeholder = "3" value="<?php print isset($recprog3) ? $recprog3 : ''; ?>"></td>
-
         </tr>
         <tr>
           <td>Minimum GPA:</td>

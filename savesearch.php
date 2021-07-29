@@ -138,7 +138,6 @@ if (isset($_POST['search'])) {
 
 
 
-
     $update = "UPDATE user_login SET Score = '$score' WHERE Email='".$row['Email']."' ";
     if ($conn->query($update)) {
       $updated = True;
@@ -150,7 +149,7 @@ if (isset($_POST['search'])) {
 }
 if ($updated) {
   //echo "Success";
-  header("Location: messages.html");
+  header("Location: searchresults.php");
 }
 else {
   echo "Submit button is not set";

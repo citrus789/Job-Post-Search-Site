@@ -49,7 +49,7 @@ if(isset($_SESSION["Email"]) && $_SESSION['loggedin'] == true) {
           <input type="submit" value="Submit" name="submit" id = "submit">
         </div>
         <div>
-          <a class = "button" href="index.html" id = "linksignup" >Sign Up</a>
+          <input id = "linklogin" type="button" onclick="location.href='index.html';" value="Sign Up" />
         </div>
       </form>
     </div>

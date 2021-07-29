@@ -31,7 +31,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
       $award1 = $row['Award1'];
       $position1 = $row['Position1'];
       $type = $row['Type1'];
-
+      $remote = $row['Remote'];
       $image = $row['Image'];
       if(!empty($image)) {
         $profilepic = "img/".$image;
@@ -89,7 +89,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
           <div class = "profileimage">
             <div class = "changeimage">
               <div class = "showimage">
-                <img src="<?php echo $profilepic; ?>" height="200" width="200" class="imgthumnail" />
+                <img src="<?php echo $profilepic; ?>" height="200" width="200" border-radius="50%" background-color="white" class="imgthumnail" />
                 <div class="overlay"></div>
               </div>
               <div class = "imagefile">
@@ -489,6 +489,32 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                 numpositions--;
               }
             </script>
+          </table>
+          <table class = "remoteornah">
+            <tr>
+              <td>Remote or In-Person?</td>
+                <td>
+                <?php
+                if (is_null($remote)) {
+              ?>
+              <select id="remote" name="Remote">
+                <option value="NULL" disabled selected>Select</option>
+                <option value="1">Remote Only</option>
+                <option value="2">In-Person Only</option>
+                <option value="3">Both</option>
+
+              </select>
+              <?php } else {?>
+              <select id="yr" name="Type[]">
+                <option value="NULL"<?php if ($remote == "NULL"): ?> selected="selected"<?php endif; ?>>Select</option>
+                <option value="1"<?php if ($remote == "1"): ?> selected="selected"<?php endif; ?>>Remote Only</option>
+                <option value="2"<?php if ($remote == "2"): ?> selected="selected"<?php endif; ?>>In-Person Only</option>
+                <option value="3"<?php if ($remote == "3"): ?> selected="selected"<?php endif; ?>>Both</option>
+
+              </select>
+              <?php } ?>
+              </td>
+            </tr>
           </table>
           <!--Save Profile-->
           <div style="text-align:center">
