@@ -65,7 +65,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
       <a href="editprofile.php">Profile</a>
       <a href="logout.php">Logout</a>
     </div>
-    <div class = "searchcontainer">
+    <div class = "searchresultscontainer">
       <form action="savesearch.php" method = "POST" class = "previoussearch">
         <h3 class = "recjob">Position</h3>
         <table>
