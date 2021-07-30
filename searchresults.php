@@ -281,6 +281,36 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
           <input id = "search" type="submit" value="Search Users" name="search" onclick="submitted()">
         </div>
       </form>
+      <form action="sendmessage.php" method = "POST" class = "sendmessage">
+      <div class = "message">
+        <div class = "positioninfo">
+          <div class = "positionrole">
+            <input type = "text" name = "positionrole" placeholder = "Position">
+          </div>
+          <div class = "companyinfo">
+            <input type = "text" name = "positionrole" placeholder = "Position">
+          </div>
+        </div>
+        <div class = "writemessage">
+          <input type = "textarea" name = "writemessage" placeholder = "Write a job posting you want to send to users">
+        </div>
+        <div class = "sendmessage">
+          <div class = "selectnumber">
+            <select id="selectnumber" name="selectnumber">
+              <option value="NULL" disabled selected>Send to number of users</option>
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+              <option value="150">150</option>
+              <option value="200">200</option>
+            </select>
+          </div>
+          <div class = "sendbutton">
+            <input id = "sendmessage" type="submit" value="Send Posting" name="sendmessage" onclick="submitted()">
+          </div>
+        </div>
+      </div>
       <div class = "userlist">
         <?php
         $user = "SELECT FirstName, LastName, Bio, Image, School, Program, Level, Year, GPA, Experience1, Experience2, Experience3, Experience4, Experience5, Skill1, Skill2, Skill3, Skill4, Skill5, Skill6, Skill7, City, Region, Country FROM user_login ORDER BY Score DESC";
@@ -299,10 +329,87 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
             </div>
             <div class = "userinfo">
               <div class = "username">
-                <h2><?php echo $row['FirstName']; echo " "; echo $row['LastName'];?></h2>
+                <h1><?php echo $row['FirstName']; echo " "; echo $row['LastName'];?></h1>
               </div>
-              <div class = "userbio">
+              <!-- <div class = "userbio">
                 <h5><?php echo $row['Bio'];?></h5>
+              </div> -->
+              <div class = "usereducation">
+                <?php
+                if (!empty($row['School']) and $row['Year'] != "0" and !empty($row['Level']) and !empty($row['Program'])) {
+                  if ($row['Level'] == "1") {
+                    $level = "high school";
+                  }
+                  if ($row['Level'] == "2" or $row['Level'] == "3") {
+                    $level = "undergraduate";
+                  }
+                  if ($row['Level'] == "4") {
+                    $level = "master's";
+                  }
+                  if ($row['Level'] == "5") {
+                    $level = "PhD";
+                  }
+                  if ($row['Year'] < 7) {
+                    echo "<h2>Year ".$row['Year']." ".$level." student at ".$row['School'].", ".$row['Program']."</h2>";
+                  }
+                  else {
+                    if ($row['Level'] == "1") {
+                      $level = "High School Diploma.";
+                    }
+                    if ($row['Level'] == "2") {
+                      $level = "Associate of ".$row['Program'];
+                    }
+                    if ($row['Level'] == "3") {
+                      $level = "Bachelor of ".$row['Program'];
+                    }
+                    if ($row['Level'] == "4") {
+                      $level = "Master of ".$row['Program'];
+                    }
+                    if ($row['Level'] == "5") {
+                      $level = "PhD in ".$row['Program'];
+                    }
+                    echo "<h2>Graduated from ".$row['School'].", ".$level."</h2>";
+                  }
+                }
+                else if (!empty($row['School']) and !empty($row['Level']) and !empty($row['Program'])) {
+                  if ($row['Level'] == "1") {
+                    $level = "High School";
+                  }
+                  if ($row['Level'] == "2" or $row['Level'] == "3") {
+                    $level = "Undergraduate";
+                  }
+                  if ($row['Level'] == "4") {
+                    $level = "Master's";
+                  }
+                  if ($row['Level'] == "5") {
+                    $level = "PhD";
+                  }
+                  if ($row['Year'] < 7) {
+                    echo "<h2>".$level." student at ".$row['School'].", ".$row['Program']."</h2>";
+                  }
+                }
+                else if (!empty($row['School']) and !empty($row['Program'])) {
+                  echo "<h2>".$row['Program']." student at ".$row['School']."</h2>";
+                }
+                else if (!empty($row['School'])) {
+                  echo "<h2>Student at ".$row['School']."</h2>";
+                }
+                else if (!empty($row['Program'])) {
+                  echo "<h2>".$row['Program']." student</h2>";
+                }
+                 ?>
+              </div>
+              <div class = "userjob">
+                <?php
+                $objects = array("Experience1", "Experience2", "Experience3", "Experience4", "Experience5");
+                foreach ($objects as $value) {
+                  if ($row[$value] != "NULL" and !empty($row[$value])) {
+                    if (unserialize($row[$value])->end == "1") {
+                      echo "<div class = currentjob><h2>".unserialize($row[$value])->role." at ".unserialize($row[$value])->company."</h2></div>";
+                    }
+                  }
+                }
+                  ?>
               </div>
             </div>
           </div>

@@ -26,8 +26,9 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
       $program = $row['Program'];
       $year = $row['Year'];
       $gpa = $row['GPA'];
-      if (!is_null($row['Experience1'])) {
+      if ($row['Experience1'] != "NULL") {
         $experience1 = unserialize($row['Experience1']);
+        echo "Fuck";
       }
       if (!is_null($row['Skill1'])) {
         $skill1 = unserialize($row['Skill1']);
@@ -41,7 +42,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
         $profilepic = "img/".$image;
       }
       else {
-        $profilepic = "img/defaultprofile.png";
+        $profilepic = "img/defaultprofile.PNG";
       }
       //echo $profilepic;
 
@@ -67,7 +68,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
   </head>
   <body>
     <div class="topnav">
-      <a href="search.php">Search</a>
+      <a href="searchresults.php">Search</a>
       <a href="messages.html">Messages</a>
       <a class="active" href="editprofile.php">Profile</a>
       <a href="logout.php">Logout</a>
@@ -104,7 +105,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
               </div>
             </div>
             <div class = "bio">
-              <textarea type = "text" id = "bio" name = "Bio" placeholder = "Write a short introduction about yourself in 200 characters maximum" maxlength = 200><?php print isset($bio) ? $bio : ''; ?></textarea>
+              <textarea type = "text" id = "bio" name = "Bio" placeholder = "Write a short introduction about yourself in 200 characters maximum. What opportunities are you looking for?" maxlength = 200><?php print isset($bio) ? $bio : ''; ?></textarea>
             </div>
             <div class="clear"></div>
           </div>
