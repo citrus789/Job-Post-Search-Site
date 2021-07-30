@@ -42,6 +42,7 @@ if (isset($_POST['saveprofile'])) {
     $awards = array();
     $positions = array();
     $types = array();
+    $current = array();
 
 
     for ($i = 0; $i < 7; $i++) {
@@ -115,6 +116,7 @@ if (isset($_POST['saveprofile'])) {
       	}
       }
   	}
+    echo "Current = ".$_POST['Current'][1];
     $bio = $conn->real_escape_string($_POST['Bio']);
 
     $exp = $conn->query("SELECT Experience1, Experience2, Experience3, Experience4, Experience5 FROM user_login");
@@ -132,9 +134,14 @@ if (isset($_POST['saveprofile'])) {
         $experience[$i]->role = $_POST['Role'][$i];
         $experience[$i]->company = $_POST['Company'][$i];
         $experience[$i]->start = $_POST['StartDate'][$i];
-        $experience[$i]->end = $_POST['EndDate'][$i];
+        if ($_POST['Current'][$i] != 1) {
+          $experience[$i]->end = $_POST['EndDate'][$i];
+        }
+        else {
+          $experience[$i]->end = 1;
+        }
+        echo $experience[$i]->end;
         $expobject[$i] = serialize($experience[$i]);
-
         continue;
       }
     }
@@ -189,6 +196,7 @@ if (isset($_POST['saveprofile'])) {
 else {
   echo "Submit button is not set";
 }
+$skll->free_result();
 $exp->free_result();
 $conn->close();
 ?>

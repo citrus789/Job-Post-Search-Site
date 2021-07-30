@@ -8,7 +8,8 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
   if (mysqli_connect_errno()) {
     echo "Failed to connect to MySQL: " . mysqli_connect_error();
   }
-  $result = $conn-> query("SELECT * FROM position");
+  $sql = "SELECT * FROM position";
+  $result = $conn-> query($sql);
 
 
   while($row = $result -> fetch_array(MYSQLI_ASSOC)) {
@@ -103,7 +104,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
               <?php } ?>
             </td>
           </tr>
-          <tr class="blank_row"><td bgcolor="lightskyblue" colspan="3">&nbsp;</tr>
+          <tr class="blank_row"><td bgcolor="lightblue" colspan="3">&nbsp;</tr>
             <td>Skills</td>
             <td>Minumum Years Experience</td>
           </tr>
@@ -131,7 +132,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
             <td><input type = "number" name = "skillyear5" placeholder = "Years of Experience" value="<?php print isset($skillyear5) ? $skillyear5 : ''; ?>"></td>
 
           </tr>
-          <tr class="blank_row"><td bgcolor="lightskyblue" colspan="3">&nbsp;</tr>
+          <tr class="blank_row"><td bgcolor="lightblue" colspan="3">&nbsp;</tr>
 
           <tr>
           <td>Starting Date:</td>
@@ -195,91 +196,121 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
               </select>
               <?php } ?>
             </td>
-        </tr>
-        <tr>
-          <td>Top 3 Program / Major: </td>
-          <td><input type = "search" name = "recprog1" placeholder = "1" value="<?php print isset($recprog1) ? $recprog1 : ''; ?>"></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td><input type = "search" name = "recprog2" placeholder = "2" value="<?php print isset($recprog2) ? $recprog2 : ''; ?>"></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td><input type = "search" name = "recprog3" placeholder = "3" value="<?php print isset($recprog3) ? $recprog3 : ''; ?>"></td>
-        </tr>
-        <tr>
-          <td>Minimum GPA:</td>
-          <td><input type = "search" name = "recgpa" placeholder = "GPA / 4.00" value="<?php print isset($recgpa) ? $recgpa : ''; ?>"></td>
-        </tr>
-      </table>
-      <h3 class = "reclocation">Job Location</h3>
-      <table class = "recremote" id = "recremote">
-        <tr>
-          <td>Remote?</td><td width = "16%"></td>
-          <td>
-            <?php
-            if ($recremote == NULL) {
-             ?>
-            <select id="remote" name="recremote">
-            <option value="NULL">Select</option>
-            <option value="1">Yes</option>
-            <option value="0">Temporarily</option>
-            <option value="0">No</option>
-            </select>
-            <?php
-          } else {
-             ?>
-           <select id="remote" name="recremote">
-           <option value="NULL"<?php if ($recremote == "NULL"): ?> selected="selected"<?php endif; ?>>Select</option>
-           <option value="1"<?php if ($recremote == "1"): ?> selected="selected"<?php endif; ?>>Yes</option>
-           <option value="0"<?php if ($recremote == "0"): ?> selected="selected"<?php endif; ?>>Temporarily</option>
-           <option value="0"<?php if ($recremote == "0"): ?> selected="selected"<?php endif; ?>>No</option>
-           </select>
-         <?php } ?>
-          </td>
-        </tr>
-      </table>
-      <div class = "reclocationinfo" id = "reclocationinfo">
-        <table>
-          <tr>
-            <td>Address: </td>
-            <td><input type ="search" name ="recaddress" placeholder = "Line 1" value="<?php print isset($recaddress) ? $recaddress : ''; ?>"></td>
           </tr>
           <tr>
-            <td>City / Town: </td>
-            <td><input type = "search" name = "reccity" placeholder = "City / Town" value="<?php print isset($reccity) ? $reccity : ''; ?>"></td>
+            <td>Top 3 Program / Major: </td>
+            <td><input type = "search" name = "recprog1" placeholder = "1" value="<?php print isset($recprog1) ? $recprog1 : ''; ?>"></td>
           </tr>
           <tr>
-            <td>State / Province: </td>
-            <td><input type = "search" name = "recregion" placeholder = "State / Province" value="<?php print isset($recregion) ? $recregion : ''; ?>"></td>
+            <td></td>
+            <td><input type = "search" name = "recprog2" placeholder = "2" value="<?php print isset($recprog2) ? $recprog2 : ''; ?>"></td>
           </tr>
           <tr>
-            <td>Country: </td>
-            <td><input type = "search" name = "reccountry" placeholder = "Country" value="<?php print isset($reccountry) ? $reccountry : ''; ?>"></td>
+            <td></td>
+            <td><input type = "search" name = "recprog3" placeholder = "3" value="<?php print isset($recprog3) ? $recprog3 : ''; ?>"></td>
+          </tr>
+          <tr>
+            <td>Minimum GPA:</td>
+            <td><input type = "search" name = "recgpa" placeholder = "GPA / 4.00" value="<?php print isset($recgpa) ? $recgpa : ''; ?>"></td>
           </tr>
         </table>
-      </div>
+        <h3 class = "reclocation">Job Location</h3>
+        <table class = "recremote" id = "recremote">
+          <tr>
+            <td>Remote?</td><td width = "16%"></td>
+            <td>
+              <?php
+              if ($recremote == NULL) {
+               ?>
+              <select id="remote" name="recremote">
+              <option value="NULL">Select</option>
+              <option value="1">Yes</option>
+              <option value="0">Temporarily</option>
+              <option value="0">No</option>
+              </select>
+              <?php
+            } else {
+               ?>
+             <select id="remote" name="recremote">
+             <option value="NULL"<?php if ($recremote == "NULL"): ?> selected="selected"<?php endif; ?>>Select</option>
+             <option value="1"<?php if ($recremote == "1"): ?> selected="selected"<?php endif; ?>>Yes</option>
+             <option value="0"<?php if ($recremote == "0"): ?> selected="selected"<?php endif; ?>>Temporarily</option>
+             <option value="0"<?php if ($recremote == "0"): ?> selected="selected"<?php endif; ?>>No</option>
+             </select>
+           <?php } ?>
+            </td>
+          </tr>
+        </table>
+        <div class = "reclocationinfo" id = "reclocationinfo">
+          <table>
+            <tr>
+              <td>Address: </td>
+              <td><input type ="search" name ="recaddress" placeholder = "Line 1" value="<?php print isset($recaddress) ? $recaddress : ''; ?>"></td>
+            </tr>
+            <tr>
+              <td>City / Town: </td>
+              <td><input type = "search" name = "reccity" placeholder = "City / Town" value="<?php print isset($reccity) ? $reccity : ''; ?>"></td>
+            </tr>
+            <tr>
+              <td>State / Province: </td>
+              <td><input type = "search" name = "recregion" placeholder = "State / Province" value="<?php print isset($recregion) ? $recregion : ''; ?>"></td>
+            </tr>
+            <tr>
+              <td>Country: </td>
+              <td><input type = "search" name = "reccountry" placeholder = "Country" value="<?php print isset($reccountry) ? $reccountry : ''; ?>"></td>
+            </tr>
+          </table>
+        </div>
 
-      <script>
-        $(document).ready(function() {
-          $('#remote').on('change', function() {
-            if ( this.value == '0')
-            {
-              $("#reclocationinfo").show();
-            }
-            else
-            {
-              $("#reclocationinfo").hide();
-            }
+        <script>
+          $(document).ready(function() {
+            $('#remote').on('change', function() {
+              if ( this.value == '0')
+              {
+                $("#reclocationinfo").show();
+              }
+              else
+              {
+                $("#reclocationinfo").hide();
+              }
+            });
           });
-        });
-      </script>
+        </script>
 
-      <div style="text-align:center">
+        <div style="text-align:center">
           <input id = "search" type="submit" value="Search Users" name="search" onclick="submitted()">
-      </div>
+        </div>
       </form>
+      <div class = "userlist">
+        <?php
+        $user = "SELECT FirstName, LastName, Bio, Image, School, Program, Level, Year, GPA, Experience1, Experience2, Experience3, Experience4, Experience5, Skill1, Skill2, Skill3, Skill4, Skill5, Skill6, Skill7, City, Region, Country FROM user_login ORDER BY Score DESC";
+        $select = $conn->query($user);
+        while($row = $select -> fetch_array(MYSQLI_ASSOC)) {
+          if (!isset($row['Image']) or empty($row['Image'])) {
+            $profilepic = "img/defaultprofile.PNG";
+          }
+          else {
+            $profilepic = "img/".$row['Image'];
+          }
+        ?>
+          <div id = "usercard">
+            <div class = "userimage">
+              <img src="<?php echo $profilepic; ?>" height="200" width="200" border-radius="50%" background-color="white" class="imgthumbnail" />
+            </div>
+            <div class = "userinfo">
+              <div class = "username">
+                <h2><?php echo $row['FirstName']; echo " "; echo $row['LastName'];?></h2>
+              </div>
+              <div class = "userbio">
+                <h5><?php echo $row['Bio'];?></h5>
+              </div>
+            </div>
+          </div>
+          <style type="text/css">
+            .clear{clear:both;}
+          </style>
+      <?php } ?>
+      </div>
     </div>
   </body>
 </html>

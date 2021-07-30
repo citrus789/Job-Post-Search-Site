@@ -136,8 +136,18 @@ if (isset($_POST['search'])) {
     $score += isMatch($recskill4, $skillyear4, $skill1, $skill2, $skill3, $skill4, $skill5, $skill6, $skill7);
     $score += isMatch($recskill5, $skillyear5, $skill1, $skill2, $skill3, $skill4, $skill5, $skill6, $skill7);
 
-
-
+    if ($recremote == 1) {
+      $score += 10;
+    }
+    else {
+      if (strictlyEqualAndNotNull(formatString($reccountry), formatString($row['Country']))) {
+        $score += 5;
+        if (strictlyEqualAndNotNull(formatString($reccity), formatString($row['City']))) {
+          $score += 5;
+        }
+      }
+    }
+    
     $update = "UPDATE user_login SET Score = '$score' WHERE Email='".$row['Email']."' ";
     if ($conn->query($update)) {
       $updated = True;

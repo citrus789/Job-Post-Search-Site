@@ -26,8 +26,12 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
       $program = $row['Program'];
       $year = $row['Year'];
       $gpa = $row['GPA'];
-      $experience1 = unserialize($row['Experience1']);
-      $skill1 = unserialize($row['Skill1']);
+      if (!is_null($row['Experience1'])) {
+        $experience1 = unserialize($row['Experience1']);
+      }
+      if (!is_null($row['Skill1'])) {
+        $skill1 = unserialize($row['Skill1']);
+      }
       $award1 = $row['Award1'];
       $position1 = $row['Position1'];
       $type = $row['Type1'];
@@ -75,7 +79,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
 
     <div class="profilecontainer">
 
-      <form action="saveprofile.php" method = "POST" enctype='multipart/form-data' class="form">
+      <form action="saveprofile.php" method = "POST" enctype='multipart/form-data' class="form" id = "editprofileform">
         <script>
          var numskills = 1;
          var numexperience = 1;
@@ -89,7 +93,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
           <div class = "profileimage">
             <div class = "changeimage">
               <div class = "showimage">
-                <img src="<?php echo $profilepic; ?>" height="200" width="200" border-radius="50%" background-color="white" class="imgthumnail" />
+                <img src="<?php echo $profilepic; ?>" height="200" width="200" border-radius="50%" background-color="white" class="imgthumbnail" />
                 <div class="overlay"></div>
               </div>
               <div class = "imagefile">
@@ -263,7 +267,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
             while($row = $skll -> fetch_array(MYSQLI_NUM)) {
               if($row[0] == $email) {
                 for ($i = 1; $i < 7; $i++) {
-                  if ($row[$i] === "NULL") {
+                  if (is_null($row[$i]) or empty($row[$i])) {
                     continue;
                   }
                   else { ?>
@@ -308,23 +312,30 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
               </td>
             </tr>
             <tr>
-              <td>Start Date</td>
-              <td>End Date</td>
+              <td>I currently work here</td>
+              <td><input type="checkbox" name = "Current[]" class = "currentcheckbox" value = "1" <?php print (isset($experience1->end) and ($experience1->end == "1")) ? "checked" : ''; ?>></td>
             </tr>
             <tr>
+              <td>Start Date:</td>
               <td>
-                <input type="date" class="start" name = 'StartDate[]' value = "<?php print isset($experience1->start) ? $experience1->start : ''; ?>" placeholder="Start Date"/>
+                <input type="date" name = 'StartDate[]' value = "<?php print isset($experience1->start) ? $experience1->start : ''; ?>"/>
               </td>
+            </tr>
+            <tr id="enddaterow[]">
+              <td>End Date:</td>
               <td>
-                <input type="date" class="end" name = 'EndDate[]' value = "<?php print isset($experience1->end) ? $experience1->end : ''; ?>" placeholder="End Date"/>
+                <input type="date" name = 'EndDate[]' value = "<?php print isset($experience1->end) ? $experience1->end : ''; ?>" placeholder="End Date"/>
               </td>
             </tr>
             <?php
+
               #Role1, Company1, Start1, End1, Role2, Company2, Start2, End2, Role3, Company3, Start3, End3,
             $exp = $conn->query("SELECT Email, Experience2, Experience3, Experience4, Experience5 FROM user_login");
-            while($row = $skll -> fetch_array(MYSQLI_NUM)) {
+            while($row = $exp -> fetch_array(MYSQLI_NUM)) {
+
               if($row[0] == $email) {
                 for ($i = 1; $i < 5; $i++) {
+
                   if (is_null($row[$i]) or empty($row[$i])) {
                     continue;
                   }
@@ -333,8 +344,9 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                     $("#experience").append('<tr class="blank_row"><td bgcolor="azure" colspan="3">&nbsp;</tr>');
                     $("#experience").append('<tr class="blank_row"><td bgcolor="azure" colspan="3">&nbsp;</tr>');
                     $("#experience").append('<tr><td><input type="text" class="role" name = "Role[]" value = "<?php print isset(unserialize($row[$i])->role) ? unserialize($row[$i])->role : ''; ?>" placeholder="Role"/><td><input type="text" class="company" name = "Company[]" value = "<?php print isset(unserialize($row[$i])->company) ? unserialize($row[$i])->company : ''; ?>"placeholder="Company"/><td><input type = "button" value="Delete" onclick="deleteexperience()"></tr>');
-                    $("#experience").append('<tr><td>Start Date <td>End Date');
-                    $("#experience").append('<tr><td><input type="date" class="start" name = "StartDate[]" value = "<?php print isset(unserialize($row[$i])->start) ? unserialize($row[$i])->start : ''; ?>" placeholder="Start Date"/><td><input type="date" class="end" name = "EndDate[]" value = "<?php print isset(unserialize($row[$i])->end) ? unserialize($row[$i])->end : ''; ?>" placeholder="End Date"/>');
+                    $("#experience").append('<tr><td>I currently work here<td><input type="checkbox" name="Current[]" class = "currentcheckbox" value = "1" <?php print (isset(unserialize($row[$i])->end) and unserialize($row[$i])->end == "1") ? "checked" : ''; ?>></tr>');
+                    $("#experience").append('<tr><td>Start Date<td><input type="date" class="start" name = "StartDate[]" value = "<?php print isset(unserialize($row[$i])->start) ? unserialize($row[$i])->start : ''; ?>" placeholder="Start Date"/></tr>');
+                    $("#experience").append('<tr id="enddaterow[]"><td>End Date<td><input type="date" class="end" name = "EndDate[]" value = "<?php print (isset(unserialize($row[$i])->end) and unserialize($row[$i])->end != "1") ? unserialize($row[$i])->end : ''; ?>" placeholder="End Date"/>');
                     numexperience++;
                 </script>
         <?php }
@@ -342,30 +354,23 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
           }
         }
             ?>
-
             <script>
-
             $('.addexperience').click(function() {
-
               if (numexperience < 5) {
                 $("#experience").append('<tr class="blank_row"><td bgcolor="azure" colspan="3">&nbsp;</tr>');
                 $("#experience").append('<tr class="blank_row"><td bgcolor="azure" colspan="3">&nbsp;</tr>');
                 $("#experience").append('<tr><td><input type="text" class="role" name = "Role[]" placeholder="Role"/> <td><input type="text" class="company" name = "Company[]" placeholder="Company"/><td><input type = "button" value="Delete" onclick="deleteexperience()"></tr>');
-                $("#experience").append('<tr><td>Start Date <td>End Date');
-                $("#experience").append('<tr><td><input type="date" class="start" name = "StartDate[]" placeholder="Start Date"/> <td><input type="date" class="end" name = "EndDate[]" placeholder="End Date"/>');
+                $("#experience").append('<tr><td>I currently work here<td><input type="checkbox" name="Current[]" class = "currentcheckbox" value = "1"></tr>');
+                $("#experience").append('<tr><td>Start Date <td><input type="date" class="start" name = "StartDate[]" placeholder="Start Date"/></tr>');
+                $("#experience").append('<tr id="enddaterow[]"><td>End Date <td><input type="date" class="end" name = "EndDate[]" placeholder="End Date"/></tr>');
                 numexperience++;
               }
              });
              function deleteexperience() {
-                 document.getElementById("experience").deleteRow((numexperience - 1) * 5 - 2);
-                 document.getElementById("experience").deleteRow((numexperience - 1) * 5 - 2);
-                 document.getElementById("experience").deleteRow((numexperience - 1) * 5 - 2);
-                 document.getElementById("experience").deleteRow((numexperience - 1) * 5 - 2);
-                 document.getElementById("experience").deleteRow((numexperience - 1) * 5 - 2);
-
-
+               for (let i = 0; i < 6; i++) {
+                 document.getElementById("experience").deleteRow((numexperience - 1) * 6 - 2);
+               }
                numexperience--;
-
              }
             </script>
           </table>
