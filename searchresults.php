@@ -281,38 +281,43 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
           <input id = "search" type="submit" value="Search Users" name="search" onclick="submitted()">
         </div>
       </form>
-      <form action="sendmessage.php" method = "POST" class = "sendmessage">
-      <div class = "message">
-        <h3>Send Job Posting</h3>
-        <div class = "positioninfo">
-          <div class = "positionrole">
-            <input type = "text" name = "positionrole" placeholder = "Position" required = "required">
-          </div>
-          <div class = "companyinfo">
-            <input type = "text" name = "positioncompany" placeholder = "Company" required = "required">
-          </div>
-        </div>
-        <div class = "writemessage">
-          <input type = "textarea" name = "writemessage" placeholder = "Write a job posting you want to send to users" required = "required">
-        </div>
-        <div class = "sendmessage">
-          <div class = "selectnumber">
-            <select id="selectnumber" name="selectnumber" required = "required">
-              <option value="NULL" disabled selected>Send to top number of users</option>
-              <option value="10">10</option>
-              <option value="25">25</option>
-              <option value="50">50</option>
-              <option value="100">100</option>
-              <option value="150">150</option>
-              <option value="200">200</option>
-            </select>
-          </div>
-          <div class = "sendbutton">
-            <input id = "sendmessage" type="submit" value="Send Posting" name="sendmessage" onclick="submitted()">
-          </div>
-        </div>
-      </div>
       <div class = "userlist">
+        <div class = "message">
+          <form action="sendmessage.php" method = "POST" class = "sendmessage">
+            <h3>Send Job Posting</h3>
+            <div class = "positioninfo">
+              <div class = "positionrole">
+                <input type = "text" name = "positionrole" placeholder = "Position" required = "required">
+              </div>
+              <div class = "separator">&nbsp;
+              </div>
+              <div class = "companyinfo">
+                <input type = "text" name = "positioncompany" placeholder = "Company" required = "required">
+              </div>
+            </div>
+            <div class = "writemessage">
+              <textarea type = "text" id = "writemessage" name = "writemessage" placeholder = "Write a job posting you want to send to users" required = "required"></textarea>
+            </div>
+            <div class = "sendmessage">
+              <div class = "sendbutton">
+                <input id = "sendmessage" type="submit" value="Send Posting" name="sendmessage" onclick="submitted()">
+              </div>
+              <div class = "selectnumber">
+                <select id="selectnumber" name="selectnumber" required = "required">
+                  <option value="NULL" disabled selected>Send to top number of users</option>
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                  <option value="150">150</option>
+                  <option value="200">200</option>
+                </select>
+              </div>
+
+            </div>
+          </form>
+        </div>
+
         <?php
         $user = "SELECT FirstName, LastName, Bio, Image, School, Program, Level, Year, GPA, Experience1, Experience2, Experience3, Experience4, Experience5, Skill1, Skill2, Skill3, Skill4, Skill5, Skill6, Skill7, City, Region, Country FROM user_login ORDER BY Score DESC";
         $select = $conn->query($user);

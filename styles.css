@@ -231,6 +231,23 @@ input[type = "button"]:hover {
   font-size: 20px;
   transition-duration: 0.4s;
 }
+#sendmessage, #selectnumber {
+  border-radius: 7px;
+  border: 2px solid darkblue;
+  background: white;
+  height: 35px;
+  margin-top: 10px;
+  float: right;
+  width: 150px;
+  margin-right: 10px;
+  text-decoration: none;
+  font-family: 'Yanone Kaffeesatz';
+  font-size: 20px;
+  transition-duration: 0.4s;
+}
+#selectnumber {
+  width: 200px;
+}
 
 a.button, a.button:link {
   border-radius: 7px;
@@ -250,14 +267,14 @@ a.button, a.button:link {
   transition-duration: 0.4s;
 }
 
-#submit:hover, a.button:hover {
+#submit:hover, #sendmessage:hover, a.button:hover {
   background-color: lightgray;
 }
 
 
 /*bio and profile image section*/
 @media only screen and (min-width: 660px) {
-  #bio{
+  #bio {
     /*display: inline-block;*/
     border-radius: 7px;
     border: 2px solid darkblue;
@@ -272,6 +289,20 @@ a.button, a.button:link {
     min-width: 250px;
     display: inline-block;
   }
+ }
+ #writemessage {
+   border-radius: 7px;
+   border: 2px solid darkblue;
+   width: 100%;
+   height: 200px;
+   margin-bottom: 10px;
+
+   font-size: 20px;
+   font-family: 'Yanone Kaffeesatz';
+   resize: none;
+   overflow: scroll;
+   min-width: 250px;
+   display: inline-block;
  }
 
 .basicinfo {
@@ -352,6 +383,7 @@ a.button, a.button:link {
   float: left;
   display: flex;
   margin-bottom: 20px;
+  overflow:hidden;
 }
 .userinfo {
   /* float: left; */
@@ -379,4 +411,21 @@ a.button, a.button:link {
   /* width: 200px;
   height: 200px; */
   /* display: inline-block; */
+}
+.message {
+  float: left;
+  height: 400px;
+  width: 100%;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.positionrole, .companyinfo {
+  width: 49.5%;
+  margin-bottom: 10px;
+  float: left;
+}
+.separator {
+  width: 1%;
+  float: left;
 }
