@@ -28,7 +28,6 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
       $gpa = $row['GPA'];
       if ($row['Experience1'] != "NULL") {
         $experience1 = unserialize($row['Experience1']);
-        echo "Fuck";
       }
       if (!is_null($row['Skill1'])) {
         $skill1 = unserialize($row['Skill1']);

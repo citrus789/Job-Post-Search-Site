@@ -217,7 +217,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
         <h3 class = "reclocation">Job Location</h3>
         <table class = "recremote" id = "recremote">
           <tr>
-            <td>Remote?</td><td width = "16%"></td>
+            <td>Remote?</td><td width = "20%"></td>
             <td>
               <?php
               if ($recremote == NULL) {
@@ -321,6 +321,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
         <?php
         $user = "SELECT FirstName, LastName, Bio, Image, School, Program, Level, Year, GPA, Experience1, Experience2, Experience3, Experience4, Experience5, Skill1, Skill2, Skill3, Skill4, Skill5, Skill6, Skill7, City, Region, Country FROM user_login ORDER BY Score DESC";
         $select = $conn->query($user);
+        $numcard = 0;
         while($row = $select -> fetch_array(MYSQLI_ASSOC)) {
           if (!isset($row['Image']) or empty($row['Image'])) {
             $profilepic = "img/defaultprofile.PNG";
@@ -328,8 +329,9 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
           else {
             $profilepic = "img/".$row['Image'];
           }
+
         ?>
-          <div id = "usercard">
+          <div id = "usercard" class = "usercard">
             <div class = "userimage">
               <img src="<?php echo $profilepic; ?>" height="200" width="200" border-radius="50%" background-color="white" class="imgthumbnail" />
             </div>
@@ -337,9 +339,6 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
               <div class = "username">
                 <h1><?php echo $row['FirstName']; echo " "; echo $row['LastName'];?></h1>
               </div>
-              <!-- <div class = "userbio">
-                <h5><?php echo $row['Bio'];?></h5>
-              </div> -->
               <div class = "usereducation">
                 <?php
                 if (!empty($row['School']) and $row['Year'] != "0" and !empty($row['Level']) and !empty($row['Program'])) {
@@ -418,11 +417,20 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                   ?>
               </div>
             </div>
+            <div class = "usermatch">
+              <input type="checkbox" name = "send[]" class = "sendcheckbox" value = "<?php print isset($row['Email']) ? $row['Email'] : ''; ?>">
+            </div>
+            <script>
+              $('.usercard :checkbox').change(function() {
+                $(this).closest('.usercard').toggleClass('checked', this.checked);
+              });
+            </script>
           </div>
           <style type="text/css">
             .clear{clear:both;}
           </style>
-      <?php } ?>
+      <?php $numcard ++;
+          }?>
       </div>
     </div>
   </body>

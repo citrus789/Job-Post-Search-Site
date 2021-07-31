@@ -115,6 +115,7 @@
   background-color: lightblue;
   width: 20%;
   min-width: 250px;
+  border-radius: 7px;
 }
 .logincontainer {
 
@@ -140,7 +141,7 @@ table {
 
 /*Input field and buttons and checkboxes*/
 input[type=text], input[type=date], select, input[type=password], input[type=email], input[type=search], input[type=number], button {
-  border-radius: 5px;
+  border-radius: 7px;
   border: 2px solid darkblue;
   width: 100%;
   height: 35px;
@@ -149,7 +150,7 @@ input[type=text], input[type=date], select, input[type=password], input[type=ema
   transition-duration: 0.4s;
 }
 #linklogin {
-  border-radius: 5px;
+  border-radius: 7px;
   border: 2px solid darkblue;
   width: 170px;
   height: 35px;
@@ -164,7 +165,7 @@ input[type=text], input[type=date], select, input[type=password], input[type=ema
 }
 
 input[type=number] {
-  border-radius: 5px;
+  border-radius: 7px;
   border: 2px solid darkblue;
   width: 100%;
   height: 35px;
@@ -175,15 +176,19 @@ input[type=number] {
 input[type="file"] {
     display: none;
 }
-.currentcheckbox {
-  border-radius: 5px;
+.currentcheckbox, .sendcheckbox {
+  border-radius: 7px;
   width: 35px;
   height: 35px;
   border: 2px solid darkblue;
 }
+.usermatch {
+  margin-top: 10px;
+  margin-right: 10px;
+}
 
 input[type = "button"] {
-  border-radius: 5px;
+  border-radius: 7px;
   border: 2px solid darkblue;
   width: 100%;
   height: 35px;
@@ -192,7 +197,7 @@ input[type = "button"] {
   transition-duration: 0.4s;
 }
 input[type = "button"]:hover {
-  border-radius: 5px;
+  border-radius: 7px;
   border: 2px solid darkblue;
   width: 100%;
   height: 35px;
@@ -236,7 +241,6 @@ input[type = "button"]:hover {
   border: 2px solid darkblue;
   background: white;
   height: 35px;
-  margin-top: 10px;
   float: right;
   width: 150px;
   margin-right: 10px;
@@ -340,7 +344,7 @@ a.button, a.button:link {
   width: 100%;
 }
 .customfileupload {
-  border-radius: 5px;
+  border-radius: 7px;
   border: 2px solid darkblue;
   width: 130px;
   /*height: 35px;*/
@@ -371,19 +375,24 @@ a.button, a.button:link {
   float: left;
   background-color: lightblue;
   font-size: 20px;
+  border-radius: 5px;
   font-family: 'Yanone Kaffeesatz', sans-serif;
 }
 
-#usercard {
+.usercard {
   width: 100%;
   height: 250px;
   background-color: white;
-  border: darkblue;
-  border-radius: 5px;
+  border: solid darkblue;
+  border-width: 3px;
+  border-radius: 7px;
   float: left;
   display: flex;
   margin-bottom: 20px;
   overflow:hidden;
+}
+.usercard.checked {
+  background: palegreen;
 }
 .userinfo {
   /* float: left; */
@@ -416,7 +425,7 @@ a.button, a.button:link {
   float: left;
   height: 400px;
   width: 100%;
-  border-radius: 5px;
+  border-radius: 7px;
   margin-bottom: 10px;
 }
 

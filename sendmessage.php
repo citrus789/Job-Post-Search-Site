@@ -26,5 +26,5 @@ if (isset($_POST['sendmessage'])) {
   if ($conn->query($update)) {
     $updated = True;
   }
-
+  
 ?>
