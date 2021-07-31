@@ -283,21 +283,22 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
       </form>
       <form action="sendmessage.php" method = "POST" class = "sendmessage">
       <div class = "message">
+        <h3>Send Job Posting</h3>
         <div class = "positioninfo">
           <div class = "positionrole">
-            <input type = "text" name = "positionrole" placeholder = "Position">
+            <input type = "text" name = "positionrole" placeholder = "Position" required = "required">
           </div>
           <div class = "companyinfo">
-            <input type = "text" name = "positionrole" placeholder = "Position">
+            <input type = "text" name = "positioncompany" placeholder = "Company" required = "required">
           </div>
         </div>
         <div class = "writemessage">
-          <input type = "textarea" name = "writemessage" placeholder = "Write a job posting you want to send to users">
+          <input type = "textarea" name = "writemessage" placeholder = "Write a job posting you want to send to users" required = "required">
         </div>
         <div class = "sendmessage">
           <div class = "selectnumber">
-            <select id="selectnumber" name="selectnumber">
-              <option value="NULL" disabled selected>Send to number of users</option>
+            <select id="selectnumber" name="selectnumber" required = "required">
+              <option value="NULL" disabled selected>Send to top number of users</option>
               <option value="10">10</option>
               <option value="25">25</option>
               <option value="50">50</option>
@@ -350,7 +351,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                     $level = "PhD";
                   }
                   if ($row['Year'] < 7) {
-                    echo "<h2>Year ".$row['Year']." ".$level." student at ".$row['School'].", ".$row['Program']."</h2>";
+                    echo "<h3>Year ".$row['Year']." ".$level." student at ".$row['School'].", ".$row['Program']."</h3>";
                   }
                   else {
                     if ($row['Level'] == "1") {
@@ -368,7 +369,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                     if ($row['Level'] == "5") {
                       $level = "PhD in ".$row['Program'];
                     }
-                    echo "<h2>Graduated from ".$row['School'].", ".$level."</h2>";
+                    echo "<h3>Graduated from ".$row['School'].", ".$level."</h3>";
                   }
                 }
                 else if (!empty($row['School']) and !empty($row['Level']) and !empty($row['Program'])) {
@@ -385,17 +386,17 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                     $level = "PhD";
                   }
                   if ($row['Year'] < 7) {
-                    echo "<h2>".$level." student at ".$row['School'].", ".$row['Program']."</h2>";
+                    echo "<h3>".$level." student at ".$row['School'].", ".$row['Program']."</h3>";
                   }
                 }
                 else if (!empty($row['School']) and !empty($row['Program'])) {
-                  echo "<h2>".$row['Program']." student at ".$row['School']."</h2>";
+                  echo "<h3>".$row['Program']." student at ".$row['School']."</h3>";
                 }
                 else if (!empty($row['School'])) {
-                  echo "<h2>Student at ".$row['School']."</h2>";
+                  echo "<h3>Student at ".$row['School']."</h3>";
                 }
                 else if (!empty($row['Program'])) {
-                  echo "<h2>".$row['Program']." student</h2>";
+                  echo "<h3>".$row['Program']." student</h3>";
                 }
                  ?>
               </div>
@@ -405,7 +406,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                 foreach ($objects as $value) {
                   if ($row[$value] != "NULL" and !empty($row[$value])) {
                     if (unserialize($row[$value])->end == "1") {
-                      echo "<div class = currentjob><h2>".unserialize($row[$value])->role." at ".unserialize($row[$value])->company."</h2></div>";
+                      echo "<div class = currentjob><h3>".unserialize($row[$value])->role." at ".unserialize($row[$value])->company."</h3></div>";
                     }
                   }
                 }

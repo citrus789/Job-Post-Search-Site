@@ -35,7 +35,9 @@ if (isset($_POST['search'])) {
   $dbPassword = "";
   $dbName = "website";
   $conn = new mysqli($host, $dbUsername, $dbPassword, $dbName);
-
+  if ($conn->connect_error) {
+      die('Could not connect to database.');
+  }
   if ($conn->query("UPDATE position SET Position = '$recposition', Type = '$rectype', Skill1 = '$recskill1', Skill2 = '$recskill2', Skill3 = '$recskill3', Skill4 = '$recskill4', Skill5 = '$recskill5', Start = '$recdate' WHERE Email = '$email'")) {
     if ($conn->query("UPDATE position SET Years1 = '$skillyear1', Years2 = '$skillyear2', Years3 = '$skillyear3', Years4 = '$skillyear4', Years5 = '$skillyear5' WHERE Email = '$email'")) {
 
@@ -78,7 +80,7 @@ if (isset($_POST['search'])) {
       $obj = new stdClass();
       $obj->skill = "Hello World";
       $obj->year = "0";
-      echo $obj->skill;
+      //echo $obj->skill;
       $object = serialize($obj);
       //return ($obj);
     }
@@ -147,13 +149,16 @@ if (isset($_POST['search'])) {
         }
       }
     }
-    
-    $update = "UPDATE user_login SET Score = '$score' WHERE Email='".$row['Email']."' ";
+
+
+    $update = sprintf("UPDATE score SET `%s` = '$score' WHERE Email = '".$row['Email']."'", $conn->real_escape_string($email));
+    echo $update;
     if ($conn->query($update)) {
       $updated = True;
     }
     else {
       $updated = False;
+      echo "Could not update";
     }
   }
 }

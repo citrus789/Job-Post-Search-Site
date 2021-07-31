@@ -14,9 +14,9 @@ if (isset($_POST['signup'])) {
         $dbName = "website";
         $conn = new mysqli($host, $dbUsername, $dbPassword, $dbName);
         if ($conn->connect_error) {
-            die('Could not connect to the database.');
+            die('Could not connect to database.');
         }
-        if ($stmt = $conn->prepare("INSERT INTO position (email) VALUES(?);")) {
+        if ($stmt = $conn->prepare("INSERT INTO position (email) VALUES(?);") and $stmt = $conn->prepare("INSERT INTO score (email) VALUES(?);")) {
 
 
             $stmt->bind_param("s", $email);

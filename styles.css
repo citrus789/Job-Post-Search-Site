@@ -365,7 +365,7 @@ a.button, a.button:link {
   width: 100%;
   margin-left: 20px;
 }
-.usereducation {
+.usereducation, .userjob {
   /* float: left; */
   width: 100%;
   margin-left: 20px;
