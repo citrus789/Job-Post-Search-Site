@@ -16,7 +16,7 @@ if (isset($_POST['signup'])) {
         if ($conn->connect_error) {
             die('Could not connect to database.');
         }
-        if ($stmt = $conn->prepare("INSERT INTO position (email) VALUES(?);") and $stmt = $conn->prepare("INSERT INTO score (email) VALUES(?);")) {
+        if ($stmt = $conn->prepare("INSERT INTO position (email) VALUES(?);")) {
 
 
             $stmt->bind_param("s", $email);

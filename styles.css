@@ -390,6 +390,7 @@ a.button, a.button:link {
   display: flex;
   margin-bottom: 20px;
   overflow:hidden;
+  transition-duration: 0.2s;
 }
 .usercard.checked {
   background: palegreen;

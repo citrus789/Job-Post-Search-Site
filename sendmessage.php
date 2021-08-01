@@ -22,6 +22,7 @@ if (isset($_POST['sendmessage'])) {
   $savemessage->number = $numuser;
   $messageobject = serialize($savemessage);
   $updated = False;
+
   $update = "UPDATE position SET SentMessage = '$messageobject' WHERE Email = $email";
   if ($conn->query($update)) {
     $updated = True;

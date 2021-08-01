@@ -149,10 +149,16 @@ if (isset($_POST['search'])) {
         }
       }
     }
-
-
-    $update = sprintf("UPDATE score SET `%s` = '$score' WHERE Email = '".$row['Email']."'", $conn->real_escape_string($email));
-    echo $update;
+    $connect = mysqli_connect($host, $dbUsername, $dbPassword, $dbName);
+    $column = mysqli_query($connect, "SHOW COLUMNS FROM `score` LIKE `$email`");
+    $exists = (mysqli_num_rows($result))?TRUE:FALSE;
+    if (!$exists) {
+      $stmt = $conn->prepare("INSERT INTO score (email) VALUES(?);");
+    }
+    if ($exists or $stmt->execute()) {
+      $update = sprintf("UPDATE score SET `%s` = '$score' WHERE Email = '".$row['Email']."'", $conn->real_escape_string($email));
+    }
+    //echo $update;
     if ($conn->query($update)) {
       $updated = True;
     }
