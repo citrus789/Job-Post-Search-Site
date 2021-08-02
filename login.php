@@ -3,7 +3,8 @@ session_start(); // Starting Session
 $error = ''; // Variable To Store Error Message
 if (isset($_POST['submit'])) {
   if (empty($_POST['Email']) || empty($_POST['Password'])) {
-    $error = "Email or Password is invalid";
+    header("Location: loginpage.php?loginerror=Incorrect Email or Password");
+    exit();
   }
   else{
   // Define $username and $password
@@ -27,7 +28,8 @@ if (isset($_POST['submit'])) {
     }
     else {
       echo "Incorrect Email / Password";
-      header("location: loginpage.php");
+      header("Location: loginpage.php?loginerror=Incorrect Email or Password");
+      exit();
 
     }
   }

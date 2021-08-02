@@ -8,6 +8,7 @@ if (isset($_POST['signup'])) {
         $firstname = $_POST['FirstName'];
         $lastname = $_POST['LastName'];
         $password = $_POST['Password'];
+        $passwordrepeat = $_POST['PasswordRepeat'];
         $host = "localhost";
         $dbUsername = "root";
         $dbPassword = "";
@@ -48,6 +49,8 @@ if (isset($_POST['signup'])) {
             }
             else {
                 echo "Email in Use";
+                header("Location: index.php?signuperror=Error: Email In Use");
+                exit();
             }
             $stmt->close();
             $conn->close();

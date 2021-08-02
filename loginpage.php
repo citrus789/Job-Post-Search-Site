@@ -23,7 +23,7 @@ if(isset($_SESSION["Email"]) && $_SESSION['loggedin'] == true) {
       <a href="emptymessages.html">Messages</a>
       <a href="emptyprofile.php">Profile</a>
       <a class = "active" href="loginpage.php">Login</a>
-      <a href="index.html">Sign Up</a>
+      <a href="index.php">Sign Up</a>
     </div>
 
 
@@ -45,10 +45,16 @@ if(isset($_SESSION["Email"]) && $_SESSION['loggedin'] == true) {
             </td>
           </tr>
         </table>
-        <div>
+        <?php if (isset($_GET['loginerror'])) { ?>
+          <p class = "error" style = "text-align: center"><?php echo $_GET['loginerror']; ?></p>
+        <?php }
+        else { ?>
+          <div style = "height: 55px">&nbsp;</div>
+        <?php }?>
+        <div style = "text-align: center">
           <input type="submit" value="Submit" name="submit" id = "submit">
         </div>
-        <div>
+        <div style = "text-align: center">
           <input id = "linklogin" type="button" onclick="location.href='index.html';" value="Sign Up" />
         </div>
       </form>

@@ -158,6 +158,7 @@ input[type=text], input[type=date], select, input[type=password], input[type=ema
   font-family: 'Yanone Kaffeesatz', sans-serif;
   transition-duration: 0.4s;
   margin-top: 20px;
+  left: 50%;
   /* display: inline-block; */
  }
 #linklogin:hover, button:hover {
@@ -209,7 +210,7 @@ input[type = "button"]:hover {
 #saveprofile, #search {
   border-radius: 7px;
   border: 2px solid darkblue;
-  background: white;
+  background: WhiteSmoke;
   width: 170px;
   height: 35px;
   margin-top: 50px;
@@ -221,14 +222,25 @@ input[type = "button"]:hover {
 #saveprofile:hover, #search:hover {
   background-color: lightgray;
 }
-
+.submitbutton, .linkloginbutton {
+  left: 50%;
+}
+.error {
+  background: #FFCCCB;
+  color: darkred;
+  padding: 10px;
+  width: 95%;
+  border-radius: 7px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
 #submit {
   border-radius: 7px;
   border: 2px solid darkblue;
-  background: white;
+  background: whitesmoke;
   width: 170px;
   height: 35px;
-  margin-top: 50px;
+  margin-top: 10px;
   align-items: center;
   justify-content: center;
   text-decoration: none;
@@ -239,7 +251,7 @@ input[type = "button"]:hover {
 #sendmessage, #selectnumber {
   border-radius: 7px;
   border: 2px solid darkblue;
-  background: white;
+  background-color: WhiteSmoke;
   height: 35px;
   float: right;
   width: 150px;
