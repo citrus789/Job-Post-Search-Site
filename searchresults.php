@@ -288,8 +288,8 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
         </div>
       </form>
       <div class = "userlist" id = "userlist">
-        <div class = "message" id = "message">
-          <form action="sendmessage.php" method = "POST" class = "sendmessage">
+        <form action="sendmessage.php" method = "POST" class = "sendmessage">
+          <div class = "message" id = "message">
             <h3>Send Job Posting</h3>
             <div class = "positioninfo">
               <div class = "positionrole">
@@ -321,179 +321,179 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
               </div>
 
             </div>
-          </form>
-        </div>
+          </div>
 
-        <?php
-        $user = "SELECT FirstName, LastName, Bio, Image, School, Program, Level, Year, GPA, Experience1, Experience2, Experience3, Experience4, Experience5, Skill1, Skill2, Skill3, Skill4, Skill5, Skill6, Skill7, City, Region, Country FROM user_login ORDER BY (SELECT score.`$username` FROM score WHERE score.Email = user_login.Email) DESC";
-        $select = $conn->query($user);
-        $numcard = 0;
-        while($row = $select -> fetch_array(MYSQLI_ASSOC)) {
-          if (!isset($row['Image']) or empty($row['Image'])) {
-            $profilepic = "img/defaultprofile.PNG";
-          }
-          else {
-            $profilepic = "img/".$row['Image'];
-          }
-
-        ?>
-          <div id = "usercard" class = "usercard">
-            <div class = "userimage">
-              <img src="<?php echo $profilepic; ?>" height="200" width="200" border-radius="50%" background-color="white" class="imgthumbnail" />
-            </div>
-            <div class = "userinfo">
-              <div class = "username">
-                <h1><?php echo $row['FirstName']; echo " "; echo $row['LastName'];?></h1>
+          <?php
+          $user = "SELECT Email, FirstName, LastName, Bio, Image, School, Program, Level, Year, GPA, Experience1, Experience2, Experience3, Experience4, Experience5, Skill1, Skill2, Skill3, Skill4, Skill5, Skill6, Skill7, City, Region, Country FROM user_login ORDER BY (SELECT score.`$username` FROM score WHERE score.Email = user_login.Email) DESC";
+          $select = $conn->query($user);
+          $numcard = 0;
+          while($row = $select -> fetch_array(MYSQLI_ASSOC)) {
+            if (!isset($row['Image']) or empty($row['Image'])) {
+              $profilepic = "img/defaultprofile.PNG";
+            }
+            else {
+              $profilepic = "img/".$row['Image'];
+            }
+            echo $row['Email'];
+          ?>
+            <div id = "usercard" class = "usercard">
+              <div class = "userimage">
+                <img src="<?php echo $profilepic; ?>" height="200" width="200" border-radius="50%" background-color="white" class="imgthumbnail" />
               </div>
-              <div class = "usereducation">
-                <?php
-                if (!empty($row['School']) and $row['Year'] != "0" and !empty($row['Level']) and !empty($row['Program'])) {
-                  if ($row['Level'] == "1") {
-                    $level = "high school";
-                  }
-                  if ($row['Level'] == "2" or $row['Level'] == "3") {
-                    $level = "undergraduate";
-                  }
-                  if ($row['Level'] == "4") {
-                    $level = "master's";
-                  }
-                  if ($row['Level'] == "5") {
-                    $level = "PhD";
-                  }
-                  if ($row['Year'] < 7) {
-                    echo "<h3>Year ".$row['Year']." ".$level." student at ".$row['School'].", ".$row['Program']."</h3>";
-                  }
-                  else {
+              <div class = "userinfo">
+                <div class = "username">
+                  <h1><?php echo $row['FirstName']; echo " "; echo $row['LastName'];?></h1>
+                </div>
+                <div class = "usereducation">
+                  <?php
+                  if (!empty($row['School']) and $row['Year'] != "0" and !empty($row['Level']) and !empty($row['Program'])) {
                     if ($row['Level'] == "1") {
-                      $level = "High School Diploma.";
+                      $level = "high school";
                     }
-                    if ($row['Level'] == "2") {
-                      $level = "Associate of ".$row['Program'];
-                    }
-                    if ($row['Level'] == "3") {
-                      $level = "Bachelor of ".$row['Program'];
+                    if ($row['Level'] == "2" or $row['Level'] == "3") {
+                      $level = "undergraduate";
                     }
                     if ($row['Level'] == "4") {
-                      $level = "Master of ".$row['Program'];
+                      $level = "master's";
                     }
                     if ($row['Level'] == "5") {
-                      $level = "PhD in ".$row['Program'];
+                      $level = "PhD";
                     }
-                    echo "<h3>Graduated from ".$row['School'].", ".$level."</h3>";
-                  }
-                }
-                else if (!empty($row['School']) and !empty($row['Level']) and !empty($row['Program'])) {
-                  if ($row['Level'] == "1") {
-                    $level = "High School";
-                  }
-                  if ($row['Level'] == "2" or $row['Level'] == "3") {
-                    $level = "Undergraduate";
-                  }
-                  if ($row['Level'] == "4") {
-                    $level = "Master's";
-                  }
-                  if ($row['Level'] == "5") {
-                    $level = "PhD";
-                  }
-                  if ($row['Year'] < 7) {
-                    echo "<h3>".$level." student at ".$row['School'].", ".$row['Program']."</h3>";
-                  }
-                }
-                else if (!empty($row['School']) and !empty($row['Program'])) {
-                  echo "<h3>".$row['Program']." student at ".$row['School']."</h3>";
-                }
-                else if (!empty($row['School'])) {
-                  echo "<h3>Student at ".$row['School']."</h3>";
-                }
-                else if (!empty($row['Program'])) {
-                  echo "<h3>".$row['Program']." student</h3>";
-                }
-                 ?>
-              </div>
-              <div class = "userjob">
-                <?php
-                $objects = array("Experience1", "Experience2", "Experience3", "Experience4", "Experience5");
-                foreach ($objects as $value) {
-                  if ($row[$value] != "NULL" and !empty($row[$value])) {
-                    if (unserialize($row[$value])->end == "1") {
-                      echo "<div class = currentjob><h3>".unserialize($row[$value])->role." at ".unserialize($row[$value])->company."</h3></div>";
+                    if ($row['Year'] < 7) {
+                      echo "<h3>Year ".$row['Year']." ".$level." student at ".$row['School'].", ".$row['Program']."</h3>";
+                    }
+                    else {
+                      if ($row['Level'] == "1") {
+                        $level = "High School Diploma.";
+                      }
+                      if ($row['Level'] == "2") {
+                        $level = "Associate of ".$row['Program'];
+                      }
+                      if ($row['Level'] == "3") {
+                        $level = "Bachelor of ".$row['Program'];
+                      }
+                      if ($row['Level'] == "4") {
+                        $level = "Master of ".$row['Program'];
+                      }
+                      if ($row['Level'] == "5") {
+                        $level = "PhD in ".$row['Program'];
+                      }
+                      echo "<h3>Graduated from ".$row['School'].", ".$level."</h3>";
                     }
                   }
-                }
-                  ?>
+                  else if (!empty($row['School']) and !empty($row['Level']) and !empty($row['Program'])) {
+                    if ($row['Level'] == "1") {
+                      $level = "High School";
+                    }
+                    if ($row['Level'] == "2" or $row['Level'] == "3") {
+                      $level = "Undergraduate";
+                    }
+                    if ($row['Level'] == "4") {
+                      $level = "Master's";
+                    }
+                    if ($row['Level'] == "5") {
+                      $level = "PhD";
+                    }
+                    if ($row['Year'] < 7) {
+                      echo "<h3>".$level." student at ".$row['School'].", ".$row['Program']."</h3>";
+                    }
+                  }
+                  else if (!empty($row['School']) and !empty($row['Program'])) {
+                    echo "<h3>".$row['Program']." student at ".$row['School']."</h3>";
+                  }
+                  else if (!empty($row['School'])) {
+                    echo "<h3>Student at ".$row['School']."</h3>";
+                  }
+                  else if (!empty($row['Program'])) {
+                    echo "<h3>".$row['Program']." student</h3>";
+                  }
+                   ?>
+                </div>
+                <div class = "userjob">
+                  <?php
+                  $objects = array("Experience1", "Experience2", "Experience3", "Experience4", "Experience5");
+                  foreach ($objects as $value) {
+                    if ($row[$value] != "NULL" and !empty($row[$value])) {
+                      if (unserialize($row[$value])->end == "1") {
+                        echo "<div class = currentjob><h3>".unserialize($row[$value])->role." at ".unserialize($row[$value])->company."</h3></div>";
+                      }
+                    }
+                  }
+                    ?>
+                </div>
               </div>
-            </div>
-            <div class = "usermatch">
-              <input type="checkbox" name = "send[]" class = "sendcheckbox" value = "<?php print isset($row['Email']) ? $row['Email'] : ''; ?>">
-            </div>
-            <script>
+              <div class = "usermatch">
+                <input type="checkbox" name = "send[]" class = "sendcheckbox" value = "<?php print isset($row['Email']) ? $row['Email'] : ''; ?>">
+              </div>
+              <script>
 
-              document.getElementById("selectnumber").onchange = function() {
-                var container = document.getElementById("userlist");
-                var div = container.getElementsByClassName("usercard");
-                if(this.value === "NULL") {
-                  if (check25 == "TRUE" || check50 == "TRUE" || check10 == "TRUE") {
-                    $('[name="send[]"]').slice(0, 200).prop("checked", false);
-                    for (var i = 0; i < 200; i++) {
-                      div[i].setAttribute('style', 'background-color: white');
+                document.getElementById("selectnumber").onchange = function() {
+                  var container = document.getElementById("userlist");
+                  var div = container.getElementsByClassName("usercard");
+                  if(this.value === "NULL") {
+                    if (check25 == "TRUE" || check50 == "TRUE" || check10 == "TRUE") {
+                      $('[name="send[]"]').slice(0, 200).prop("checked", false);
+                      for (var i = 0; i < 200; i++) {
+                        div[i].setAttribute('style', 'background-color: white');
+                      }
+                      check50 = "FALSE";
+                      check25 = "FALSE";
+                      check10 = "FALSE";
                     }
-                    check50 = "FALSE";
-                    check25 = "FALSE";
-                    check10 = "FALSE";
                   }
-                }
-                if(this.value === "10") {
-                  if (check25 == "TRUE" || check50 == "TRUE") {
-                    $('[name="send[]"]').slice(2, 200).prop("checked", false);
-                    for (var i = 2; i < 200; i++) {
-                      div[i].setAttribute('style', 'background-color: white');
+                  if(this.value === "10") {
+                    if (check25 == "TRUE" || check50 == "TRUE") {
+                      $('[name="send[]"]').slice(2, 200).prop("checked", false);
+                      for (var i = 2; i < 200; i++) {
+                        div[i].setAttribute('style', 'background-color: white');
+                      }
+                      check50 = "FALSE";
+                      check25 = "FALSE";
                     }
-                    check50 = "FALSE";
-                    check25 = "FALSE";
-                  }
-                  $('[name="send[]"]').slice(0, 2).prop("checked", true);
-                  for (var i = 0; i < 2; i++) {
-                    div[i].setAttribute('style', 'background-color: palegreen');
-                  }
-                  check10 = "TRUE";
-                }
-                else if (this.value == "25") {
-                  if (check50 == "TRUE") {
-                    $('[name="send[]"]').slice(3, 200).prop("checked", false);
-                    for (var i = 3; i < 200; i++) {
-                      div[i].setAttribute('style', 'background-color: white');
+                    $('[name="send[]"]').slice(0, 2).prop("checked", true);
+                    for (var i = 0; i < 2; i++) {
+                      div[i].setAttribute('style', 'background-color: palegreen');
                     }
-                    check50 = "FALSE";
+                    check10 = "TRUE";
                   }
-                  $('[name="send[]"]').slice(0, 3).prop("checked", true);
-                  for (var i = 0; i < 3; i++) {
-                    div[i].setAttribute('style', 'background-color: palegreen');
+                  else if (this.value == "25") {
+                    if (check50 == "TRUE") {
+                      $('[name="send[]"]').slice(3, 200).prop("checked", false);
+                      for (var i = 3; i < 200; i++) {
+                        div[i].setAttribute('style', 'background-color: white');
+                      }
+                      check50 = "FALSE";
+                    }
+                    $('[name="send[]"]').slice(0, 3).prop("checked", true);
+                    for (var i = 0; i < 3; i++) {
+                      div[i].setAttribute('style', 'background-color: palegreen');
+                    }
+                    check25 = "TRUE";
                   }
-                  check25 = "TRUE";
-                }
-                else if (this.value == "50") {
-                  // $('[name="send[]"]').slice(5, 200).prop("checked", false);
-                  // for (var i = 0; i < 200; i++) {
-                  //   div[i].setAttribute('style', 'background-color: white');
-                  // }
-                  $('[name="send[]"]').slice(0, 5).prop("checked", true);
-                  for (var i = 0; i < 5; i++) {
-                    div[i].setAttribute('style', 'background-color: palegreen');
+                  else if (this.value == "50") {
+                    // $('[name="send[]"]').slice(5, 200).prop("checked", false);
+                    // for (var i = 0; i < 200; i++) {
+                    //   div[i].setAttribute('style', 'background-color: white');
+                    // }
+                    $('[name="send[]"]').slice(0, 5).prop("checked", true);
+                    for (var i = 0; i < 5; i++) {
+                      div[i].setAttribute('style', 'background-color: palegreen');
+                    }
+                    check50 = "TRUE";
                   }
-                  check50 = "TRUE";
-                }
-              };
-              $('.usercard :checkbox').change(function() {
-                $(this).closest('.usercard').toggleClass('checked', this.checked);
-              });
-              // var numchecked = document.querySelectorAll('input[type="checkbox"]:checked').length;
-            </script>
-          </div>
-          <style type="text/css">
-            .clear{clear:both;}
-          </style>
-      <?php $numcard ++;
-          }?>
+                };
+                $('.usercard :checkbox').change(function() {
+                  $(this).closest('.usercard').toggleClass('checked', this.checked);
+                });
+                // var numchecked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+              </script>
+            </div>
+            <style type="text/css">
+              .clear{clear:both;}
+            </style>
+        <?php $numcard ++;
+            }?>
+        </form>
       </div>
     </div>
   </body>

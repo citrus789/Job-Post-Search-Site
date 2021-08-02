@@ -98,9 +98,15 @@ if (isset($_POST['search'])) {
   $recprog3 = formatString($recprog1);
 
 
+  $column = mysqli_query($conn, "SHOW COLUMNS FROM `score` LIKE '$email'");
+  $exists = (mysqli_num_rows($column))?TRUE:FALSE;
+
+  if (!$exists) {
+    $stmt = $conn->prepare("ALTER TABLE score ADD `$email` VARCHAR(100)");
+  }
   while($row = $result -> fetch_array(MYSQLI_ASSOC)) {
     $score = 0;
-    echo $row['Email'];
+    //echo $row['Email'];
     if (strictlyEqualAndNotNull($recposition, formatString($row['Position1'])) or strictlyEqualAndNotNull($recposition, formatString($row['Position2'])) or strictlyEqualAndNotNull($recposition, formatString($row['Position3']))) {
       $score += 15;
     }
@@ -149,16 +155,10 @@ if (isset($_POST['search'])) {
         }
       }
     }
-    $connect = mysqli_connect($host, $dbUsername, $dbPassword, $dbName);
-    $column = mysqli_query($connect, "SHOW COLUMNS FROM `score` LIKE `$email`");
-    $exists = (mysqli_num_rows($result))?TRUE:FALSE;
-    if (!$exists) {
-      $stmt = $conn->prepare("INSERT INTO score (email) VALUES(?);");
-    }
+    echo $row['Email'].$score;
     if ($exists or $stmt->execute()) {
       $update = sprintf("UPDATE score SET `%s` = '$score' WHERE Email = '".$row['Email']."'", $conn->real_escape_string($email));
     }
-    //echo $update;
     if ($conn->query($update)) {
       $updated = True;
     }
@@ -169,8 +169,8 @@ if (isset($_POST['search'])) {
   }
 }
 if ($updated) {
-  //echo "Success";
-  header("Location: searchresults.php");
+  echo "Success";
+  //header("Location: searchresults.php");
 }
 else {
   echo "Submit button is not set";

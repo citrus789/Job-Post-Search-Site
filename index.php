@@ -61,13 +61,13 @@
                     confirm.style.background = "palegreen";
                     password.style.background = "palegreen";
                     submit.style.color = "black";
-                    $('input[name="signup"]').prop('disabled', false);
+                    document.getElementById('submit').disabled = false;
                   }
                   else {
                     confirm.style.background = "#ffcccb";
                     password.style.background = "#ffcccb";
                     submit.style.color = "gray";
-                    $('input[name="signup"]').prop('disabled', true);
+                    document.getElementById('submit').disabled = true;
                   }
                 }
                 </script>

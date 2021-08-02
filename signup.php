@@ -17,11 +17,11 @@ if (isset($_POST['signup'])) {
         if ($conn->connect_error) {
             die('Could not connect to database.');
         }
-        if ($stmt = $conn->prepare("INSERT INTO position (email) VALUES(?);")) {
+        if ($stmt = $conn->prepare("INSERT INTO position (email) VALUES(?);") and $stmt2 = $conn->prepare("INSERT INTO score (email) VALUES(?);")) {
 
-
+            $stmt2->bind_param("s", $email);
             $stmt->bind_param("s", $email);
-            if ($stmt->execute()) {
+            if ($stmt->execute() and $stmt2->execute()) {
               $Select = "SELECT email FROM user_login WHERE email = ? LIMIT 1";
               $Insert = "INSERT INTO user_login(email, firstname, lastname, password) values(?, ?, ?, ?)";
 
