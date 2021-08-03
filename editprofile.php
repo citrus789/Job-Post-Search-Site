@@ -29,7 +29,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
       if ($row['Experience1'] != "NULL") {
         $experience1 = unserialize($row['Experience1']);
       }
-      if (!is_null($row['Skill1'])) {
+      if (!empty($row['Skill1']) and $row['Skill1'] != "NULL") {
         $skill1 = unserialize($row['Skill1']);
       }
       $award1 = $row['Award1'];

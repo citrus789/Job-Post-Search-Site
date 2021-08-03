@@ -170,7 +170,7 @@ if (isset($_POST['search'])) {
 }
 if ($updated) {
   echo "Success";
-  //header("Location: searchresults.php");
+  header("Location: searchresults.php");
 }
 else {
   echo "Submit button is not set";

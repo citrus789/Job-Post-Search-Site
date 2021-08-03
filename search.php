@@ -60,8 +60,8 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
   </head>
   <body>
     <div class="topnav">
-      <a class="active" href="search.html">Search</a>
-      <a href="messages.html">Messages</a>
+      <a class="active" href="search.php">Search</a>
+      <a href="messages.php">Messages</a>
       <a href="editprofile.php">Profile</a>
       <a href="logout.php">Logout</a>
     </div>

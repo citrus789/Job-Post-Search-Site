@@ -61,8 +61,8 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
   </head>
   <body>
     <div class="topnav">
-      <a class="active" href="search.html">Search</a>
-      <a href="messages.html">Messages</a>
+      <a class="active" href="search.php">Search</a>
+      <a href="messages.php">Messages</a>
       <a href="editprofile.php">Profile</a>
       <a href="logout.php">Logout</a>
     </div>
@@ -334,7 +334,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
             else {
               $profilepic = "img/".$row['Image'];
             }
-            echo $row['Email'];
+            // echo $row['Email'];
           ?>
             <div id = "usercard" class = "usercard">
               <div class = "userimage">
@@ -423,7 +423,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                 </div>
               </div>
               <div class = "usermatch">
-                <input type="checkbox" name = "send[]" class = "sendcheckbox" value = "<?php print isset($row['Email']) ? $row['Email'] : ''; ?>">
+                <input type="checkbox" onchange="isChecked(this,'sub1')" name = "send[]" class = "sendcheckbox" value = "<?php print isset($row['Email']) ? $row['Email'] : ''; ?>">
               </div>
               <script>
 
@@ -434,7 +434,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                     if (check25 == "TRUE" || check50 == "TRUE" || check10 == "TRUE") {
                       $('[name="send[]"]').slice(0, 200).prop("checked", false);
                       for (var i = 0; i < 200; i++) {
-                        div[i].setAttribute('style', 'background-color: white');
+                        div[i].setAttribute('style', 'background-color: none');
                       }
                       check50 = "FALSE";
                       check25 = "FALSE";
@@ -445,7 +445,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                     if (check25 == "TRUE" || check50 == "TRUE") {
                       $('[name="send[]"]').slice(2, 200).prop("checked", false);
                       for (var i = 2; i < 200; i++) {
-                        div[i].setAttribute('style', 'background-color: white');
+                        div[i].setAttribute('style', 'background-color: none');
                       }
                       check50 = "FALSE";
                       check25 = "FALSE";
@@ -460,7 +460,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                     if (check50 == "TRUE") {
                       $('[name="send[]"]').slice(3, 200).prop("checked", false);
                       for (var i = 3; i < 200; i++) {
-                        div[i].setAttribute('style', 'background-color: white');
+                        div[i].setAttribute('style', 'background-color: none');
                       }
                       check50 = "FALSE";
                     }
@@ -482,9 +482,15 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                     check50 = "TRUE";
                   }
                 };
-                $('.usercard :checkbox').change(function() {
-                  $(this).closest('.usercard').toggleClass('checked', this.checked);
-                });
+                function isChecked(elem) {
+                  elem.parentNode.parentNode.style.background = (elem.checked) ? 'palegreen' : 'white';
+                }
+                // $('.usercard :checkbox').change(function() {
+                //   $(this).closest('.usercard').toggleClass('checked', this.checked);
+                //   if (!this.checked) {
+                //     $(this).setAttribute('style', 'background-color: white');
+                //   }
+                // });
                 // var numchecked = document.querySelectorAll('input[type="checkbox"]:checked').length;
               </script>
             </div>
@@ -498,3 +504,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
     </div>
   </body>
 </html>
+<?php
+$result->close();
+$conn->close();
+?>
