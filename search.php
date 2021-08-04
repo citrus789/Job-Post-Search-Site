@@ -259,7 +259,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
       <script>
         $(document).ready(function() {
           $('#remote').on('change', function() {
-            if ( this.value == '0')
+            if (this.value == '0')
             {
               $("#reclocationinfo").show();
             }

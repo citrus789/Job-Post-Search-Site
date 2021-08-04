@@ -260,6 +260,7 @@ input[type = "button"]:hover {
   font-family: 'Yanone Kaffeesatz';
   font-size: 20px;
   transition-duration: 0.4s;
+  margin-bottom: 20px;
 }
 #selectnumber {
   width: 200px;
@@ -439,11 +440,21 @@ a.button, a.button:link {
   height: 400px;
   width: 100%;
   border-radius: 7px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .positionrole, .companyinfo {
   width: 49.5%;
+  margin-bottom: 10px;
+  float: left;
+}
+.salarystart, .salaryend {
+  width: 18.5%;
+  margin-bottom: 10px;
+  float: left;
+}
+.currency {
+  width: 10.5%;
   margin-bottom: 10px;
   float: left;
 }

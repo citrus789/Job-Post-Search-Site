@@ -15,6 +15,31 @@ if (isset($_POST['sendmessage'])) {
   if ($conn->connect_error) {
       die('Could not connect to database.');
   }
+
+  $postinginfo = "SELECT * FROM position WHERE Email = '$email'";
+  if ($select = $conn->query($postinginfo)) {
+    if ($row = $select -> fetch_array(MYSQLI_ASSOC)) {
+      if (!is_null($row['Remote']) {
+        if ($row['Remote'] == '0') {
+          $remoteornah = "Remote";
+        }
+        if ($row['Remote'] == '1') {
+          $remoteornah = "Temporarily Remote";
+        }
+        if ($row['Remote'] == '2') {
+          $remoteornah = "In Person";
+          if (!is_null($row['City']) and !is_null($row['Region']) and !is_null($row['Country'])) {
+            $jobcity = $row['City'];
+            $jobregion = $row['Region'];
+            $jobcountry = $row['Country'];
+          }
+        }
+      }
+      else {
+        $recremote = NULL;
+      }
+    }
+  }
   $savemessage = new stdClass();
   $savemessage->position = $sendposition;
   $savemessage->company = $sendcompany;

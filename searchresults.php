@@ -235,8 +235,8 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
              <select id="remote" name="recremote">
              <option value="NULL"<?php if ($recremote == "NULL"): ?> selected="selected"<?php endif; ?>>Select</option>
              <option value="1"<?php if ($recremote == "1"): ?> selected="selected"<?php endif; ?>>Yes</option>
-             <option value="0"<?php if ($recremote == "0"): ?> selected="selected"<?php endif; ?>>Temporarily</option>
-             <option value="0"<?php if ($recremote == "0"): ?> selected="selected"<?php endif; ?>>No</option>
+             <option value="0"<?php if ($recremote == "2"): ?> selected="selected"<?php endif; ?>>Temporarily</option>
+             <option value="0"<?php if ($recremote == "3"): ?> selected="selected"<?php endif; ?>>No</option>
              </select>
            <?php } ?>
             </td>
@@ -266,7 +266,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
         <script>
           $(document).ready(function() {
             $('#remote').on('change', function() {
-              if ( this.value == '0')
+              if (this.value == '0')
               {
                 $("#reclocationinfo").show();
               }
@@ -277,9 +277,9 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
             });
           });
 
-          var check50 = FALSE;
-          var check25 = FALSE;
-          var check10 = FALSE;
+          var check50 = "FALSE";
+          var check25 = "FALSE";
+          var check10 = "FALSE";
 
         </script>
 
@@ -295,10 +295,27 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
               <div class = "positionrole">
                 <input type = "text" name = "positionrole" placeholder = "Position" required = "required">
               </div>
-              <div class = "separator">&nbsp;
-              </div>
+              <div class = "separator">&nbsp;</div>
               <div class = "companyinfo">
                 <input type = "text" name = "positioncompany" placeholder = "Company" required = "required">
+              </div>
+            <!-- </div> -->
+            <!-- <div class = "salaryrange"> -->
+              <div class = "salarystart">
+                <input type = "text" name = "salarystart" placeholder = "Min Salary" required = "required">
+              </div>
+              <div class = "separator">&nbsp;</div>
+              <div class = "salaryend">
+                <input type = "text" name = "salaryend" placeholder = "Max Salary" required = "required">
+              </div>
+              <div class = "separator">&nbsp;</div>
+              <div class = "currency">
+                <select id="currency" name="currency" required = "required">
+                  <option value="NULL" selected disabled>Currency</option>
+                  <option value="USD">USD</option>
+                  <option value="CAD">CAD</option>
+                  <option value="EUR">EUR</option>
+                </select>
               </div>
             </div>
             <div class = "writemessage">
@@ -309,7 +326,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                 <input id = "sendmessage" type="submit" value="Send Posting" name="sendmessage" onclick="submitted()">
               </div>
               <div class = "selectnumber">
-                <select id="selectnumber" name="selectnumber" required = "required">
+                <select id="selectnumber" name="selectnumber">
                   <option value="NULL" selected>Send to top number of users</option>
                   <option value="10">10</option>
                   <option value="25">25</option>
@@ -426,47 +443,50 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                 <input type="checkbox" onchange="isChecked(this,'sub1')" name = "send[]" class = "sendcheckbox" value = "<?php print isset($row['Email']) ? $row['Email'] : ''; ?>">
               </div>
               <script>
-
+              jQuery(document).ready(function($) {
                 document.getElementById("selectnumber").onchange = function() {
                   var container = document.getElementById("userlist");
-                  var div = container.getElementsByClassName("usercard");
-                  if(this.value === "NULL") {
+                  var divs = container.getElementsByClassName("usercard");
+                  if(this.value == "NULL") {
                     if (check25 == "TRUE" || check50 == "TRUE" || check10 == "TRUE") {
                       $('[name="send[]"]').slice(0, 200).prop("checked", false);
-                      for (var i = 0; i < 200; i++) {
-                        div[i].setAttribute('style', 'background-color: none');
+                      for (var i = 0; i < divs.length; i++) {
+                        divs[i].setAttribute('style', 'background-color: white');
                       }
                       check50 = "FALSE";
                       check25 = "FALSE";
                       check10 = "FALSE";
                     }
                   }
-                  if(this.value === "10") {
+                  if(this.value == "10") {
+                    console.log("Hello");
+
                     if (check25 == "TRUE" || check50 == "TRUE") {
                       $('[name="send[]"]').slice(2, 200).prop("checked", false);
-                      for (var i = 2; i < 200; i++) {
-                        div[i].setAttribute('style', 'background-color: none');
+                      for (var i = 2; i < divs.length; i++) {
+                        console.log(divs);
+                        divs[i].setAttribute('style', 'background-color: white');
                       }
                       check50 = "FALSE";
                       check25 = "FALSE";
                     }
                     $('[name="send[]"]').slice(0, 2).prop("checked", true);
                     for (var i = 0; i < 2; i++) {
-                      div[i].setAttribute('style', 'background-color: palegreen');
+                      divs[i].setAttribute('style', 'background-color: palegreen');
                     }
                     check10 = "TRUE";
                   }
                   else if (this.value == "25") {
                     if (check50 == "TRUE") {
                       $('[name="send[]"]').slice(3, 200).prop("checked", false);
-                      for (var i = 3; i < 200; i++) {
-                        div[i].setAttribute('style', 'background-color: none');
+                      for (var i = 3; i < divs.length; i++) {
+                        divs[i].setAttribute('style', 'background-color: white');
                       }
                       check50 = "FALSE";
                     }
                     $('[name="send[]"]').slice(0, 3).prop("checked", true);
                     for (var i = 0; i < 3; i++) {
-                      div[i].setAttribute('style', 'background-color: palegreen');
+                      divs[i].setAttribute('style', 'background-color: palegreen');
                     }
                     check25 = "TRUE";
                   }
@@ -477,14 +497,15 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                     // }
                     $('[name="send[]"]').slice(0, 5).prop("checked", true);
                     for (var i = 0; i < 5; i++) {
-                      div[i].setAttribute('style', 'background-color: palegreen');
+                      divs[i].setAttribute('style', 'background-color: palegreen');
                     }
                     check50 = "TRUE";
                   }
                 };
-                function isChecked(elem) {
-                  elem.parentNode.parentNode.style.background = (elem.checked) ? 'palegreen' : 'white';
-                }
+              });
+              function isChecked(elem) {
+                elem.parentNode.parentNode.style.background = (elem.checked) ? 'palegreen' : 'white';
+              }
                 // $('.usercard :checkbox').change(function() {
                 //   $(this).closest('.usercard').toggleClass('checked', this.checked);
                 //   if (!this.checked) {
@@ -494,9 +515,9 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                 // var numchecked = document.querySelectorAll('input[type="checkbox"]:checked').length;
               </script>
             </div>
-            <style type="text/css">
+            <!-- <style type="text/css">
               .clear{clear:both;}
-            </style>
+            </style> -->
         <?php $numcard ++;
             }?>
         </form>
