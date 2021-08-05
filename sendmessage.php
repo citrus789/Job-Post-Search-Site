@@ -5,7 +5,10 @@ if (isset($_POST['sendmessage'])) {
   $sendposition = $_POST['positionrole'];
   $sendcompany = $_POST['positioncompany'];
   $sendmessage = $_POST['writemessage'];
-  $numuser = $_POST['selectnumber'];
+  $salstart = $_POST['salarystart'];
+  $salend = $_POST['salaryend'];
+  $currency = $_POST['currency'];
+
 
   $host = "localhost";
   $dbUsername = "root";
@@ -19,12 +22,30 @@ if (isset($_POST['sendmessage'])) {
   $postinginfo = "SELECT * FROM position WHERE Email = '$email'";
   if ($select = $conn->query($postinginfo)) {
     if ($row = $select -> fetch_array(MYSQLI_ASSOC)) {
-      if (!is_null($row['Remote']) {
+      if (!is_null($row['Remote'])) {
         if ($row['Remote'] == '0') {
           $remoteornah = "Remote";
+          $jobcity = NULL;
+          $jobregion = NULL;
+          $jobcountry = NULL;
         }
         if ($row['Remote'] == '1') {
           $remoteornah = "Temporarily Remote";
+          if (!is_null($row['City']) and !is_null($row['Region']) and !is_null($row['Country'])) {
+            $jobcity = $row['City'];
+            $jobregion = $row['Region'];
+            $jobcountry = $row['Country'];
+          }
+          if (!is_null($row['City']) and !is_null($row['Country'])) {
+            $jobcity = $row['City'];
+            $jobregion = NULL;
+            $jobcountry = $row['Country'];
+          }
+          else {
+            $jobcity = NULL;
+            $jobregion = NULL;
+            $jobcountry = NULL;
+          }
         }
         if ($row['Remote'] == '2') {
           $remoteornah = "In Person";
@@ -32,6 +53,16 @@ if (isset($_POST['sendmessage'])) {
             $jobcity = $row['City'];
             $jobregion = $row['Region'];
             $jobcountry = $row['Country'];
+          }
+          if (!is_null($row['City']) and !is_null($row['Country'])) {
+            $jobcity = $row['City'];
+            $jobregion = NULL;
+            $jobcountry = $row['Country'];
+          }
+          else {
+            $jobcity = NULL;
+            $jobregion = NULL;
+            $jobcountry = NULL;
           }
         }
       }
@@ -44,7 +75,20 @@ if (isset($_POST['sendmessage'])) {
   $savemessage->position = $sendposition;
   $savemessage->company = $sendcompany;
   $savemessage->message = $sendmessage;
-  $savemessage->number = $numuser;
+  $savemessage->salarystart = $salstart;
+  $savemessage->salaryend = $salend;
+  $savemessage->currency = $currency;
+  $savemessage->remote = $remoteornah;
+  if ($remoteornah = "In Person") {
+    $savemessage->city = $jobcity;
+    $savemessage->region = $jobregion;
+    $savemessage->country = $jobcountry;
+  }
+  else {
+    $savemessage->city = NULL;
+    $savemessage->region = NULL;
+    $savemessage->country = NULL;
+  }
   $messageobject = serialize($savemessage);
   $updated = False;
 
@@ -52,7 +96,13 @@ if (isset($_POST['sendmessage'])) {
   if ($conn->query($update)) {
     $updated = True;
   }
-  $checked = $_POST['send'];
+  if (!empty($_POST['send'])) {
+    $checked = $_POST['send'];
+  }
+  else {
+    header("Location: searchresults.php?senderror=No Users Selected");
+    exit();
+  }
   // echo $checked[0];
   $sendtousers = array();
   foreach ($checked as $useremail) {
@@ -103,7 +153,7 @@ if (isset($_POST['sendmessage'])) {
   }
   if ($updated) {
     echo "Success";
-    header("Location: messages.html");
+    header("Location: messages.php");
   }
 }
 ?>

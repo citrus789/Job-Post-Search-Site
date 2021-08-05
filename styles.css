@@ -87,16 +87,20 @@
   font-family: 'Yanone Kaffeesatz', sans-serif;
   /* border-spacing: 5rem; */
 }
-.searchresultscontainer {
-  margin: 8;
+.searchresultscontainer, .postingscontainer {
+
   height: auto;
-  display: flex;
+
   align-items: left;
   justify-content: left;
   font-size: 20px;
   background: Azure;
   font-family: 'Yanone Kaffeesatz', sans-serif;
   /* border-spacing: 5rem; */
+}
+.searchresultscontainer, .postingscontainer{
+  display: flex;
+  margin: 8;
 }
 .profilecontainer {
 
@@ -233,6 +237,19 @@ input[type = "button"]:hover {
   border-radius: 7px;
   margin-top: 10px;
   margin-bottom: 10px;
+  border: 2px solid darkred;
+}
+
+.senderror {
+  background: #FFCCCB;
+  color: darkred;
+  border: 2px solid darkred;
+  padding: 9px;
+  width: 200px;
+  border-radius: 7px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  float: right;
 }
 #submit {
   border-radius: 7px;
@@ -388,12 +405,11 @@ a.button, a.button:link {
   float: left;
   background-color: lightblue;
   font-size: 20px;
-  border-radius: 5px;
+  border-radius: 7px;
   font-family: 'Yanone Kaffeesatz', sans-serif;
 }
 
-.usercard {
-  width: 100%;
+.usercard, .postingcard {
   height: 250px;
   background-color: white;
   border: solid darkblue;
@@ -404,6 +420,17 @@ a.button, a.button:link {
   margin-bottom: 20px;
   overflow:hidden;
   transition-duration: 0.2s;
+  width: 100%;
+}
+
+.postingcard {
+  margin-right: 10px;
+}
+.moreinfo, .maintitle, .isremote {
+  padding: 10px;
+  font-size: 20px;
+  float: left;
+  width: 100%;
 }
 .usercard.checked {
   background: palegreen;
@@ -461,4 +488,16 @@ a.button, a.button:link {
 .separator {
   width: 1%;
   float: left;
+}
+.postingslist {
+  margin-left: 10px;
+  margin-top: 10px;
+  width: 30%;
+  padding: 10px;
+  float: left;
+  background-color: lightblue;
+  font-size: 20px;
+  border-radius: 7px;
+  font-family: 'Yanone Kaffeesatz', sans-serif;
+
 }

@@ -47,15 +47,30 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
       <a href="editprofile.php">Profile</a>
       <a href="logout.php">Logout</a>
     </div>
-    <div class = "postings">
-      <h1 class = "postingstitle">Your Postings</h1>
-      <?php
-      $i = 0;
-      for ($i = 0; $i < $postingcount - 1; $i++) {?>
-        <div class = "postingcard">
-          <h2 class = "postingtitle"><?php echo unserialize($postinglist[$i])->position." at ".unserialize($postinglist[$i])->company;?></h2>
-        </div>
-<?php } ?>
+    <div class = "postingscontainer">
+      <div class = "postingslist">
+        <h1 class = "postingstitle" style = "margin-left: 10px;">Your Postings</h1>
+        <?php
+        $i = 0;
+        //echo $postingcount;
+        for ($i = 0; $i < $postingcount; $i++) {?>
+          <div class = "postingcard">
+            <div>
+              <div class = "maintitle">
+                <div class = "postingtitle"><?php echo unserialize($postinglist[$i])->position." at ".unserialize($postinglist[$i])->company;?></div>
+              </div>
+              <div>
+                <div class = "moreinfo">
+                  <div class = "salary"><?php echo "$".unserialize($postinglist[$i])->salarystart." - $".unserialize($postinglist[$i])->salaryend." (".unserialize($postinglist[$i])->currency.")"?></div>
+                </div>
+                <div class = "isremote">
+                  <div class = "remote?"><?php echo "".unserialize($postinglist[$i])->remote.""?></div>
+                </div>
+              </div>
+            </div>
+          </div>
+  <?php } ?>
+      </div>
     </div>
   </body>
 </html>

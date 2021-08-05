@@ -280,6 +280,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
           var check50 = "FALSE";
           var check25 = "FALSE";
           var check10 = "FALSE";
+          // var sendcount = 0;
 
         </script>
 
@@ -322,8 +323,9 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
               <textarea type = "text" id = "writemessage" name = "writemessage" placeholder = "Write a job posting you want to send to users" required = "required"></textarea>
             </div>
             <div class = "sendmessage">
+
               <div class = "sendbutton">
-                <input id = "sendmessage" type="submit" value="Send Posting" name="sendmessage" onclick="submitted()">
+                <input id = "sendmessage" type="submit" value="Send Posting (0)" name="sendmessage" onclick="submitted()">
               </div>
               <div class = "selectnumber">
                 <select id="selectnumber" name="selectnumber">
@@ -336,7 +338,9 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                   <option value="200">200</option>
                 </select>
               </div>
-
+              <?php if (isset($_GET['senderror'])) { ?>
+                <div class = "senderror" style = "text-align: center"><?php echo $_GET['senderror']; ?></div>
+              <?php } ?>
             </div>
           </div>
 
@@ -445,10 +449,11 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
               <script>
               jQuery(document).ready(function($) {
                 document.getElementById("selectnumber").onchange = function() {
+
                   var container = document.getElementById("userlist");
                   var divs = container.getElementsByClassName("usercard");
                   if(this.value == "NULL") {
-                    if (check25 == "TRUE" || check50 == "TRUE" || check10 == "TRUE") {
+                    // if (check25 == "TRUE" || check50 == "TRUE" || check10 == "TRUE") {
                       $('[name="send[]"]').slice(0, 200).prop("checked", false);
                       for (var i = 0; i < divs.length; i++) {
                         divs[i].setAttribute('style', 'background-color: white');
@@ -457,11 +462,11 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                       check25 = "FALSE";
                       check10 = "FALSE";
                     }
-                  }
+                  // }
                   if(this.value == "10") {
                     console.log("Hello");
 
-                    if (check25 == "TRUE" || check50 == "TRUE") {
+                    // if (check25 == "TRUE" || check50 == "TRUE") {
                       $('[name="send[]"]').slice(2, 200).prop("checked", false);
                       for (var i = 2; i < divs.length; i++) {
                         console.log(divs);
@@ -469,21 +474,22 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                       }
                       check50 = "FALSE";
                       check25 = "FALSE";
-                    }
+                    // }
                     $('[name="send[]"]').slice(0, 2).prop("checked", true);
                     for (var i = 0; i < 2; i++) {
                       divs[i].setAttribute('style', 'background-color: palegreen');
                     }
+                    sendcount += 10;
                     check10 = "TRUE";
                   }
                   else if (this.value == "25") {
-                    if (check50 == "TRUE") {
+                    // if (check50 == "TRUE") {
                       $('[name="send[]"]').slice(3, 200).prop("checked", false);
                       for (var i = 3; i < divs.length; i++) {
                         divs[i].setAttribute('style', 'background-color: white');
                       }
                       check50 = "FALSE";
-                    }
+                    // }
                     $('[name="send[]"]').slice(0, 3).prop("checked", true);
                     for (var i = 0; i < 3; i++) {
                       divs[i].setAttribute('style', 'background-color: palegreen');
@@ -491,33 +497,27 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                     check25 = "TRUE";
                   }
                   else if (this.value == "50") {
-                    // $('[name="send[]"]').slice(5, 200).prop("checked", false);
-                    // for (var i = 0; i < 200; i++) {
-                    //   div[i].setAttribute('style', 'background-color: white');
-                    // }
                     $('[name="send[]"]').slice(0, 5).prop("checked", true);
                     for (var i = 0; i < 5; i++) {
                       divs[i].setAttribute('style', 'background-color: palegreen');
                     }
                     check50 = "TRUE";
                   }
+                  var sendcount = document.querySelectorAll('input[type="checkbox"]:checked').length;
+                  var submitvalue = ("Send Posting (").concat(sendcount).concat(")");
+                  console.log(submitvalue);
+                  document.getElementById("sendmessage").setAttribute('value', submitvalue);
                 };
               });
               function isChecked(elem) {
                 elem.parentNode.parentNode.style.background = (elem.checked) ? 'palegreen' : 'white';
+                var sendcount = document.querySelectorAll('input[type="checkbox"]:checked').length;
+                var submitvalue = ("Send Posting (").concat(sendcount).concat(")");
+                console.log(submitvalue);
+                document.getElementById("sendmessage").setAttribute('value', submitvalue);
               }
-                // $('.usercard :checkbox').change(function() {
-                //   $(this).closest('.usercard').toggleClass('checked', this.checked);
-                //   if (!this.checked) {
-                //     $(this).setAttribute('style', 'background-color: white');
-                //   }
-                // });
-                // var numchecked = document.querySelectorAll('input[type="checkbox"]:checked').length;
               </script>
             </div>
-            <!-- <style type="text/css">
-              .clear{clear:both;}
-            </style> -->
         <?php $numcard ++;
             }?>
         </form>
