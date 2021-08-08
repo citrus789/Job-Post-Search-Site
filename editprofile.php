@@ -66,15 +66,24 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
 
   </head>
   <body>
-    <div class="topnav">
-      <a href="search.php">Search</a>
-      <a href="messages.php">Messages</a>
-      <a class="active" href="editprofile.php">Profile</a>
-      <a href="logout.php">Logout</a>
-    </div>
+    <header>
+
+      <a href="home.html"><button class = "homebutton">Home</button></a>
+      <nav>
+        <ul class = "topnavlinks">
+          <li><a href="search.php">Search</a></li>
+          <li><a href="messages.php">Messages</a></li>
+          <li><a class="active" href="editprofile.php">Profile</a></li>
+        </ul>
+      </nav>
+      <a href="logout.php"><button class = "logoutbutton">Logout</button></a>
+
+    </header>
     <div class = "bottomnav">
-      <a class = "active" href="editprofile.php">Edit Profile</a>
-      <a href="viewprofile.php">View Profile</a>
+      <div class = "bottomnavcontents">
+        <div id = "editprofile" class = "active"><a class = "active" href="editprofile.php">Edit Profile</a></div>
+        <div id = "viewprofile"><a href="viewprofile.php">View Profile</a></div>
+      </div class = "bottomnavcontents">
     </div>
 
     <div class="profilecontainer">
@@ -267,7 +276,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
             while($row = $skll -> fetch_array(MYSQLI_NUM)) {
               if($row[0] == $email) {
                 for ($i = 1; $i < 7; $i++) {
-                  if (is_null($row[$i]) or empty($row[$i])) {
+                  if (is_null($row[$i]) or empty($row[$i]) or $row[$i] == "NULL") {
                     continue;
                   }
                   else { ?>
@@ -336,7 +345,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
               if($row[0] == $email) {
                 for ($i = 1; $i < 5; $i++) {
 
-                  if (is_null($row[$i]) or empty($row[$i])) {
+                  if (is_null($row[$i]) or empty($row[$i]) or $row[$i] == "NULL") {
                     continue;
                   }
                   else { ?>
