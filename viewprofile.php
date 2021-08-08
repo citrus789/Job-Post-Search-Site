@@ -49,15 +49,24 @@
 
   </head>
   <body>
-    <div class="topnav">
-      <a href="search.php">Search</a>
-      <a href="messages.php">Messages</a>
-      <a class="active" href="editprofile.php">Profile</a>
-      <a href="logout.php">Logout</a>
-    </div>
+    <header>
+
+      <a href="home.html"><button class = "homebutton">Home</button></a>
+      <nav>
+        <ul class = "topnavlinks">
+          <li><a href="search.php">Search</a></li>
+          <li><a href="messages.php">Messages</a></li>
+          <li><a class="active" href="editprofile.php">Profile</a></li>
+        </ul>
+      </nav>
+      <a href="logout.php"><button class = "logoutbutton">Logout</button></a>
+
+    </header>
     <div class = "bottomnav">
-      <a href="editprofile.php">Edit Profile</a>
-      <a class = "active" href="viewprofile.php">View Profile</a>
+      <div class = "bottomnavcontents">
+        <div id = "editprofile"><a class = "active" href="editprofile.php">Edit Profile</a></div>
+        <div id = "viewprofile" class = "active"><a href="viewprofile.php">View Profile</a></div>
+      </div class = "bottomnavcontents">
     </div>
   </body>
 
