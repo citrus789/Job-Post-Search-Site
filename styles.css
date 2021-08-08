@@ -1,66 +1,138 @@
-/*Navigation bars*/
-.topnav {
-  background-color: darkblue;
-  overflow: hidden;
-  transition-duration: 0.4s;
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 5%;
+  background: #001f4d;
 }
 
-.topnav a {
-  float: center;
-  display: inline-block;
-  color: white;
-  text-align: center;
-  padding: 15px 20px;
-  font-size: 16px;
+li, a, .homebutton, .logoutbutton {
   font-family: 'Yanone Kaffeesatz', sans-serif;
-  transition-duration: 0.4s;
   text-decoration: none;
-}
-
-.topnav a:hover {
-  background-color: lightblue;
+  font-size: 18px;
   color: white;
 }
 
-.topnav a.active {
-  background-color: lightblue;
-  color: white
+.topnavlinks {
+  list-style: none;
+  margin-left: -40px;
+}
+.topnavlinks li {
+  display: inline-block;
+  padding: 0px 20px;
+}
+.topnavlinks li a:hover {
+  transition-duration: all 0.4s ease 0s;
+}
+.topnavlinks li a:hover {
+  color: lightblue;
 }
 
-.sticky {
-  position: fixed;
-  top: 0;
-  width: 100%;
+.topnavlinks li a.active {
+  color: lightblue;
+}
+
+.logoutbutton, .homebutton {
+  padding: 10px 25px;
+  background-color: #0052cc;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  transition-duration: all 0.4s ease 0s;
+}
+
+.logoutbutton:hover, .homebutton:hover {
+  background-color: #003380;
 }
 
 .bottomnav {
-  background-color: darkblue;
-  overflow: hidden;
-  margin-top: 10px;
-  transition-duration: 0.4s;
-
-}
-.bottomnav a {
-  float: center;
-  display: inline-block;
-  color: white;
+  width: auto;
+  height: 60px;
+  margin-top: 0px;
+  background: azure;
   text-align: center;
-  padding: 15px 20px;
-  font-size: 16px;
-  font-family: 'Yanone Kaffeesatz', sans-serif;
-  text-decoration: none;
-  transition-duration: 0.4s;
+  align-content: center;
 }
-.bottomnav a:hover {
+#searchnav {
+  width: auto;
+  height: 45px;
+  margin-top: 20px;
+  text-align: center;
+  align-content: center;
   background-color: lightblue;
+  border: 5px solid lightblue;
+}
+
+#searchnav tbody, #searchnav tr{
+  width: auto;
+  background-color: azure;
+}
+#searchnav td {
+  width: 35px;
+  height: 35px;
+  border-radius: 7px;
   color: white;
+  background-color: #0052cc;
+  border: none;
+  transition-duration: 0.2s;
+  margin-left: 10px;
+  padding: 10px;
+  border: 5px solid lightblue;
+}
+#searchnav td:hover {
+  background-color: #003380;
+  cursor: pointer;
+}
+ #searchnav td.active {
+   background-color: #003380;
+ }
+.bottomnavcontents {
+  width: auto;
+  height: 60px;
+  margin-top: 0px;
+  background: azure;
+  width: 410px;
+  margin: 0 auto;
+}
+#editprofile, #loginbutton, #signupbutton, #viewprofile {
+  margin-top: 10px;
+  padding: 10px 25px;
+  background-color: #0052cc;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  transition-duration: all 0.4s ease 0s;
+  width: 150px;
+  text-align: center;
+  float: left;
+  transition-duration: 0.4s;
+  display: block;
+}
+#viewprofile, #signupbutton {
+  margin-left: 10px;
 }
 
-.bottomnav a.active {
-  background-color: lightblue;
-  color: white
+#editprofile a, #viewprofile a {
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+#loginbutton a, #signupbutton a {
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
+#editprofile:hover, #loginbutton:hover, #signupbutton:hover, #viewprofile:hover {
+  background-color: #003380;
+}
+
+#editprofile.active, #loginbutton.active, #signupbutton.active, #viewprofile.active {
+  background-color: #003380;
+}
 
 /*Major containers, forms, tables*/
 .signupcontainer {
@@ -167,6 +239,7 @@ input[type=text], input[type=date], select, input[type=password], input[type=ema
  }
 #linklogin:hover, button:hover {
   background: lightgray;
+  cursor: pointer;
 }
 
 input[type=number] {
@@ -209,6 +282,7 @@ input[type = "button"]:hover {
   background-color: lightgray;
   font-size: 20px;
   font-family: 'Yanone Kaffeesatz', sans-serif;
+  cursor: pointer;
 }
 
 #saveprofile, #search {
@@ -225,6 +299,7 @@ input[type = "button"]:hover {
 
 #saveprofile:hover, #search:hover {
   background-color: lightgray;
+  cursor: pointer;
 }
 .submitbutton, .linkloginbutton {
   left: 50%;
@@ -303,6 +378,7 @@ a.button, a.button:link {
 
 #submit:hover, #sendmessage:hover, a.button:hover {
   background-color: lightgray;
+  cursor: pointer;
 }
 
 
