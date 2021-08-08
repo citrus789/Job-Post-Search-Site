@@ -155,5 +155,10 @@ if (isset($_POST['sendmessage'])) {
     echo "Success";
     header("Location: messages.php");
   }
+  else {
+    header("Location: searchresults.php?senderror=Could Not Send Posting");
+    exit();
+  }
 }
+$conn->close();
 ?>
