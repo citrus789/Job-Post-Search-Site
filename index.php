@@ -11,12 +11,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz&display=swap" rel="stylesheet">
   </head>
   <body>
-    <div class="topnav">
-      <a href="emptysearch.html">Search</a>
-      <a href="emptymessages.html">Messages</a>
-      <a href="emptyprofile.html">Profile</a>
-      <a href="loginpage.php">Login</a>
-      <a class="active" href="index.php">Sign Up</a>
+    <div class="bottomnav">
+      <div class = "bottomnavcontents">
+        <div id = "loginbutton"><a href="loginpage.php">Login</a></div>
+        <div id = "signupbutton" class = "active"><a class="active" href="index.php">Sign Up</a></div>
+      </div>
     </div>
 
     <div class="signupcontainer">

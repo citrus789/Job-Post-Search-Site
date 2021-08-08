@@ -18,14 +18,12 @@ if(isset($_SESSION["Email"]) && $_SESSION['loggedin'] == true) {
     <link href="https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz&display=swap" rel="stylesheet">
   </head>
   <body>
-    <div class="topnav">
-      <a href="search.html">Search</a>
-      <a href="emptymessages.html">Messages</a>
-      <a href="emptyprofile.php">Profile</a>
-      <a class = "active" href="loginpage.php">Login</a>
-      <a href="index.php">Sign Up</a>
+    <div class="bottomnav">
+      <div class = "bottomnavcontents">
+        <div id = "loginbutton" class = "active"><a class="active" href="loginpage.php">Login</a></div>
+        <div id = "signupbutton"><a href="index.php">Sign Up</a></div>
+      </div>
     </div>
-
 
     <div class="logincontainer">
 
