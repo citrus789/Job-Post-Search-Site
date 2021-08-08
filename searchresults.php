@@ -40,10 +40,10 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
         $recregion = $row["Region"];
         $reccountry = $row["Country"];
       }
-
+      $previousmessage = $row['SentMessage'];
+      $previousmessage = unserialize($previousmessage);
     }
   }
-
 }
 ?>
 <html>
@@ -60,15 +60,21 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
     <link href="https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz&display=swap" rel="stylesheet">
   </head>
   <body>
-    <div class="topnav">
-      <a class="active" href="search.php">Search</a>
-      <a href="messages.php">Messages</a>
-      <a href="editprofile.php">Profile</a>
-      <a href="logout.php">Logout</a>
-    </div>
-    <div class = "searchresultscontainer">
-      <form action="savesearch.php" method = "POST" class = "previoussearch">
+    <header>
 
+      <a href="home.html"><button class = "homebutton">Home</button></a>
+      <nav>
+        <ul class = "topnavlinks">
+          <li><a class="active" href="search.php">Search</a></li>
+          <li><a href="messages.php">Messages</a></li>
+          <li><a href="editprofile.php">Profile</a></li>
+        </ul>
+      </nav>
+      <a href="logout.php"><button class = "logoutbutton">Logout</button></a>
+
+    </header>
+    <div class = "searchresultscontainer">
+      <form action="savesearch.php" method = "POST" class = "previoussearch"> <!--previous search form-->
         <h3 class = "recjob">Position</h3>
         <table>
           <tr>
@@ -224,19 +230,19 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
               if ($recremote == NULL) {
                ?>
               <select id="remote" name="recremote">
-              <option value="NULL">Select</option>
-              <option value="1">Yes</option>
-              <option value="0">Temporarily</option>
-              <option value="0">No</option>
+                <option value="NULL">Select</option>
+                <option value="1">Yes</option>
+                <option value="0">Temporarily</option>
+                <option value="0">No</option>
               </select>
               <?php
             } else {
                ?>
              <select id="remote" name="recremote">
-             <option value="NULL"<?php if ($recremote == "NULL"): ?> selected="selected"<?php endif; ?>>Select</option>
-             <option value="1"<?php if ($recremote == "1"): ?> selected="selected"<?php endif; ?>>Yes</option>
-             <option value="0"<?php if ($recremote == "2"): ?> selected="selected"<?php endif; ?>>Temporarily</option>
-             <option value="0"<?php if ($recremote == "3"): ?> selected="selected"<?php endif; ?>>No</option>
+               <option value="NULL"<?php if ($recremote == "NULL"): ?> selected="selected"<?php endif; ?>>Select</option>
+               <option value="1"<?php if ($recremote == "1"): ?> selected="selected"<?php endif; ?>>Yes</option>
+               <option value="0"<?php if ($recremote == "2"): ?> selected="selected"<?php endif; ?>>Temporarily</option>
+               <option value="0"<?php if ($recremote == "3"): ?> selected="selected"<?php endif; ?>>No</option>
              </select>
            <?php } ?>
             </td>
@@ -280,52 +286,74 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
           var check50 = "FALSE";
           var check25 = "FALSE";
           var check10 = "FALSE";
-          // var sendcount = 0;
+          var sendcount = 0;
 
         </script>
 
         <div style="text-align:center">
           <input id = "search" type="submit" value="Search Users" name="search" onclick="submitted()">
         </div>
-      </form>
-      <div class = "userlist" id = "userlist">
-        <form action="sendmessage.php" method = "POST" class = "sendmessage">
-          <div class = "message" id = "message">
+      </form><!--previous search form-->
+
+
+      <div class = "userlist" id = "userlist"> <!--list of search results-->
+        <form action="sendmessage.php" method = "POST" class = "sendmessage"> <!--job posting form-->
+          <div class = "message" id = "message"> <!--send message container-->
             <h3>Send Job Posting</h3>
             <div class = "positioninfo">
               <div class = "positionrole">
-                <input type = "text" name = "positionrole" placeholder = "Position" required = "required">
+                <input type = "text" name = "positionrole" placeholder = "Position" required = "required" value = "<?php print isset($previousmessage->position) ? $previousmessage->position : ''; ?>">
               </div>
               <div class = "separator">&nbsp;</div>
               <div class = "companyinfo">
-                <input type = "text" name = "positioncompany" placeholder = "Company" required = "required">
+                <input type = "text" name = "positioncompany" placeholder = "Company" required = "required" value = "<?php print isset($previousmessage->company) ? $previousmessage->company : ''; ?>">
               </div>
             <!-- </div> -->
             <!-- <div class = "salaryrange"> -->
               <div class = "salarystart">
-                <input type = "text" name = "salarystart" placeholder = "Min Salary" required = "required">
+                <input type = "text" name = "salarystart" placeholder = "Min Salary" required = "required" value = "<?php print isset($previousmessage->salarystart) ? $previousmessage->salarystart : ''; ?>">
               </div>
               <div class = "separator">&nbsp;</div>
               <div class = "salaryend">
-                <input type = "text" name = "salaryend" placeholder = "Max Salary" required = "required">
+                <input type = "text" name = "salaryend" placeholder = "Max Salary" required = "required" value = "<?php print isset($previousmessage->salaryend) ? $previousmessage->salaryend : ''; ?>">
               </div>
               <div class = "separator">&nbsp;</div>
               <div class = "currency">
+                <?php if ($previousmessage->currency == "NULL") { ?>
                 <select id="currency" name="currency" required = "required">
                   <option value="NULL" selected disabled>Currency</option>
                   <option value="USD">USD</option>
                   <option value="CAD">CAD</option>
                   <option value="EUR">EUR</option>
                 </select>
+              <?php } else { ?>
+                <select id="currency" name="currency" required = "required">
+                  <option value="NULL" selected disabled>Currency</option>
+                  <option value="USD"<?php if ($previousmessage->currency == "USD"): ?> selected="selected"<?php endif; ?>>USD</option>
+                  <option value="CAD"<?php if ($previousmessage->currency == "CAD"): ?> selected="selected"<?php endif; ?>>CAD</option>
+                  <option value="EUR"<?php if ($previousmessage->currency == "EUR"): ?> selected="selected"<?php endif; ?>>EUR</option>
+                </select>
               </div>
             </div>
             <div class = "writemessage">
-              <textarea type = "text" id = "writemessage" name = "writemessage" placeholder = "Write a job posting you want to send to users" required = "required"></textarea>
+              <textarea type = "text" id = "writemessage" name = "writemessage" placeholder = "Write a job posting you want to send to users" required = "required"> <?php print isset($previousmessage->message) ? $previousmessage->message : ''; ?></textarea>
             </div>
             <div class = "sendmessage">
 
               <div class = "sendbutton">
                 <input id = "sendmessage" type="submit" value="Send Posting (0)" name="sendmessage" onclick="submitted()">
+                <script>
+                  var submit = document.getElementById("sendmessage");
+                  submit.value = ("Send Posting (").concat(sendcount).concat(")");
+                  if (sendcount == 0) {
+                    submit.style.color = "gray";
+                    submit.disabled = true;
+                  }
+                  else {
+                    submit.style.color = "black";
+                    submit.disabled = false;
+                  }
+                </script>
               </div>
               <div class = "selectnumber">
                 <select id="selectnumber" name="selectnumber">
@@ -342,7 +370,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                 <div class = "senderror" style = "text-align: center"><?php echo $_GET['senderror']; ?></div>
               <?php } ?>
             </div>
-          </div>
+          </div> <!--send message container-->
 
           <?php
           $user = "SELECT Email, FirstName, LastName, Bio, Image, School, Program, Level, Year, GPA, Experience1, Experience2, Experience3, Experience4, Experience5, Skill1, Skill2, Skill3, Skill4, Skill5, Skill6, Skill7, City, Region, Country FROM user_login ORDER BY (SELECT score.`$username` FROM score WHERE score.Email = user_login.Email) DESC";
@@ -356,7 +384,9 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
               $profilepic = "img/".$row['Image'];
             }
             // echo $row['Email'];
-          ?>
+            if ($numcard == 0 or $numcard % 3 == 0) {
+            ?><div id = "usercardpage" class = "usercardpage"><?php
+            } ?>
             <div id = "usercard" class = "usercard">
               <div class = "userimage">
                 <img src="<?php echo $profilepic; ?>" height="200" width="200" border-radius="50%" background-color="white" class="imgthumbnail" />
@@ -444,36 +474,35 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                 </div>
               </div>
               <div class = "usermatch">
-                <input type="checkbox" onchange="isChecked(this,'sub1')" name = "send[]" class = "sendcheckbox" value = "<?php print isset($row['Email']) ? $row['Email'] : ''; ?>">
+                <input type="checkbox" onchange="isChecked(this,'elem')" name = "send[]" class = "sendcheckbox" value = "<?php print isset($row['Email']) ? $row['Email'] : ''; ?>">
               </div>
               <script>
               jQuery(document).ready(function($) {
                 document.getElementById("selectnumber").onchange = function() {
-
+                  var submit = document.getElementById('sendmessage');
                   var container = document.getElementById("userlist");
                   var divs = container.getElementsByClassName("usercard");
                   if(this.value == "NULL") {
                     // if (check25 == "TRUE" || check50 == "TRUE" || check10 == "TRUE") {
-                      $('[name="send[]"]').slice(0, 200).prop("checked", false);
-                      for (var i = 0; i < divs.length; i++) {
-                        divs[i].setAttribute('style', 'background-color: white');
-                      }
-                      check50 = "FALSE";
-                      check25 = "FALSE";
-                      check10 = "FALSE";
+                    $('[name="send[]"]').slice(0, 200).prop("checked", false);
+                    for (var i = 0; i < divs.length; i++) {
+                      divs[i].setAttribute('style', 'background-color: white');
                     }
+                    check50 = "FALSE";
+                    check25 = "FALSE";
+                    check10 = "FALSE";
+                  }
                   // }
                   if(this.value == "10") {
-                    console.log("Hello");
 
                     // if (check25 == "TRUE" || check50 == "TRUE") {
-                      $('[name="send[]"]').slice(2, 200).prop("checked", false);
-                      for (var i = 2; i < divs.length; i++) {
-                        console.log(divs);
-                        divs[i].setAttribute('style', 'background-color: white');
-                      }
-                      check50 = "FALSE";
-                      check25 = "FALSE";
+                    $('[name="send[]"]').slice(2, 200).prop("checked", false);
+                    for (var i = 2; i < divs.length; i++) {
+                      // console.log(divs);
+                      divs[i].setAttribute('style', 'background-color: white');
+                    }
+                    check50 = "FALSE";
+                    check25 = "FALSE";
                     // }
                     $('[name="send[]"]').slice(0, 2).prop("checked", true);
                     for (var i = 0; i < 2; i++) {
@@ -484,11 +513,11 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                   }
                   else if (this.value == "25") {
                     // if (check50 == "TRUE") {
-                      $('[name="send[]"]').slice(3, 200).prop("checked", false);
-                      for (var i = 3; i < divs.length; i++) {
-                        divs[i].setAttribute('style', 'background-color: white');
-                      }
-                      check50 = "FALSE";
+                    $('[name="send[]"]').slice(3, 200).prop("checked", false);
+                    for (var i = 3; i < divs.length; i++) {
+                      divs[i].setAttribute('style', 'background-color: white');
+                    }
+                    check50 = "FALSE";
                     // }
                     $('[name="send[]"]').slice(0, 3).prop("checked", true);
                     for (var i = 0; i < 3; i++) {
@@ -503,28 +532,95 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                     }
                     check50 = "TRUE";
                   }
-                  var sendcount = document.querySelectorAll('input[type="checkbox"]:checked').length;
+                  sendcount = document.querySelectorAll('input[type="checkbox"]:checked').length;
                   var submitvalue = ("Send Posting (").concat(sendcount).concat(")");
-                  console.log(submitvalue);
+                  // console.log(submitvalue);
                   document.getElementById("sendmessage").setAttribute('value', submitvalue);
+                  if (sendcount == 0) {
+
+                    submit.style.color = "gray";
+                    submit.disabled = true;
+                  }
+                  else {
+                    submit.style.color = "black";
+                    submit.disabled = false;
+                  }
                 };
               });
               function isChecked(elem) {
                 elem.parentNode.parentNode.style.background = (elem.checked) ? 'palegreen' : 'white';
-                var sendcount = document.querySelectorAll('input[type="checkbox"]:checked').length;
+                sendcount = document.querySelectorAll('input[type="checkbox"]:checked').length;
                 var submitvalue = ("Send Posting (").concat(sendcount).concat(")");
-                console.log(submitvalue);
+                // console.log(submitvalue);
                 document.getElementById("sendmessage").setAttribute('value', submitvalue);
+                if (sendcount == 0) {
+
+                  submit.style.color = "gray";
+                  submit.disabled = true;
+                }
+                else {
+                  submit.style.color = "black";
+                  submit.disabled = false;
+                }
               }
               </script>
-            </div>
-        <?php $numcard ++;
-            }?>
+            </div> <!--end of each usercard-->
+
+            <?php $numcard ++;
+            if ($numcard % 3 == 0) {
+              $end = true;
+              ?> </div> <?php
+            }
+            else {
+              $end = false;
+            }
+          }
+          if ($end == false) {
+            ?> </div> <?php
+          }
+          if ($numcard > 3) { ?>
+            <table class = "searchnav" id = "searchnav" style = "height: 25px;">
+              <tr></tr>
+            </table>
+            <script>
+              <?php for ($i = 1; $i <= ceil($numcard / 3); $i++) { ?>
+                console.log("loop");
+                $("#searchnav").find('tr').each(function() {
+                  $(this).append("<td id = searchnav<?php echo $i; ?> name = <?php echo $i; ?> onclick = showpage(this)><?php echo $i; ?></td>");
+                });
+                <?php if ($i == 1) {?>
+                  document.getElementById("searchnav1").setAttribute("class", "active");
+                  var currentpage = document.getElementsByClassName("usercardpage");
+                  currentpage[0].style.display = "block";
+                  <?php for ($j = 1; $j < ceil($numcard / 3); $j++) { ?>
+                    currentpage[<?php echo $j;?>].style.display = "none";
+
+              <?php } } } ?>
+              function showpage(elem) {
+                var table = document.getElementById("searchnav");
+                var currentpage = document.getElementsByClassName("usercardpage");
+
+                for (let row of searchnav.rows) {
+                  for(let cell of row.cells) {
+                    cell.removeAttribute("class");
+                  }
+                }
+
+                <?php for ($j = 0; $j < ceil($numcard / 3); $j++) { ?>
+                  currentpage[<?php echo $j; ?>].style.display = "none";
+                <?php } ?>
+                elem.setAttribute("class", "active");
+                currentpage[Number(elem.getAttribute("name") - 1)].style.display = "block";
+              }
+            </script>
+          <?php } } ?>
+        <!-- </div> -->
         </form>
-      </div>
-    </div>
+      </div> <!--job posting form-->
+    </div> <!--list of search results-->
   </body>
 </html>
+
 <?php
 $result->close();
 $conn->close();
