@@ -59,12 +59,19 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
     <link href="https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz&display=swap" rel="stylesheet">
   </head>
   <body>
-    <div class="topnav">
-      <a class="active" href="search.php">Search</a>
-      <a href="messages.php">Messages</a>
-      <a href="editprofile.php">Profile</a>
-      <a href="logout.php">Logout</a>
-    </div>
+    <header>
+
+      <a href="home.html"><button class = "homebutton">Home</button></a>
+      <nav>
+        <ul class = "topnavlinks">
+          <li><a class="active" href="search.php">Search</a></li>
+          <li><a href="messages.php">Messages</a></li>
+          <li><a href="editprofile.php">Profile</a></li>
+        </ul>
+      </nav>
+      <a href="logout.php"><button class = "logoutbutton">Logout</button></a>
+
+    </header>
     <div class = "searchcontainer">
       <form action="savesearch.php" method = "POST">
         <h3 class = "recjob">Position</h3>
