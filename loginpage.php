@@ -20,8 +20,8 @@ if(isset($_SESSION["Email"]) && $_SESSION['loggedin'] == true) {
   <body>
     <div class="bottomnav">
       <div class = "bottomnavcontents">
-        <div id = "loginbutton" class = "active"><a class="active" href="loginpage.php">Login</a></div>
-        <div id = "signupbutton"><a href="index.php">Sign Up</a></div>
+        <a class="active" href="loginpage.php"><div id = "loginbutton" class = "active">Login</div></a>
+        <a href="index.php"><div id = "signupbutton">Sign Up</div></a>
       </div>
     </div>
 
