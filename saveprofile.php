@@ -134,14 +134,37 @@ if (isset($_POST['saveprofile'])) {
         $experience[$i]->role = $_POST['Role'][$i];
         $experience[$i]->company = $_POST['Company'][$i];
         $experience[$i]->start = $_POST['StartDate'][$i];
-        if ($_POST['Current'][$i] != 1) {
+        if ($_POST['Current'][$i] != "Present") {
           $experience[$i]->end = $_POST['EndDate'][$i];
         }
         else {
-          $experience[$i]->end = 1;
+          $experience[$i]->end = "Present";
         }
         echo $experience[$i]->end;
         $expobject[$i] = serialize($experience[$i]);
+        continue;
+      }
+    }
+
+    $edu = $conn->query("SELECT Education1, Education2, Education3 FROM user_login");
+    $row = $edu -> fetch_array(MYSQLI_NUM);
+    $education = array();
+    $eduobject = array();
+    $count = 0;
+    for ($i = 0; $i < 3; $i++) {
+      if (empty($_POST['Level'][$i]) && empty($_POST['School'][$i]) && empty($_POST['Year'][$i])) {
+        $eduobject[$i] = "NULL";
+        continue;
+      }
+      else {
+        $education[$i] = new stdClass();
+        $education[$i]->level = $_POST['Level'][$i];
+        $education[$i]->school = $_POST['School'][$i];
+        $education[$i]->program = $_POST['Program'][$i];
+        $education[$i]->year = $_POST['Year'][$i];
+        $education[$i]->gpa = $_POST['GPA'][$i];
+
+        $eduobject[$i] = serialize($education[$i]);
         continue;
       }
     }
@@ -169,16 +192,16 @@ if (isset($_POST['saveprofile'])) {
     //if (isset($image)) {
       //$conn->query("UPDATE user_login SET Image = '$image' WHERE Email = '$email'");
     //}
-    if ($conn->query("UPDATE user_login SET Experience1 = '$expobject[0]', Experience2 = '$expobject[1]', Experience3 = '$expobject[2]', Experience4 = '$expobject[3]', Experience5 = '$expobject[4]', GPA = '$gpa', Bio = '$bio' WHERE Email = '$email' ")) {
+    if ($conn->query("UPDATE user_login SET Experience1 = '$expobject[0]', Experience2 = '$expobject[1]', Experience3 = '$expobject[2]', Experience4 = '$expobject[3]', Experience5 = '$expobject[4]', Bio = '$bio' WHERE Email = '$email' ")) {
 
-      if ($conn->query("UPDATE user_login SET FirstName = '$firstname', LastName = '$lastname', Phone = '$phone', Country = '$country', Email2 = '$email2', Region = '$region', City = '$city', Level = '$level', School = '$school', Program = '$program', Year = '$year' WHERE Email = '$email' ")) {
+      if ($conn->query("UPDATE user_login SET FirstName = '$firstname', LastName = '$lastname', Phone = '$phone', Country = '$country', Email2 = '$email2', Region = '$region', City = '$city', Education1 = '$eduobject[0]', Education2 = '$eduobject[1]', Education3 = '$eduobject[2]' WHERE Email = '$email' ")) {
         //echo "Works";
         if ($conn->query("UPDATE user_login SET Skill1 = '$skillobject[0]', Skill2 = '$skillobject[1]', Skill3 = '$skillobject[2]', Skill4 = '$skillobject[3]', Skill5 = '$skillobject[4]', Skill6 = '$skillobject[5]', Skill7 = '$skillobject[6]' WHERE Email = '$email' ")) {
           //echo "Works";
           if ($conn->query("UPDATE user_login SET Award1 = '$awards[0]', Award2 = '$awards[1]', Award3 = '$awards[2]', Award4 = '$awards[3]', Award5 = '$awards[4]', Award6 = '$awards[5]', Award7 = '$awards[6]' WHERE Email = '$email' ")) {
             //echo "Works";
             if ($conn->query("UPDATE user_login SET Position1 = '$positions[0]', Position2 = '$positions[1]', Position3 = '$positions[2]', Type1 = '$types[0]', Type2 = '$types[1]', Type3 = '$types[2]' WHERE Email = '$email' ")) {
-              header("Location: search.php");
+              header("Location: viewprofile.php");
             }
             else {
               echo "Failed";
