@@ -9,7 +9,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
     echo "Failed to connect to MySQL: " . mysqli_connect_error();
   }
   $sql = "SELECT * FROM position";
-  if ($result = $conn-> query($sql)) {
+  if ($result = $conn->query($sql)) {
     $numcolumns = $result->field_count;
   }
 
@@ -18,7 +18,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
   while($row = $result -> fetch_array(MYSQLI_NUM)) {
     if($row[0] == $username) {
       for ($i = 26; $i < $numcolumns; $i++) {
-        if ($row[$i] != "NULL" or !is_null($row[$i])) {
+        if ($row[$i] != "NULL" and !is_null($row[$i])) {
           array_push($postinglist, $row[$i]);
           $postingcount++;
         }
