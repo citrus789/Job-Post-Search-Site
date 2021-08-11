@@ -319,7 +319,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
               </div>
               <div class = "separator">&nbsp;</div>
               <div class = "currency">
-                <?php if ($previousmessage->currency == "NULL") { ?>
+                <?php if (!property_exists($previousmessage, 'currency') or $previousmessage->currency == "NULL") { ?>
                 <select id="currency" name="currency" required = "required">
                   <option value="NULL" selected disabled>Currency</option>
                   <option value="USD">USD</option>
@@ -333,6 +333,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                   <option value="CAD"<?php if ($previousmessage->currency == "CAD"): ?> selected="selected"<?php endif; ?>>CAD</option>
                   <option value="EUR"<?php if ($previousmessage->currency == "EUR"): ?> selected="selected"<?php endif; ?>>EUR</option>
                 </select>
+              <?php } ?>
               </div>
             </div>
             <div class = "writemessage">
@@ -373,10 +374,10 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
           </div> <!--send message container-->
 
           <?php
-          $user = "SELECT Email, FirstName, LastName, Bio, Image, School, Program, Level, Year, GPA, Experience1, Experience2, Experience3, Experience4, Experience5, Skill1, Skill2, Skill3, Skill4, Skill5, Skill6, Skill7, City, Region, Country FROM user_login ORDER BY (SELECT score.`$username` FROM score WHERE score.Email = user_login.Email) DESC";
+          $user = "SELECT Email, FirstName, LastName, Bio, Image, Education1, Education2, Education3, Experience1, Experience2, Experience3, Experience4, Experience5, Skill1, Skill2, Skill3, Skill4, Skill5, Skill6, Skill7, City, Region, Country FROM user_login ORDER BY (SELECT score.`$username` FROM score WHERE score.Email = user_login.Email) DESC";
           $select = $conn->query($user);
           $numcard = 0;
-          while($row = $select -> fetch_array(MYSQLI_ASSOC)) {
+          while($row = $select->fetch_array(MYSQLI_ASSOC)) {
             if (!isset($row['Image']) or empty($row['Image'])) {
               $profilepic = "img/defaultprofile.PNG";
             }
@@ -386,7 +387,45 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
             // echo $row['Email'];
             if ($numcard == 0 or $numcard % 3 == 0) {
             ?><div id = "usercardpage" class = "usercardpage"><?php
-            } ?>
+            }
+
+            if ((empty($row['Education1']) and empty($row['Education2']) and empty($row['Education3'])) or ($row['Education1'] == "NULL" and $row['Education2'] == "NULL" and $row['Education3'] == "NULL")) {
+              $haseducation = "False";
+            }
+            else {
+              $haseducation = "True";
+            }
+            if (!empty($row['Education1']) and $row['Education1'] != "NULL") {
+              if (isset(unserialize($row['Education1'])->level)) {
+                $greatesteducation = unserialize($row['Education1']);
+                // echo "why doesn't this work?";
+              }
+            }
+            if ((!empty($row['Education1']) and $row['Education1'] != "NULL") and (!empty($row['Education2']) and $row['Education2'] != "NULL")) {
+              if (isset(unserialize($row['Education1'])->level) and isset(unserialize($row['Education2'])->level)) {
+                if ((int)(unserialize($row['Education1'])->level) > (int)(unserialize($row['Education2'])->level)) {
+                  $greatesteducation = unserialize($row['Education1']);
+                }
+                else {
+                  $greatesteducation = unserialize($row['Education2']);
+                }
+              }
+            }
+            if ((!empty($row['Education1']) and $row['Education1'] != "NULL") and (!empty($row['Education2']) and $row['Education2'] != "NULL") and (!empty($row['Education3']) and $row['Education3'] != "NULL")) {
+              if (isset(unserialize($row['Education1'])->level) and isset(unserialize($row['Education2'])->level) and isset(unserialize($row['Education3'])->level)) {
+                if ((int)(unserialize($row['Education1'])->level) > (int)(unserialize($row['Education2'])->level) and (int)(unserialize($row['Education1'])->level) > (int)(unserialize($row['Education3'])->level)) {
+                  $greatesteducation = unserialize($row['Education1']);
+                }
+                else if ((int)(unserialize($row['Education2'])->level) > (int)(unserialize($row['Education1'])->level) and (int)(unserialize($row['Education2'])->level) > (int)(unserialize($row['Education3'])->level)) {
+                  $greatesteducation = unserialize($row['Education2']);
+                }
+                else {
+                  $greatesteducation = unserialize($row['Education3']);
+                }
+              }
+            }
+            ?>
+
             <div id = "usercard" class = "usercard">
               <div class = "userimage">
                 <img src="<?php echo $profilepic; ?>" height="200" width="200" border-radius="50%" background-color="white" class="imgthumbnail" />
@@ -397,66 +436,69 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                 </div>
                 <div class = "usereducation">
                   <?php
-                  if (!empty($row['School']) and $row['Year'] != "0" and !empty($row['Level']) and !empty($row['Program'])) {
-                    if ($row['Level'] == "1") {
-                      $level = "high school";
+
+                  if ($haseducation == "True") {
+                    if ((int)($greatesteducation->level) > 0 and (int)($greatesteducation->year) > 0 and !empty($greatesteducation->school) and !empty($greatesteducation->program)) {
+                      if ($greatesteducation->level == "1") {
+                        $level = "high school";
+                      }
+                      if ($greatesteducation->level == "2" or $greatesteducation->level == "3") {
+                        $level = "undergraduate";
+                      }
+                      if ($greatesteducation->level == "4") {
+                        $level = "master's";
+                      }
+                      if ($greatesteducation->level == "5") {
+                        $level = "PhD";
+                      }
+                      if ($greatesteducation->year < 7) {
+                        echo "<h3>Year ".$greatesteducation->year." ".$level." student at ".$greatesteducation->school.", ".$greatesteducation->program."</h3>";
+                      }
+                      else {
+                        if ($greatesteducation->level == "1") {
+                          $level = "High School Diploma.";
+                        }
+                        if ($greatesteducation->level == "2") {
+                          $level = "Associate of ".$row['Program'];
+                        }
+                        if ($greatesteducation->level == "3") {
+                          $level = "Bachelor of ".$row['Program'];
+                        }
+                        if ($greatesteducation->level == "4") {
+                          $level = "Master of ".$row['Program'];
+                        }
+                        if ($greatesteducation->level == "5") {
+                          $level = "PhD in ".$row['Program'];
+                        }
+                        echo "<h3>Graduated from ".$greatesteducation->school.", ".$level."</h3>";
+                      }
                     }
-                    if ($row['Level'] == "2" or $row['Level'] == "3") {
-                      $level = "undergraduate";
-                    }
-                    if ($row['Level'] == "4") {
-                      $level = "master's";
-                    }
-                    if ($row['Level'] == "5") {
-                      $level = "PhD";
-                    }
-                    if ($row['Year'] < 7) {
-                      echo "<h3>Year ".$row['Year']." ".$level." student at ".$row['School'].", ".$row['Program']."</h3>";
-                    }
-                    else {
+                    else if (!empty($greatesteducation->school) and !empty($greatesteducation->level) and !empty($greatesteducation->program)) {
                       if ($row['Level'] == "1") {
-                        $level = "High School Diploma.";
+                        $level = "High School";
                       }
-                      if ($row['Level'] == "2") {
-                        $level = "Associate of ".$row['Program'];
-                      }
-                      if ($row['Level'] == "3") {
-                        $level = "Bachelor of ".$row['Program'];
+                      if ($row['Level'] == "2" or $row['Level'] == "3") {
+                        $level = "Undergraduate";
                       }
                       if ($row['Level'] == "4") {
-                        $level = "Master of ".$row['Program'];
+                        $level = "Master's";
                       }
                       if ($row['Level'] == "5") {
-                        $level = "PhD in ".$row['Program'];
+                        $level = "PhD";
                       }
-                      echo "<h3>Graduated from ".$row['School'].", ".$level."</h3>";
+                      if ($row['Year'] < 7) {
+                        echo "<h3>".$level." student at ".$row['School'].", ".$row['Program']."</h3>";
+                      }
                     }
-                  }
-                  else if (!empty($row['School']) and !empty($row['Level']) and !empty($row['Program'])) {
-                    if ($row['Level'] == "1") {
-                      $level = "High School";
+                    else if (!empty($greatesteducation->school) and !empty($greatesteducation->program)) {
+                      echo "<h3>".$row['Program']." student at ".$row['School']."</h3>";
                     }
-                    if ($row['Level'] == "2" or $row['Level'] == "3") {
-                      $level = "Undergraduate";
+                    else if (!empty($greatesteducation->school)) {
+                      echo "<h3>Student at ".$row['School']."</h3>";
                     }
-                    if ($row['Level'] == "4") {
-                      $level = "Master's";
+                    else if (!empty($greatesteducation->program)) {
+                      echo "<h3>".$row['Program']." student</h3>";
                     }
-                    if ($row['Level'] == "5") {
-                      $level = "PhD";
-                    }
-                    if ($row['Year'] < 7) {
-                      echo "<h3>".$level." student at ".$row['School'].", ".$row['Program']."</h3>";
-                    }
-                  }
-                  else if (!empty($row['School']) and !empty($row['Program'])) {
-                    echo "<h3>".$row['Program']." student at ".$row['School']."</h3>";
-                  }
-                  else if (!empty($row['School'])) {
-                    echo "<h3>Student at ".$row['School']."</h3>";
-                  }
-                  else if (!empty($row['Program'])) {
-                    echo "<h3>".$row['Program']." student</h3>";
                   }
                    ?>
                 </div>
@@ -465,7 +507,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                   $objects = array("Experience1", "Experience2", "Experience3", "Experience4", "Experience5");
                   foreach ($objects as $value) {
                     if ($row[$value] != "NULL" and !empty($row[$value])) {
-                      if (unserialize($row[$value])->end == "1") {
+                      if (unserialize($row[$value])->end == "Present") {
                         echo "<div class = currentjob><h3>".unserialize($row[$value])->role." at ".unserialize($row[$value])->company."</h3></div>";
                       }
                     }
@@ -583,7 +625,10 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
               <tr></tr>
             </table>
             <script>
-              <?php for ($i = 1; $i <= ceil($numcard / 3); $i++) { ?>
+              <?php
+              //Warning: unreadable shit below!!!
+
+              for ($i = 1; $i <= ceil($numcard / 3); $i++) { ?>
                 console.log("loop");
                 $("#searchnav").find('tr').each(function() {
                   $(this).append("<td id = searchnav<?php echo $i; ?> name = <?php echo $i; ?> onclick = showpage(this)><?php echo $i; ?></td>");
@@ -594,8 +639,9 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                   currentpage[0].style.display = "block";
                   <?php for ($j = 1; $j < ceil($numcard / 3); $j++) { ?>
                     currentpage[<?php echo $j;?>].style.display = "none";
-
-              <?php } } } ?>
+            <?php }
+                } 
+              } ?>
               function showpage(elem) {
                 var table = document.getElementById("searchnav");
                 var currentpage = document.getElementsByClassName("usercardpage");
@@ -613,7 +659,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                 currentpage[Number(elem.getAttribute("name") - 1)].style.display = "block";
               }
             </script>
-          <?php } } ?>
+          <?php } ?>
         <!-- </div> -->
         </form>
       </div> <!--job posting form-->
