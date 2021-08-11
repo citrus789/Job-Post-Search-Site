@@ -78,8 +78,23 @@ if (isset($_POST['search'])) {
   function unpackObject($object) {
     if ($object === "NULL" or empty($object) or is_null($object)) {
       $obj = new stdClass();
-      $obj->skill = "Hello World";
+      $obj->skill = "skill";
       $obj->year = "0";
+      //echo $obj->skill;
+      $object = serialize($obj);
+      //return ($obj);
+    }
+    return unserialize($object);
+  }
+
+  function unpackEducationObject($object) {
+    if ($object === "NULL" or empty($object) or is_null($object)) {
+      $obj = new stdClass();
+      $obj->level = "0";
+      $obj->year = "0";
+      $obj->school = "NULL";
+      $obj->program = "NULL";
+      $obj->GPA = "0";
       //echo $obj->skill;
       $object = serialize($obj);
       //return ($obj);
@@ -97,6 +112,9 @@ if (isset($_POST['search'])) {
   $recprog2 = formatString($recprog1);
   $recprog3 = formatString($recprog1);
 
+  $education1 = unpackEducationObject($row['Education1']);
+  $education2 = unpackEducationObject($row['Education2']);
+  $education3 = unpackEducationObject($row['Education3']);
 
   $column = mysqli_query($conn, "SHOW COLUMNS FROM `score` LIKE '$email'");
   $exists = (mysqli_num_rows($column))?TRUE:FALSE;
@@ -117,16 +135,36 @@ if (isset($_POST['search'])) {
     else {
       $score += 3;
     }
-    if ($row['Level'] >= $reclevel) {
-      $score += 15;
-    }
-    if ($row['Year'] >= $recyear) {
+
+    if ($education1->level >= $reclevel) {
       $score += 10;
+      if ($education1->year >= $recyear) {
+        $score += 10;
+        if ($education1->gpa >= $recgpa) {
+          $score += 5;
+        }
+      }
     }
-    if (strictlyEqualAndNotNull($recprog1, formatString($row['Program'])) or strictlyEqualAndNotNull($recprog2, formatString($row['Program'])) or strictlyEqualAndNotNull($recprog3, formatString($row['Program']))) {
+    else if ($education2->level >= $reclevel) {
       $score += 10;
+      if ($education2->year >= $recyear) {
+        $score += 10;
+        if ($education2->gpa >= $recgpa) {
+          $score += 5;
+        }
+      }
     }
-    if ($row['GPA'] >= $recgpa) {
+    else if ($education3->level >= $reclevel) {
+      $score += 10;
+      if ($education3->year >= $recyear) {
+        $score += 10;
+        if ($education3->gpa >= $recgpa) {
+          $score += 5;
+        }
+      }
+    }
+
+    if (strictlyEqualAndNotNull($recprog1, formatString($education1->program)) or strictlyEqualAndNotNull($recprog2, formatString($education1->program)) or strictlyEqualAndNotNull($recprog1, formatString($education1->program)) or strictlyEqualAndNotNull($recprog1, formatString($education2->program)) or strictlyEqualAndNotNull($recprog2, formatString($education2->program)) or strictlyEqualAndNotNull($recprog1, formatString($education2->program)) or strictlyEqualAndNotNull($recprog1, formatString($education3->program)) or strictlyEqualAndNotNull($recprog2, formatString($education3->program)) or strictlyEqualAndNotNull($recprog1, formatString($education3->program))) {
       $score += 10;
     }
     $skill1 = unpackObject($row['Skill1']);
