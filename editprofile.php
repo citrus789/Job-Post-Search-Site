@@ -21,11 +21,14 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
       $country = $row['Country'];
       $region = $row['Region'];
       $city = $row['City'];
-      $level = $row['Level'];
-      $school = $row['School'];
-      $program = $row['Program'];
-      $year = $row['Year'];
-      $gpa = $row['GPA'];
+      if ($row['Education1'] != "NULL") {
+        $education1 = unserialize($row['Education1']);
+      }
+      // else {
+      //   $education1 = new stdClass();
+      //   $education1->year = "NULL";
+      //   $edcuation1->level = "NULL";
+      // }
       if ($row['Experience1'] != "NULL") {
         $experience1 = unserialize($row['Experience1']);
       }
@@ -56,7 +59,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
   <head>
     <meta charset = "UTF-8">
     <meta name = "description" content = "This is my first experimental website">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>First Website</title>
     <link rel = "stylesheet" href = "styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -81,8 +84,8 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
     </header>
     <div class = "bottomnav">
       <div class = "bottomnavcontents">
-        <div id = "editprofile" class = "active"><a class = "active" href="editprofile.php">Edit Profile</a></div>
-        <div id = "viewprofile"><a href="viewprofile.php">View Profile</a></div>
+        <a class = "active" href="editprofile.php"><div id = "editprofile" class = "active">Edit Profile</div></a>
+        <a href="viewprofile.php"><div id = "viewprofile">View Profile</div></a>
       </div class = "bottomnavcontents">
     </div>
 
@@ -94,163 +97,212 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
          var numexperience = 1;
          var numawards = 1;
          var numpositions = 1;
+         var numeducation = 1;
         </script>
         <h1 class = "editprofiletitle">Edit Profile</h1>
 
-          <h3 class = "basicinfotitle">Basic Information</h3>
+        <h3 class = "basicinfotitle">Basic Information</h3>
 
-          <div class = "profileimage">
-            <div class = "changeimage">
-              <div class = "showimage">
-                <img src="<?php echo $profilepic; ?>" height="200" width="200" border-radius="50%" background-color="white" class="imgthumbnail" />
-                <div class="overlay"></div>
-              </div>
-              <div class = "imagefile">
-                <label for="fileupload" class="customfileupload">
-                  <i class="fa fa-cloud-upload" class = "customfileupload"></i> Change Image
-                </label>
-                <input id="fileupload" type="file" name = "image"/>
-              </div>
+        <div class = "profileimage">
+          <div class = "changeimage">
+            <div class = "showimage">
+              <img src="<?php echo $profilepic; ?>" height="200" width="200" border-radius="50%" background-color="white" class="imgthumbnail" />
+              <div class="overlay"></div>
             </div>
-            <div class = "bio">
-              <textarea type = "text" id = "bio" name = "Bio" placeholder = "Write a short introduction about yourself in 200 characters maximum. What opportunities are you looking for?" maxlength = 200><?php print isset($bio) ? $bio : ''; ?></textarea>
+            <div class = "imagefile">
+              <label for="fileupload" class="customfileupload">
+                <i class="fa fa-cloud-upload" class = "customfileupload"></i> Change Image
+              </label>
+              <input id="fileupload" type="file" name = "image"/>
             </div>
-            <div class="clear"></div>
           </div>
-          <style type="text/css">
-            .clear{clear:both;}
-          </style>
-          <div class = "basicinfo">
-            <font size = "20">
+          <div class = "bio">
+            <textarea type = "text" id = "bio" name = "Bio" placeholder = "Write a short introduction about yourself in 200 characters maximum. What opportunities are you looking for?" maxlength = 200><?php print isset($bio) ? $bio : ''; ?></textarea>
+          </div>
+          <div class="clear"></div>
+        </div>
+        <style type="text/css">
+          .clear{clear:both;}
+        </style>
+        <div class = "basicinfo">
+          <font size = "20">
             <table>
               <font size = 15>
-              <tr>
-                <td>First Name: </td>
-                <td>
-                   <input type="text" class="firstname" name = 'FirstName' value="<?php print isset($firstname) ? $firstname : ''; ?>">
-                </td>
+                <tr>
+                  <td>First Name: </td>
+                  <td>
+                     <input type="text" class="firstname" name = 'FirstName' value="<?php print isset($firstname) ? $firstname : ''; ?>">
+                  </td>
 
-                <td>Last Name: </td>
-                <td>
-                   <input type="text" class="lastname" name = 'LastName' value="<?php print isset($lastname) ? $lastname : ''; ?>">
-                </td>
-              </tr>
+                  <td>Last Name: </td>
+                  <td>
+                     <input type="text" class="lastname" name = 'LastName' value="<?php print isset($lastname) ? $lastname : ''; ?>">
+                  </td>
+                </tr>
 
-              <tr>
-                <td>Phone Number: </td>
-                <td>
-                  <input type="text" class="phonenumber" name = 'Phone' placeholder="Phone Number" value="<?php print isset($phone) ? $phone : ''; ?>">
-                </td>
-                <td>Email: </td>
-                <td>
-                  <input type="text" class="email" name = 'Email' value="<?php print isset($email) ? $email : ''; ?>">
-                </td>
-              </tr>
+                <tr>
+                  <td>Phone Number: </td>
+                  <td>
+                    <input type="text" class="phonenumber" name = 'Phone' placeholder="Phone Number" value="<?php print isset($phone) ? $phone : ''; ?>">
+                  </td>
+                  <td>Email: </td>
+                  <td>
+                    <input type="text" class="email" name = 'Email' value="<?php print isset($email) ? $email : ''; ?>">
+                  </td>
+                </tr>
 
-              <tr>
-                <td>Country: </td>
-                <td>
-                  <input type="text" class="country" name = 'Country' placeholder="Country" value="<?php print isset($country) ? $country : ''; ?>">
-                </td>
-              </tr>
-              <tr>
-                <td>State/Region: </td>
-                <td>
-                  <input type="text" class="stateregion" name = 'Region' placeholder="State / Region" value="<?php print isset($region) ? $region : ''; ?>">
-                </td>
-              </tr>
-              <tr>
-                <td>City / Town: </td>
-                <td>
-                  <input type="text" class="citytown" name = 'City' placeholder="City / Town" value="<?php print isset($city) ? $city : ''; ?>">
-                </td>
-              </tr>
-              </font>
-            </table>
-          </font>
+                <tr>
+                  <td>Country: </td>
+                  <td>
+                    <input type="text" class="country" name = 'Country' placeholder="Country" value="<?php print isset($country) ? $country : ''; ?>">
+                  </td>
+                </tr>
+                <tr>
+                  <td>State/Region: </td>
+                  <td>
+                    <input type="text" class="stateregion" name = 'Region' placeholder="State / Region" value="<?php print isset($region) ? $region : ''; ?>">
+                  </td>
+                </tr>
+                <tr>
+                  <td>City / Town: </td>
+                  <td>
+                    <input type="text" class="citytown" name = 'City' placeholder="City / Town" value="<?php print isset($city) ? $city : ''; ?>">
+                  </td>
+                </tr>
+                </font>
+              </table>
+            </font>
           </div>
           <!--Education Section-->
           <h3 class = "educationtitle">Education</h3>
-          <table class = "edu">
-              <tr>
-                <td>
-                  <label for="lev">Education Level: </label>
-                </td>
-                <td>
-                  <?php
-                    if (is_null($level) or empty($level)) {
-                  ?>
-                  <select id="lev" name="Level">
-                    <option value="NULL">Select</option>
-                    <option value="1">High School</option>
-                    <option value="2">Associates</option>
-                    <option value="3">Bachelor's</option>
-                    <option value="4">Master's</option>
-                    <option value="5">Doctorate</option>
-                  </select>
-                  <?php } else {?>
-                  <select id="lev" name="Level">
-                    <option value="NULL"<?php if ($level== "NULL"): ?> selected="selected"<?php endif; ?>>Select</option>
-                    <option value="1"<?php if ($level== "1"): ?> selected="selected"<?php endif; ?>>High School</option>
-                    <option value="2"<?php if ($level== "2"): ?> selected="selected"<?php endif; ?>>Associates</option>
-                    <option value="3"<?php if ($level== "3"): ?> selected="selected"<?php endif; ?>>Bachelor's</option>
-                    <option value="4"<?php if ($level== "4"): ?> selected="selected"<?php endif; ?>>Master's</option>
-                    <option value="5"<?php if ($level== "5"): ?> selected="selected"<?php endif; ?>>Doctorate</option>
-                  </select>
-                  <?php } ?>
-                </td>
-              </tr>
-              <tr>
-                <td>School: </td>
-                <td>
-                  <input type="text" class="school" name = 'School' placeholder="School" value="<?php print isset($school) ? $school : ''; ?>"/>
-                </td>
-              </tr>
-              <tr>
-                <td>Program / Major: </td>
-                <td>
-                  <input type="text" class="program" name = 'Program' placeholder="Program / Major" value="<?php print isset($program) ? $program : ''; ?>"/>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <label for="yr">Current Year of Study: </label>
-                </td>
-                <td>
-                  <?php
-                    if ($year == 0) {
-                  ?>
-                  <select id="yr" name="Year">
-                    <option value="0">Select</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">Graduated</option>
-                  </select>
-                  <?php } else {?>
-                  <select id="yr" name="Year">
-                    <option value="0"<?php if ($year== "NULL"): ?> selected="selected"<?php endif; ?>>Select</option>
-                    <option value="1"<?php if ($year== "1"): ?> selected="selected"<?php endif; ?>>1</option>
-                    <option value="2"<?php if ($year== "2"): ?> selected="selected"<?php endif; ?>>2</option>
-                    <option value="3"<?php if ($year== "3"): ?> selected="selected"<?php endif; ?>>3</option>
-                    <option value="4"<?php if ($year== "4"): ?> selected="selected"<?php endif; ?>>4</option>
-                    <option value="5"<?php if ($year== "5"): ?> selected="selected"<?php endif; ?>>5</option>
-                    <option value="6"<?php if ($year== "6"): ?> selected="selected"<?php endif; ?>>6</option>
-                    <option value="7"<?php if ($year== "0"): ?> selected="selected"<?php endif; ?>>Graduated</option>
-                  </select>
-                  <?php } ?>
-                </td>
-              </tr>
-              <tr>
-                <td>GPA: </td>
-                <td>
-                  <input type="text" class="gpa" name = 'GPA' placeholder="GPA / 4.00" value="<?php print $gpa != 0 ? $gpa : ''; ?>">
-                </td>
-              </tr>
+          <table class = "edu" id = "education">
+            <tr>
+              <td>
+                <label for="lev">Education Level: </label>
+              </td>
+              <td>
+                <?php
+                  if (!isset($education1->level)) {
+                ?>
+                <select id="lev" name="Level[]">
+                  <option value="0">Select</option>
+                  <option value="1">High School</option>
+                  <option value="2">Associates</option>
+                  <option value="3">Bachelor's</option>
+                  <option value="4">Master's</option>
+                  <option value="5">Doctorate</option>
+                </select>
+                <?php } else {?>
+                <select id="lev" name="Level[]">
+                  <option value="0"<?php if ($education1->level== "0"): ?> selected="selected"<?php endif; ?>>Select</option>
+                  <option value="1"<?php if ($education1->level== "1"): ?> selected="selected"<?php endif; ?>>High School</option>
+                  <option value="2"<?php if ($education1->level== "2"): ?> selected="selected"<?php endif; ?>>Associates</option>
+                  <option value="3"<?php if ($education1->level== "3"): ?> selected="selected"<?php endif; ?>>Bachelor's</option>
+                  <option value="4"<?php if ($education1->level== "4"): ?> selected="selected"<?php endif; ?>>Master's</option>
+                  <option value="5"<?php if ($education1->level== "5"): ?> selected="selected"<?php endif; ?>>Doctorate</option>
+                </select>
+                <?php } ?>
+              </td>
+              <td>
+                <button type="button" class="button addeducation">Add Education</button>
+              </td>
+            </tr>
+            <tr>
+              <td>School: </td>
+              <td>
+                <input type="text" class="school" name = 'School[]' placeholder="School" value="<?php print isset($education1->school) ? $education1->school : ''; ?>"/>
+              </td>
+            </tr>
+            <tr>
+              <td>Program / Major: </td>
+              <td>
+                <input type="text" class="program" name = 'Program[]' placeholder="Program / Major" value="<?php print isset($education1->program) ? $education1->program : ''; ?>"/>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for="yr">Current Year of Study: </label>
+              </td>
+              <td>
+                <?php
+                  if (!isset($education1->year)) {
+                ?>
+                <select id="yr" name="Year[]">
+                  <option value="0">Select</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">Graduated</option>
+                </select>
+                <?php } else {?>
+                <select id="yr" name="Year[]">
+                  <option value="0"<?php if ($education1->year== "NULL"): ?> selected="selected"<?php endif; ?>>Select</option>
+                  <option value="1"<?php if ($education1->year== "1"): ?> selected="selected"<?php endif; ?>>1</option>
+                  <option value="2"<?php if ($education1->year== "2"): ?> selected="selected"<?php endif; ?>>2</option>
+                  <option value="3"<?php if ($education1->year== "3"): ?> selected="selected"<?php endif; ?>>3</option>
+                  <option value="4"<?php if ($education1->year== "4"): ?> selected="selected"<?php endif; ?>>4</option>
+                  <option value="5"<?php if ($education1->year== "5"): ?> selected="selected"<?php endif; ?>>5</option>
+                  <option value="6"<?php if ($education1->year== "6"): ?> selected="selected"<?php endif; ?>>6</option>
+                  <option value="7"<?php if ($education1->year== "0"): ?> selected="selected"<?php endif; ?>>Graduated</option>
+                </select>
+                <?php } ?>
+              </td>
+            </tr>
+            <tr>
+              <td>GPA: </td>
+              <td>
+                <input type="text" class="gpa" name = 'GPA[]' placeholder="GPA / 4.00" value="<?php print isset($education1->gpa) ? $education1->gpa : ''; ?>">
+              </td>
+            </tr>
+            <?php
+            $edu = $conn->query("SELECT Email, Education2, Education3 FROM user_login");
+            while($row = $edu -> fetch_array(MYSQLI_NUM)) {
 
+              if($row[0] == $email) {
+                for ($i = 1; $i < 3; $i++) {
+
+                  if (is_null($row[$i]) or empty($row[$i]) or $row[$i] == "NULL") {
+                    continue;
+                  }
+                  else { ?>
+                    <script>
+                    $("#education").append('<tr class="blank_row"><td bgcolor="azure" colspan="3">&nbsp;</tr>');
+                    $("#education").append('<tr class="blank_row"><td bgcolor="azure" colspan="3">&nbsp;</tr>');
+                    $("#education").append(`<tr><td><label for="lev">Education Level: </label><td><?php if (is_null(unserialize($row[$i])->level) or empty(unserialize($row[$i])->level)) {?><select id="lev" name="Level[]">  <option value="NULL">Select</option>  <option value="1">High School</option>  <option value="2">Associates</option> <option value="3">Bachelor's</option> <option value="4">Master's</option><option value="5">Doctorate</option></select><?php } else {?><select id="lev" name="Level[]"> <option value="0"<?php if (unserialize($row[$i])->level== "0"): ?> selected="selected"<?php endif; ?>>Select</option><option value="1"<?php if (unserialize($row[$i])->level== "1"): ?> selected="selected"<?php endif; ?>>High School</option><option value="2"<?php if (unserialize($row[$i])->level== "2"): ?> selected="selected"<?php endif; ?>>Associates</option><option value="3"<?php if (unserialize($row[$i])->level== "3"): ?> selected="selected"<?php endif; ?>>Bachelor's</option><option value="4"<?php if (unserialize($row[$i])->level== "4"): ?> selected="selected"<?php endif; ?>>Master's</option>  <option value="5"<?php if (unserialize($row[$i])->level== "5"): ?> selected="selected"<?php endif; ?>>Doctorate</option></select><?php } ?><td><input type = "button" value="Delete" onclick="deleteeducation()"></tr>`);
+                    $("#education").append('<tr><td>School: <td><input type="text" class="school" name = 'School[]' placeholder="School" value="<?php print isset(unserialize($row[$i])->school) ? unserialize($row[$i])->school : ''; ?>"/></tr>');
+                    $("#education").append('<tr><td>Program / Major: <td><input type="text" class="program" name = 'Program[]' placeholder="Program / Major" value="<?php print isset(unserialize($row[$i])->program) ? unserialize($row[$i])->program : ''; ?>"/></tr>');
+                    $("#education").append('<tr><td><label for="yr">Current Year of Study: </label><td>  <?php if (unserialize($row[$i])->year == "0") { ?> <select id="yr" name="Year[]"> <option value="0">Select</option> <option value="1">1</option> <option value="2">2</option> <option value="3">3</option> <option value="4">4</option> <option value="5">5</option> <option value="6">6</option> <option value="7">Graduated</option> </select> <?php } else {?> <select id="yr" name="Year[]"> <option value="0"<?php if (unserialize($row[$i])->year== "NULL"): ?> selected="selected"<?php endif; ?>>Select</option> <option value="1"<?php if (unserialize($row[$i])->year== "1"): ?> selected="selected"<?php endif; ?>>1</option> <option value="2"<?php if (unserialize($row[$i])->year== "2"): ?> selected="selected"<?php endif; ?>>2</option> <option value="3"<?php if (unserialize($row[$i])->year== "3"): ?> selected="selected"<?php endif; ?>>3</option><option value="4"<?php if (unserialize($row[$i])->year== "4"): ?> selected="selected"<?php endif; ?>>4</option> <option value="5"<?php if (unserialize($row[$i])->year== "5"): ?> selected="selected"<?php endif; ?>>5</option> <option value="6"<?php if (unserialize($row[$i])->year== "6"): ?> selected="selected"<?php endif; ?>>6</option><option value="7"<?php if (unserialize($row[$i])->year== "0"): ?> selected="selected"<?php endif; ?>>Graduated</option></select><?php } ?></tr>');
+                    $("#education").append('<tr><td>GPA: <td>  <input type="text" class="gpa" name = "GPA[]" placeholder="GPA / 4.00" value="<?php print unserialize($row[$i])->gpa != 0 ? unserialize($row[$i])->gpa : ''; ?>"></tr>');
+                    numeducation++;
+                </script>
+            <?php }
+                }
+              }
+            }
+            ?>
+            <script>
+            $('.addeducation').click(function() {
+              if (numeducation < 3) {
+                $("#education").append('<tr class="blank_row"><td bgcolor="azure" colspan="3">&nbsp;</tr>');
+                $("#education").append('<tr class="blank_row"><td bgcolor="azure" colspan="3">&nbsp;</tr>');
+                $("#education").append(`<tr><td><label for="lev">Education Level: </label> <td><select id="lev" name="Level[]">  <option value="0">Select</option>  <option value="1">High School</option>  <option value="2">Associates</option>  <option value="3">Bachelor's</option>  <option value="4">Master's</option>  <option value="5">Doctorate</option></select><td> <input type = "button" value="Delete" onclick="deleteeducation()"></tr>`);
+                $("#education").append('<tr><td>School: <td> <input type="text" class="school" name = "School[]" placeholder="School"/></tr>');
+                $("#education").append('<tr><td>Program / Major: <td> <input type="text" class="program" name = "Program[]" placeholder="Program / Major"/></tr>');
+                $("#education").append('<tr><td>  <label for="yr">Current Year of Study: </label> <td><select id="yr" name="Year[]"> <option value="0">Select</option>  <option value="1">1</option>  <option value="2">2</option>  <option value="3">3</option>  <option value="4">4</option>  <option value="5">5</option>  <option value="6">6</option>  <option value="7">Graduated</option> </select></tr>');
+                $("#education").append('<tr><td>GPA: <td>  <input type="text" class="gpa" name = "GPA[]" placeholder="GPA / 4.00"></tr>');
+                numeducation++;
+              }
+           });
+           function deleteeducation() {
+             for (let i = 0; i < 7; i++) {
+               document.getElementById("education").deleteRow((numeducation - 1) * 7 - 2);
+             }
+             numeducation--;
+           }
+            </script>
           </table>
 
           <!--Skill Section-->
@@ -268,7 +320,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                 <input type="number" class="skill" name = "YearsExp[]" value = "<?php print isset($skill1->year) ? $skill1->year : ''; ?>"placeholder="Years of Experience" max="100" min = "0"/>
               </td>
               <td>
-                <button type="button" class="button addskill">New Skill</button>
+                <button type="button" class="button addskill">Add Skill</button>
               </td>
             </tr>
             <?php
@@ -284,10 +336,10 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                     $("#skills").append('<tr><td><input type="text" class="skill" name = "Skill[]" value = "<?php print isset(unserialize($row[$i])->skill) ? unserialize($row[$i])->skill : ''; ?>" placeholder="Skill"/><td><input type="number" class="skill" name = "YearsExp[]" value = "<?php print isset(unserialize($row[$i])->year) ? unserialize($row[$i])->year : ''; ?>"placeholder="Years of Experience" max="100" min = "0"/><td><input type = "button" value="Delete" onclick="deleteskill()"></tr>');
                     numskills++;
                 </script>
-        <?php }
+            <?php }
+                }
+              }
             }
-          }
-        }
             ?>
             <script>
               $('.addskill').click(function() {
@@ -317,12 +369,12 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                 <input type="text" class="company" name = 'Company[]' value = "<?php print isset($experience1->company) ? $experience1->company : ''; ?>" placeholder="Company"/>
               </td>
               <td>
-                <button type="button" class="button addexperience">New Experience</button>
+                <button type="button" class="button addexperience">Add Experience</button>
               </td>
             </tr>
             <tr>
               <td>I currently work here</td>
-              <td><input type="checkbox" name = "Current[]" class = "currentcheckbox" value = "1" <?php print (isset($experience1->end) and ($experience1->end == "1")) ? "checked" : ''; ?>></td>
+              <td><input type="checkbox" name = "Current[]" class = "currentcheckbox" value = "Present" <?php print (isset($experience1->end) and ($experience1->end == "Present")) ? "checked" : ''; ?>></td>
             </tr>
             <tr>
               <td>Start Date:</td>
@@ -353,15 +405,15 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                     $("#experience").append('<tr class="blank_row"><td bgcolor="azure" colspan="3">&nbsp;</tr>');
                     $("#experience").append('<tr class="blank_row"><td bgcolor="azure" colspan="3">&nbsp;</tr>');
                     $("#experience").append('<tr><td><input type="text" class="role" name = "Role[]" value = "<?php print isset(unserialize($row[$i])->role) ? unserialize($row[$i])->role : ''; ?>" placeholder="Role"/><td><input type="text" class="company" name = "Company[]" value = "<?php print isset(unserialize($row[$i])->company) ? unserialize($row[$i])->company : ''; ?>"placeholder="Company"/><td><input type = "button" value="Delete" onclick="deleteexperience()"></tr>');
-                    $("#experience").append('<tr><td>I currently work here<td><input type="checkbox" name="Current[]" class = "currentcheckbox" value = "1" <?php print (isset(unserialize($row[$i])->end) and unserialize($row[$i])->end == "1") ? "checked" : ''; ?>></tr>');
+                    $("#experience").append('<tr><td>I currently work here<td><input type="checkbox" name="Current[]" class = "currentcheckbox" value = "Present" <?php print (isset(unserialize($row[$i])->end) and unserialize($row[$i])->end == "Present") ? "checked" : ''; ?>></tr>');
                     $("#experience").append('<tr><td>Start Date<td><input type="date" class="start" name = "StartDate[]" value = "<?php print isset(unserialize($row[$i])->start) ? unserialize($row[$i])->start : ''; ?>" placeholder="Start Date"/></tr>');
                     $("#experience").append('<tr id="enddaterow[]"><td>End Date<td><input type="date" class="end" name = "EndDate[]" value = "<?php print (isset(unserialize($row[$i])->end) and unserialize($row[$i])->end != "1") ? unserialize($row[$i])->end : ''; ?>" placeholder="End Date"/>');
                     numexperience++;
                 </script>
-        <?php }
+            <?php }
+                }
+              }
             }
-          }
-        }
             ?>
             <script>
             $('.addexperience').click(function() {
@@ -369,7 +421,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                 $("#experience").append('<tr class="blank_row"><td bgcolor="azure" colspan="3">&nbsp;</tr>');
                 $("#experience").append('<tr class="blank_row"><td bgcolor="azure" colspan="3">&nbsp;</tr>');
                 $("#experience").append('<tr><td><input type="text" class="role" name = "Role[]" placeholder="Role"/> <td><input type="text" class="company" name = "Company[]" placeholder="Company"/><td><input type = "button" value="Delete" onclick="deleteexperience()"></tr>');
-                $("#experience").append('<tr><td>I currently work here<td><input type="checkbox" name="Current[]" class = "currentcheckbox" value = "1"></tr>');
+                $("#experience").append('<tr><td>I currently work here<td><input type="checkbox" name="Current[]" class = "currentcheckbox" value = "Present"></tr>');
                 $("#experience").append('<tr><td>Start Date <td><input type="date" class="start" name = "StartDate[]" placeholder="Start Date"/></tr>');
                 $("#experience").append('<tr id="enddaterow[]"><td>End Date <td><input type="date" class="end" name = "EndDate[]" placeholder="End Date"/></tr>');
                 numexperience++;
@@ -507,7 +559,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
           <table class = "remoteornah">
             <tr>
               <td>Remote or In-Person?</td>
-                <td>
+              <td>
                 <?php
                 if (is_null($remote)) {
               ?>
@@ -532,7 +584,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
           </table>
           <!--Save Profile-->
           <div style="text-align:center">
-              <input id = "saveprofile" type="submit" value="Save Profile" name="saveprofile" onclick="submitted()">
+            <input id = "saveprofile" type="submit" value="Save Profile" name="saveprofile" onclick="submitted()">
           </div>
         </div>
       </form>
