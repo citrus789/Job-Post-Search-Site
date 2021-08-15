@@ -185,7 +185,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                   if (!isset($education1->level)) {
                 ?>
                 <select id="lev" name="Level[]">
-                  <option value="0">Select</option>
+                  <option value="" disabled selected>Select</option>
                   <option value="1">High School</option>
                   <option value="2">Associates</option>
                   <option value="3">Bachelor's</option>
@@ -194,7 +194,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                 </select>
                 <?php } else {?>
                 <select id="lev" name="Level[]">
-                  <option value="0"<?php if ($education1->level== "0"): ?> selected="selected"<?php endif; ?>>Select</option>
+                  <option value=""<?php if ($education1->level== ""): ?> selected="selected"<?php endif; ?>>Select</option>
                   <option value="1"<?php if ($education1->level== "1"): ?> selected="selected"<?php endif; ?>>High School</option>
                   <option value="2"<?php if ($education1->level== "2"): ?> selected="selected"<?php endif; ?>>Associates</option>
                   <option value="3"<?php if ($education1->level== "3"): ?> selected="selected"<?php endif; ?>>Bachelor's</option>
@@ -227,8 +227,8 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                 <?php
                   if (!isset($education1->year)) {
                 ?>
-                <select id="yr" name="Year[]">
-                  <option value="0">Select</option>
+                <select id="yr" name="Year[]" required>
+                  <option value="">Select</option>
                   <option value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option>
@@ -239,14 +239,14 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                 </select>
                 <?php } else {?>
                 <select id="yr" name="Year[]">
-                  <option value="0"<?php if ($education1->year== "NULL"): ?> selected="selected"<?php endif; ?>>Select</option>
+                  <option value=""<?php if ($education1->year== ""): ?> selected="selected"<?php endif; ?>>Select</option>
                   <option value="1"<?php if ($education1->year== "1"): ?> selected="selected"<?php endif; ?>>1</option>
                   <option value="2"<?php if ($education1->year== "2"): ?> selected="selected"<?php endif; ?>>2</option>
                   <option value="3"<?php if ($education1->year== "3"): ?> selected="selected"<?php endif; ?>>3</option>
                   <option value="4"<?php if ($education1->year== "4"): ?> selected="selected"<?php endif; ?>>4</option>
                   <option value="5"<?php if ($education1->year== "5"): ?> selected="selected"<?php endif; ?>>5</option>
                   <option value="6"<?php if ($education1->year== "6"): ?> selected="selected"<?php endif; ?>>6</option>
-                  <option value="7"<?php if ($education1->year== "0"): ?> selected="selected"<?php endif; ?>>Graduated</option>
+                  <option value="7"<?php if ($education1->year== "7"): ?> selected="selected"<?php endif; ?>>Graduated</option>
                 </select>
                 <?php } ?>
               </td>
@@ -256,6 +256,9 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
               <td>
                 <input type="text" class="gpa" name = 'GPA[]' placeholder="GPA / 4.00" value="<?php print isset($education1->gpa) ? $education1->gpa : ''; ?>">
               </td>
+            </tr>
+            <tr>
+              <td colspan = 2 rowspan = 2><textarea type = "text" name = "EducationDescription[]" id = "edudesc" placeholder = "Description" maxlength = 200><?php print isset($education1->description) ? $education1->description : ''; ?></textarea></td>
             </tr>
             <?php
             $edu = $conn->query("SELECT Email, Education2, Education3 FROM user_login");
@@ -272,10 +275,11 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                     $("#education").append('<tr class="blank_row"><td bgcolor="azure" colspan="3">&nbsp;</tr>');
                     $("#education").append('<tr class="blank_row"><td bgcolor="azure" colspan="3">&nbsp;</tr>');
                     $("#education").append(`<tr><td><label for="lev">Education Level: </label><td><?php if (is_null(unserialize($row[$i])->level) or empty(unserialize($row[$i])->level)) {?><select id="lev" name="Level[]">  <option value="NULL">Select</option>  <option value="1">High School</option>  <option value="2">Associates</option> <option value="3">Bachelor's</option> <option value="4">Master's</option><option value="5">Doctorate</option></select><?php } else {?><select id="lev" name="Level[]"> <option value="0"<?php if (unserialize($row[$i])->level== "0"): ?> selected="selected"<?php endif; ?>>Select</option><option value="1"<?php if (unserialize($row[$i])->level== "1"): ?> selected="selected"<?php endif; ?>>High School</option><option value="2"<?php if (unserialize($row[$i])->level== "2"): ?> selected="selected"<?php endif; ?>>Associates</option><option value="3"<?php if (unserialize($row[$i])->level== "3"): ?> selected="selected"<?php endif; ?>>Bachelor's</option><option value="4"<?php if (unserialize($row[$i])->level== "4"): ?> selected="selected"<?php endif; ?>>Master's</option>  <option value="5"<?php if (unserialize($row[$i])->level== "5"): ?> selected="selected"<?php endif; ?>>Doctorate</option></select><?php } ?><td><input type = "button" value="Delete" onclick="deleteeducation()"></tr>`);
-                    $("#education").append('<tr><td>School: <td><input type="text" class="school" name = 'School[]' placeholder="School" value="<?php print isset(unserialize($row[$i])->school) ? unserialize($row[$i])->school : ''; ?>"/></tr>');
-                    $("#education").append('<tr><td>Program / Major: <td><input type="text" class="program" name = 'Program[]' placeholder="Program / Major" value="<?php print isset(unserialize($row[$i])->program) ? unserialize($row[$i])->program : ''; ?>"/></tr>');
-                    $("#education").append('<tr><td><label for="yr">Current Year of Study: </label><td>  <?php if (unserialize($row[$i])->year == "0") { ?> <select id="yr" name="Year[]"> <option value="0">Select</option> <option value="1">1</option> <option value="2">2</option> <option value="3">3</option> <option value="4">4</option> <option value="5">5</option> <option value="6">6</option> <option value="7">Graduated</option> </select> <?php } else {?> <select id="yr" name="Year[]"> <option value="0"<?php if (unserialize($row[$i])->year== "NULL"): ?> selected="selected"<?php endif; ?>>Select</option> <option value="1"<?php if (unserialize($row[$i])->year== "1"): ?> selected="selected"<?php endif; ?>>1</option> <option value="2"<?php if (unserialize($row[$i])->year== "2"): ?> selected="selected"<?php endif; ?>>2</option> <option value="3"<?php if (unserialize($row[$i])->year== "3"): ?> selected="selected"<?php endif; ?>>3</option><option value="4"<?php if (unserialize($row[$i])->year== "4"): ?> selected="selected"<?php endif; ?>>4</option> <option value="5"<?php if (unserialize($row[$i])->year== "5"): ?> selected="selected"<?php endif; ?>>5</option> <option value="6"<?php if (unserialize($row[$i])->year== "6"): ?> selected="selected"<?php endif; ?>>6</option><option value="7"<?php if (unserialize($row[$i])->year== "0"): ?> selected="selected"<?php endif; ?>>Graduated</option></select><?php } ?></tr>');
+                    $("#education").append('<tr><td>School: <td><input type="text" class="school" name = "School[]" placeholder="School" value="<?php print isset(unserialize($row[$i])->school) ? unserialize($row[$i])->school : ''; ?>"/></tr>');
+                    $("#education").append('<tr><td>Program / Major: <td><input type="text" class="program" name = "Program[]" placeholder="Program / Major" value="<?php print isset(unserialize($row[$i])->program) ? unserialize($row[$i])->program : ''; ?>"/></tr>');
+                    $("#education").append('<tr><td><label for="yr">Current Year of Study: </label><td>  <?php if (unserialize($row[$i])->year == "0") { ?> <select id="yr" name="Year[]"> <option value="0">Select</option> <option value="1">1</option> <option value="2">2</option> <option value="3">3</option> <option value="4">4</option> <option value="5">5</option> <option value="6">6</option> <option value="7">Graduated</option> </select> <?php } else {?> <select id="yr" name="Year[]"> <option value="0"<?php if (unserialize($row[$i])->year== "NULL"): ?> selected="selected"<?php endif; ?>>Select</option> <option value="1"<?php if (unserialize($row[$i])->year== "1"): ?> selected="selected"<?php endif; ?>>1</option> <option value="2"<?php if (unserialize($row[$i])->year== "2"): ?> selected="selected"<?php endif; ?>>2</option> <option value="3"<?php if (unserialize($row[$i])->year== "3"): ?> selected="selected"<?php endif; ?>>3</option><option value="4"<?php if (unserialize($row[$i])->year== "4"): ?> selected="selected"<?php endif; ?>>4</option> <option value="5"<?php if (unserialize($row[$i])->year== "5"): ?> selected="selected"<?php endif; ?>>5</option> <option value="6"<?php if (unserialize($row[$i])->year== "6"): ?> selected="selected"<?php endif; ?>>6</option><option value="7"<?php if (unserialize($row[$i])->year== "7"): ?> selected="selected"<?php endif; ?>>Graduated</option></select><?php } ?></tr>');
                     $("#education").append('<tr><td>GPA: <td>  <input type="text" class="gpa" name = "GPA[]" placeholder="GPA / 4.00" value="<?php print unserialize($row[$i])->gpa != 0 ? unserialize($row[$i])->gpa : ''; ?>"></tr>');
+                    $("#education").append('<tr><td colspan = 2 rowspan = 2><textarea type = "text" id = "edudesc" name = "EducationDescription[]" placeholder = "Description" maxlength = 200><?php print isset(unserialize($row[$i])->description) ? unserialize($row[$i])->description : ''; ?></textarea></td></tr>');
                     numeducation++;
                 </script>
             <?php }
@@ -288,17 +292,18 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
               if (numeducation < 3) {
                 $("#education").append('<tr class="blank_row"><td bgcolor="azure" colspan="3">&nbsp;</tr>');
                 $("#education").append('<tr class="blank_row"><td bgcolor="azure" colspan="3">&nbsp;</tr>');
-                $("#education").append(`<tr><td><label for="lev">Education Level: </label> <td><select id="lev" name="Level[]">  <option value="0">Select</option>  <option value="1">High School</option>  <option value="2">Associates</option>  <option value="3">Bachelor's</option>  <option value="4">Master's</option>  <option value="5">Doctorate</option></select><td> <input type = "button" value="Delete" onclick="deleteeducation()"></tr>`);
-                $("#education").append('<tr><td>School: <td> <input type="text" class="school" name = "School[]" placeholder="School"/></tr>');
-                $("#education").append('<tr><td>Program / Major: <td> <input type="text" class="program" name = "Program[]" placeholder="Program / Major"/></tr>');
-                $("#education").append('<tr><td>  <label for="yr">Current Year of Study: </label> <td><select id="yr" name="Year[]"> <option value="0">Select</option>  <option value="1">1</option>  <option value="2">2</option>  <option value="3">3</option>  <option value="4">4</option>  <option value="5">5</option>  <option value="6">6</option>  <option value="7">Graduated</option> </select></tr>');
+                $("#education").append(`<tr><td><label for="lev">Education Level: </label> <td><select id="lev" name="Level[]" required>  <option value="" disabled selected>Select</option>  <option value="1">High School</option>  <option value="2">Associates</option>  <option value="3">Bachelor's</option>  <option value="4">Master's</option>  <option value="5">Doctorate</option></select><td> <input type = "button" value="Delete" onclick="deleteeducation()"></tr>`);
+                $("#education").append('<tr><td>School: <td> <input type="text" class="school" name = "School[]" placeholder="School" required/></tr>');
+                $("#education").append('<tr><td>Program / Major: <td> <input type="text" class="program" name = "Program[]" placeholder="Program / Major" required/></tr>');
+                $("#education").append('<tr><td>  <label for="yr">Current Year of Study: </label> <td><select id="yr" name="Year[]" required> <option value="" disabled selected>Select</option> <option value="1">1</option>  <option value="2">2</option>  <option value="3">3</option>  <option value="4">4</option>  <option value="5">5</option>  <option value="6">6</option>  <option value="7">Graduated</option> </select></tr>');
                 $("#education").append('<tr><td>GPA: <td>  <input type="text" class="gpa" name = "GPA[]" placeholder="GPA / 4.00"></tr>');
+                $("#education").append('<tr> <td colspan = 2 rowspan = 2><textarea type = "text" id = "edudesc" name = "EducationDescription[]" placeholder = "Description" maxlength = 200></textarea></td></tr>');
                 numeducation++;
               }
            });
            function deleteeducation() {
-             for (let i = 0; i < 7; i++) {
-               document.getElementById("education").deleteRow((numeducation - 1) * 7 - 2);
+             for (let i = 0; i < 8; i++) {
+               document.getElementById("education").deleteRow((numeducation - 1) * 8 - 2);
              }
              numeducation--;
            }
@@ -388,6 +393,9 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                 <input type="date" name = 'EndDate[]' value = "<?php print isset($experience1->end) ? $experience1->end : ''; ?>" placeholder="End Date"/>
               </td>
             </tr>
+            <tr>
+              <td colspan = 2 rowspan = 2><textarea type = "text" name = "ExperienceDescription[]" id = "expdesc" placeholder = "Description" maxlength = 200><?php print isset($experience1->description) ? $experience1->description : ''; ?></textarea></td>
+            </tr>
             <?php
 
               #Role1, Company1, Start1, End1, Role2, Company2, Start2, End2, Role3, Company3, Start3, End3,
@@ -408,6 +416,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                     $("#experience").append('<tr><td>I currently work here<td><input type="checkbox" name="Current[]" class = "currentcheckbox" value = "Present" <?php print (isset(unserialize($row[$i])->end) and unserialize($row[$i])->end == "Present") ? "checked" : ''; ?>></tr>');
                     $("#experience").append('<tr><td>Start Date<td><input type="date" class="start" name = "StartDate[]" value = "<?php print isset(unserialize($row[$i])->start) ? unserialize($row[$i])->start : ''; ?>" placeholder="Start Date"/></tr>');
                     $("#experience").append('<tr id="enddaterow[]"><td>End Date<td><input type="date" class="end" name = "EndDate[]" value = "<?php print (isset(unserialize($row[$i])->end) and unserialize($row[$i])->end != "1") ? unserialize($row[$i])->end : ''; ?>" placeholder="End Date"/>');
+                    $("#experience").append('<tr><td colspan = 2 rowspan = 2><textarea type = "text" name = "ExperienceDescription[]" id = "expdesc" placeholder = "Description" maxlength = 200><?php print isset(unserialize($row[$i])->description) ? unserialize($row[$i])->description : ''; ?></textarea></td></tr>');
                     numexperience++;
                 </script>
             <?php }
@@ -424,12 +433,13 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                 $("#experience").append('<tr><td>I currently work here<td><input type="checkbox" name="Current[]" class = "currentcheckbox" value = "Present"></tr>');
                 $("#experience").append('<tr><td>Start Date <td><input type="date" class="start" name = "StartDate[]" placeholder="Start Date"/></tr>');
                 $("#experience").append('<tr id="enddaterow[]"><td>End Date <td><input type="date" class="end" name = "EndDate[]" placeholder="End Date"/></tr>');
+                $("#experience").append('<tr><td colspan = 2 rowspan = 2><textarea type = "text" name = "ExperienceDescription[]" id = "expdesc" placeholder = "Description" maxlength = 200></textarea></td></tr>');
                 numexperience++;
               }
              });
              function deleteexperience() {
-               for (let i = 0; i < 6; i++) {
-                 document.getElementById("experience").deleteRow((numexperience - 1) * 6 - 2);
+               for (let i = 0; i < 7; i++) {
+                 document.getElementById("experience").deleteRow((numexperience - 1) * 7 - 2);
                }
                numexperience--;
              }
@@ -523,8 +533,8 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
             </tr>
 
             <?php
-            $pstn = $conn->query("SELECT Position2, Position3, Type2, Type3 FROM user_login");
-            while($row = $skll -> fetch_array(MYSQLI_NUM)) {
+            $pstn = $conn->query("SELECT Email, Position2, Position3, Type2, Type3 FROM user_login");
+            while($row = $pstn -> fetch_array(MYSQLI_NUM)) {
               if($row[0] == $email) {
                 for ($i = 1; $i < 3; $i++) {
                   if (empty($row[$i]) and empty($row[$i + 2])) {
