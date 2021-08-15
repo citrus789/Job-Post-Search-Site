@@ -3,12 +3,13 @@ session_start();
 if (isset($_POST['sendmessage'])) {
   $email = $_SESSION['Email'];
   $sendposition = $_POST['positionrole'];
-  $sendcompany = $_POST['positioncompany'];
+  $sendcompany = $_POST['companyinfo'];
+  $sendtype = $_POST['positiontype'];
   $sendmessage = $_POST['writemessage'];
   $salstart = $_POST['salarystart'];
   $salend = $_POST['salaryend'];
   $currency = $_POST['currency'];
-
+  $wage = $_POST['hourlywage'];
 
   $host = "localhost";
   $dbUsername = "root";
@@ -23,13 +24,13 @@ if (isset($_POST['sendmessage'])) {
   if ($select = $conn->query($postinginfo)) {
     if ($row = $select -> fetch_array(MYSQLI_ASSOC)) {
       if (!is_null($row['Remote'])) {
-        if ($row['Remote'] == '0') {
+        if ($row['Remote'] == '1') {
           $remoteornah = "Remote";
           $jobcity = NULL;
           $jobregion = NULL;
           $jobcountry = NULL;
         }
-        if ($row['Remote'] == '1') {
+        if ($row['Remote'] == '2') {
           $remoteornah = "Temporarily Remote";
           if (!is_null($row['City']) and !is_null($row['Region']) and !is_null($row['Country'])) {
             $jobcity = $row['City'];
@@ -47,14 +48,14 @@ if (isset($_POST['sendmessage'])) {
             $jobcountry = NULL;
           }
         }
-        if ($row['Remote'] == '2') {
+        if ($row['Remote'] == '3') {
           $remoteornah = "In Person";
           if (!is_null($row['City']) and !is_null($row['Region']) and !is_null($row['Country'])) {
             $jobcity = $row['City'];
             $jobregion = $row['Region'];
             $jobcountry = $row['Country'];
           }
-          if (!is_null($row['City']) and !is_null($row['Country'])) {
+          else if (!is_null($row['City']) and !is_null($row['Country'])) {
             $jobcity = $row['City'];
             $jobregion = NULL;
             $jobcountry = $row['Country'];
@@ -77,8 +78,10 @@ if (isset($_POST['sendmessage'])) {
   $savemessage->message = $sendmessage;
   $savemessage->salarystart = $salstart;
   $savemessage->salaryend = $salend;
+  $savemessage->wage = $wage;
   $savemessage->currency = $currency;
   $savemessage->remote = $remoteornah;
+  $savemessage->type = $sendtype;
   if ($remoteornah = "In Person") {
     $savemessage->city = $jobcity;
     $savemessage->region = $jobregion;
@@ -91,16 +94,50 @@ if (isset($_POST['sendmessage'])) {
   }
   $messageobject = serialize($savemessage);
   $updated = False;
-
-  $update = "UPDATE position SET SentMessage = '$messageobject' WHERE Email = '$email'";
-  if ($conn->query($update)) {
-    $updated = True;
+  $select = "SELECT * FROM sent_postings WHERE Email = '$email'";
+  $exists = $conn->query($select);
+  if ($exists->num_rows == 0) {
+    $insert = $conn->prepare("INSERT INTO sent_postings (email) VALUES (?)");
+    $insert->bind_param("s", $email);
+    if ($insert->execute()) {
+      echo "Email added";
+    }
   }
-  if (!empty($_POST['send'])) {
-    $checked = $_POST['send'];
+  $postings = $conn->query("SELECT Posting1, Posting2, Posting3, Posting4, Posting5, Posting6, Posting7 FROM sent_postings WHERE Email = '$email'");
+  $row = $postings -> fetch_array(MYSQLI_NUM);
+  $postingerror = "True";
+
+  function formatString($var) {
+    return (strtolower(preg_replace('/\s+/', '', $var)));
+  }
+
+  for ($i = 1; $i <= 7; $i++) {
+    $column = "Posting".$i;
+    if ($row[$i] != "NULL") {
+      if (formatString(unserialize($row[$i])->position) == formatString($sendposition) and formatString(unserialize($row[$i])->company) == formatString($sendcompany)) {
+        $conn->query("UPDATE sent_postings SET `$column` = '$messageobject' WHERE Email = '$email'");
+        $postingerror = "False";
+        break;
+      }
+    }
+
+    if (empty($row[$i - 1]) or is_null($row[$i - 1]) or $row[$i - 1] == "NULL") {
+      $conn->query("UPDATE sent_postings SET `$column` = '$messageobject' WHERE Email = '$email'");
+      $postingerror = "False";
+      break;
+    }
+    else {
+      $postingerror = "True";
+    }
+  }
+  if ($postingerror == "False") {
+    $updated = True;
+    if (!empty($_POST['send'])) {
+      $checked = $_POST['send'];
+    }
   }
   else {
-    header("Location: searchresults.php?senderror=No Users Selected");
+    header("Location: searchresults.php?senderror=Posting Limit Reached");
     exit();
   }
   // echo $checked[0];
@@ -161,4 +198,5 @@ if (isset($_POST['sendmessage'])) {
   }
 }
 $conn->close();
+$insert->close();
 ?>
