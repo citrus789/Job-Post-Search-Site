@@ -210,6 +210,10 @@ li, a, .homebutton, .logoutbutton {
 }
 .viewprofilecontents {
   margin-top: 20px;
+  background-color: white;
+  border-radius: 14px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  max-width: 900px;
 }
 table {
   font-size: 1.3rem;
@@ -229,6 +233,10 @@ input[type=text], input[type=date], select, input[type=password], input[type=ema
   font-size: 20px;
   font-family: 'Yanone Kaffeesatz', sans-serif;
   transition-duration: 0.4s;
+
+}
+button {
+  min-width: 110px;
 }
 #linklogin {
   border-radius: 7px;
@@ -257,7 +265,7 @@ input[type=number] {
   transition-duration: 0.4s;
 }
 input[type="file"] {
-    display: none;
+  display: none;
 }
 .currentcheckbox, .sendcheckbox {
   border-radius: 7px;
@@ -403,10 +411,19 @@ a.button, a.button:link {
   margin-bottom: 30px;
   margin-left: 10px;
   flex-grow: 7;
-
 }
 
-@media (min-width: 550px) {
+#edudesc, #expdesc {
+  border-radius: 7px;
+  border: 2px solid darkblue;
+  font-size: 20px;
+  font-family: 'Yanone Kaffeesatz';
+  height: 150px;
+  margin-top: 10px;
+  overflow: scroll;
+}
+
+@media (min-width: 700px) {
   .bio {
     margin-left: 10px;
     width: 100%;
@@ -419,9 +436,12 @@ a.button, a.button:link {
   #bio {
     min-width: 200px;
   }
+  #edudesc, #expdesc {
+    width: 450px;
+  }
 }
 
-@media (max-width: 550px) {
+@media (max-width: 700px) {
   .bio {
     margin-right: 10px;
     width: 100%;
@@ -436,6 +456,9 @@ a.button, a.button:link {
   }
   .form {
     width: 90%;
+  }
+  #edudesc, #expdesc {
+    width: 100%;
   }
 }
 
@@ -474,8 +497,12 @@ a.button, a.button:link {
   float: left;
   min-height: 250px;
   height: auto;
-  width: 100%;
+  width: 90%;
   display: flex;
+  padding-top: 3%;
+  padding-left: 3%;
+  padding-right: 3%;
+
 }
 .viewimage {
   padding: 15px;
@@ -487,25 +514,35 @@ a.button, a.button:link {
   overflow: hidden;
   margin-right: 10px;
   min-width: 250px;
+
 }
-@media (max-width: 630px) {
+
+@media (max-width: 900px) {
   .viewbasicinfocontents {
     display: inline-block;
     overflow: hidden;
     min-width: 250px;
+    margin: 0 auto;
   }
   .viewprofilecontents {
-    width: 100%;
+    width: 90%;
   }
   .viewbasicinfo {
     display: inline-block;
     justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
     margin: 0 auto;
   }
   .viewimage {
-    display: inline-block;
-
+    margin-bottom: 10px;
   }
+  .viewbio {
+    float: left;
+  }
+
 }
 .viewname {
   float: left;
@@ -517,7 +554,7 @@ a.button, a.button:link {
 .viewcontact, .viewlocation {
   float: left;
   margin-left: 20px;
-  font-size: 30px;
+  font-size: 25px;
   width: 100%;
   display: flex;
   padding: 5px 0px;
@@ -525,25 +562,86 @@ a.button, a.button:link {
 .viewbio {
   float: left;
   margin-left: 15px;
-  width: 100%;
+  width: 95%;
   font-size: 20px;
   margin-bottom: 10px;
-  z-index: 5;
   margin-right: 5px;
-  display: flex;
+  display: inline-block;
   padding: 5px 0px;
+  overflow: visible;
+}
+.viewskillstitle, .viewexperiencetitle, .vieweducationtitle {
+  padding-left: 3%;
+  height: 50px;
+  width: 98%;
+  display: inline-block;
+  padding-right: 5px;
 }
 
 .viewskills {
   font-size: 30px;
   width: 100%;
   display: flex;
-  padding: 15px;
+  padding: 0% 3%;
   float: left;
+
+  margin-left: 10px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.viewexperience, .vieweducation {
+  width: 100%;
+  display: inline-block;
+  padding: 0% 3%;
+  margin-left: 10px;
+  margin-bottom: 15px;
 }
 .skilltag {
-  display: flex;
+  background-color: azure;
+  border-radius: 7px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  padding: 10px 5px;
+  text-align: center;
+  width: auto;
+  margin-right: 15px;
+  margin-bottom: 10px;
 }
+.eachskill {
+  display: inline-block;
+  justify-content: center;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+.experiencetag, .educationtag {
+  padding: 10px 5px;
+  display: inline-block;
+  width: 85%;
+  margin-bottom: 10px;
+}
+
+.experiencerole, .educationschool {
+  font-size: 25px;
+  float: left;
+  width: 50%;
+  margin-bottom: 5px;
+}
+.experiencecompany, .educationprogram {
+  font-size: 25px;
+  float: left;
+  width: 100%;
+}
+
+.experiencestartend, .educationyear {
+  font-size: 20px;
+  float: right;
+}
+.experiencedescription, .educationdescription {
+  float: left;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 .imagefile {
   align-self: center;
   margin-top: 15px;
@@ -597,17 +695,23 @@ a.button, a.button:link {
   margin-bottom: 20px;
   overflow:hidden;
   transition-duration: 0.2s;
+
+}
+.usercard {
   width: 100%;
 }
-
 .postingcard {
-  margin-right: 10px;
+  margin-left: 4%;
+  margin-right: 5%;
+  width: 90%;
 }
 .moreinfo, .maintitle, .isremote {
   padding: 10px;
   font-size: 20px;
   float: left;
   width: 100%;
+  flex-wrap: wrap;
+  flex-direction: row;
 }
 .usercard.checked {
   background: palegreen;
@@ -646,9 +750,16 @@ a.button, a.button:link {
   border-radius: 7px;
   margin-bottom: 20px;
 }
-
+.positioninfo {
+  display: inline-block;
+}
 .positionrole, .companyinfo {
-  width: 49.5%;
+  width: 35%;
+  margin-bottom: 10px;
+  float: left;
+}
+.typeinfo {
+  width: 27%;
   margin-bottom: 10px;
   float: left;
 }
@@ -669,12 +780,21 @@ a.button, a.button:link {
 .postingslist {
   margin-left: 10px;
   margin-top: 10px;
-  width: 30%;
-  padding: 10px;
+  width: 35%;
+  display: inline-block;
   float: left;
   background-color: lightblue;
   font-size: 20px;
   border-radius: 7px;
   font-family: 'Yanone Kaffeesatz', sans-serif;
 
+}
+.postingcardinfo {
+  display: flex;
+  float: left;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+.isremote, .moreinfo {
+  width: auto;
 }
