@@ -86,23 +86,30 @@ if (isset($_POST['saveprofile'])) {
 
   	// valid file extensions
   	$extensions_arr = array("jpg","jpeg","png","gif", "jfif");
+    function clean($string) {
+      $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
 
+      return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
+    }
   	// Check extension
   	if(in_array($imageFileType, $extensions_arr)) {
-      echo "good file";
-  	// Upload files and store in database
+      // echo "good file";
+  	  // Upload files and store in database
       if(!empty($filename)) {
-      	if(move_uploaded_file($_FILES["image"]["tmp_name"],'img/'.$filename)){
+        $temp = explode(".", $_FILES["image"]["name"]);
+        $newfilename = clean($email) . '.' . end($temp);
+        echo $newfilename;
+      	if(move_uploaded_file($_FILES["image"]["tmp_name"],'img/'.$newfilename)){
       		// Image db insert sql
-
-  // Use unlink() function to delete a file
+          echo "moved";
+          // Use unlink() function to delete a file
           if (!unlink($image)) {
             echo ("$image cannot be deleted due to an error");
           }
           else {
             echo ("$image has been deleted");
           }
-      		$insert = "UPDATE user_login SET Image = '$filename' WHERE Email = '$email'";
+      		$insert = "UPDATE user_login SET Image = '$newfilename' WHERE Email = '$email'";
       		if($conn->query($insert)) {
       		  echo 'Data inserted successfully';
       		}
@@ -134,13 +141,14 @@ if (isset($_POST['saveprofile'])) {
         $experience[$i]->role = $_POST['Role'][$i];
         $experience[$i]->company = $_POST['Company'][$i];
         $experience[$i]->start = $_POST['StartDate'][$i];
+        $experience[$i]->description = nl2br($_POST['ExperienceDescription'][$i]);
         if ($_POST['Current'][$i] != "Present") {
           $experience[$i]->end = $_POST['EndDate'][$i];
         }
         else {
           $experience[$i]->end = "Present";
         }
-        echo $experience[$i]->end;
+        // echo $experience[$i]->end;
         $expobject[$i] = serialize($experience[$i]);
         continue;
       }
@@ -152,7 +160,7 @@ if (isset($_POST['saveprofile'])) {
     $eduobject = array();
     $count = 0;
     for ($i = 0; $i < 3; $i++) {
-      if (empty($_POST['Level'][$i]) && empty($_POST['School'][$i]) && empty($_POST['Year'][$i])) {
+      if (empty($_POST['Level'][$i]) && empty($_POST['School'][$i]) && empty($_POST['Program'][$i])) {
         $eduobject[$i] = "NULL";
         continue;
       }
@@ -163,6 +171,8 @@ if (isset($_POST['saveprofile'])) {
         $education[$i]->program = $_POST['Program'][$i];
         $education[$i]->year = $_POST['Year'][$i];
         $education[$i]->gpa = $_POST['GPA'][$i];
+        $education[$i]->description = nl2br($_POST['EducationDescription'][$i]);
+
 
         $eduobject[$i] = serialize($education[$i]);
         continue;
