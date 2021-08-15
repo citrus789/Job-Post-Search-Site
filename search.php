@@ -78,7 +78,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
         <table>
           <tr>
             <td>Position: </td>
-            <td><input type = "search" name = "recposition" placeholder = "Position" value="<?php print isset($recposition) ? $recposition : ''; ?>"></td>
+            <td><input type = "search" name = "recposition" placeholder = "Position" value="<?php print isset($recposition) ? $recposition : ''; ?>" required></td>
           </tr>
           <tr>
             <td>Type: </td>
@@ -86,8 +86,8 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
               <?php
                 if (is_null($rectype) or empty($rectype)) {
               ?>
-              <select id="rectype" name="rectype">
-                <option value="NULL">Select</option>
+              <select id="rectype" name="rectype" required>
+                <option value="" disabled selected>Select</option>
                 <option value="Full Time">Full Time</option>
                 <option value="Part Time">Part Time</option>
                 <option value="Casual">Casual</option>
@@ -98,7 +98,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
               </select>
               <?php } else {?>
               <select id="rectype" name="rectype">
-                <option value="NULL"<?php if ($rectype== "NULL"): ?> selected="selected"<?php endif; ?>>Select</option>
+                <option value=""<?php if ($rectype== ""): ?> selected="selected"<?php endif; ?>>Select</option>
                 <option value="Full Time"<?php if ($rectype== "Full Time"): ?> selected="selected"<?php endif; ?>>Full Time</option>
                 <option value="Part Time"<?php if ($rectype== "Part Time"): ?> selected="selected"<?php endif; ?>>Part Time</option>
                 <option value="Casual"<?php if ($rectype== "Casual"): ?> selected="selected"<?php endif; ?>>Casual</option>
@@ -154,21 +154,21 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                 if (is_null($reclevel) or empty($reclevel)) {
               ?>
               <select id="lev" name="reclevel">
-                <option value="NULL">Select</option>
-                <option value="HS">High School</option>
-                <option value="AS">Associates</option>
-                <option value="BA">Bachelor's</option>
-                <option value="MS">Master's</option>
-                <option value="DR">Doctorate</option>
+                <option value="" disabled selected>Select</option>
+                <option value="1">High School</option>
+                <option value="2">Associates</option>
+                <option value="3">Bachelor's</option>
+                <option value="4">Master's</option>
+                <option value="5">Doctorate</option>
               </select>
               <?php } else {?>
               <select id="lev" name="reclevel">
-                <option value="NULL"<?php if ($reclevel== "NULL"): ?> selected="selected"<?php endif; ?>>Select</option>
-                <option value="HS"<?php if ($reclevel== "HS"): ?> selected="selected"<?php endif; ?>>High School</option>
-                <option value="AS"<?php if ($reclevel== "AS"): ?> selected="selected"<?php endif; ?>>Associates</option>
-                <option value="BA"<?php if ($reclevel== "BA"): ?> selected="selected"<?php endif; ?>>Bachelor's</option>
-                <option value="MS"<?php if ($reclevel== "MS"): ?> selected="selected"<?php endif; ?>>Master's</option>
-                <option value="DR"<?php if ($reclevel== "DR"): ?> selected="selected"<?php endif; ?>>Doctorate</option>
+                <option value=""<?php if ($reclevel== ""): ?> selected="selected"<?php endif; ?>>Select</option>
+                <option value="1"<?php if ($reclevel== "1"): ?> selected="selected"<?php endif; ?>>High School</option>
+                <option value="2"<?php if ($reclevel== "2"): ?> selected="selected"<?php endif; ?>>Associates</option>
+                <option value="3"<?php if ($reclevel== "3"): ?> selected="selected"<?php endif; ?>>Bachelor's</option>
+                <option value="4"<?php if ($reclevel== "4"): ?> selected="selected"<?php endif; ?>>Master's</option>
+                <option value="5"<?php if ($reclevel== "5"): ?> selected="selected"<?php endif; ?>>Doctorate</option>
               </select>
               <?php } ?>
             </td>
@@ -180,7 +180,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                 if ($recyear == 0) {
               ?>
               <select id="yr" name="recyear">
-                <option value="0">Select</option>
+                <option value="">Select</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -191,7 +191,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
               </select>
               <?php } else {?>
               <select id="yr" name="recyear">
-                <option value="0"<?php if ($recyear== "NULL"): ?> selected="selected"<?php endif; ?>>Select</option>
+                <option value=""<?php if ($recyear== ""): ?> selected="selected"<?php endif; ?>>Select</option>
                 <option value="1"<?php if ($recyear== "1"): ?> selected="selected"<?php endif; ?>>1</option>
                 <option value="2"<?php if ($recyear== "2"): ?> selected="selected"<?php endif; ?>>2</option>
                 <option value="3"<?php if ($recyear== "3"): ?> selected="selected"<?php endif; ?>>3</option>
@@ -223,17 +223,17 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
             <?php
             if ($recremote == NULL) {
              ?>
-            <select id="remote" name="recremote">
-            <option value="NULL">Select</option>
-            <option value="1">Yes</option>
-            <option value="0">Temporarily</option>
-            <option value="0">No</option>
+            <select id="remote" name="recremote" required>
+              <option value="" disabled selected>Select</option>
+              <option value="1">Yes</option>
+              <option value="0">Temporarily</option>
+              <option value="0">No</option>
             </select>
             <?php
           } else {
              ?>
            <select id="remote" name="recremote">
-           <option value="NULL"<?php if ($recremote == "NULL"): ?> selected="selected"<?php endif; ?>>Select</option>
+           <option value=""<?php if ($recremote == ""): ?> selected="selected"<?php endif; ?>>Select</option>
            <option value="1"<?php if ($recremote == "1"): ?> selected="selected"<?php endif; ?>>Yes</option>
            <option value="0"<?php if ($recremote == "0"): ?> selected="selected"<?php endif; ?>>Temporarily</option>
            <option value="0"<?php if ($recremote == "0"): ?> selected="selected"<?php endif; ?>>No</option>
@@ -246,33 +246,36 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
         <table>
           <tr>
             <td>Address: </td>
-            <td><input type ="search" name ="recaddress" placeholder = "Line 1" value="<?php print isset($recaddress) ? $recaddress : ''; ?>"></td>
+            <td><input type ="search" name ="recaddress" placeholder = "Address" value="<?php print isset($recaddress) ? $recaddress : ''; ?>"></td>
           </tr>
           <tr>
             <td>City / Town: </td>
-            <td><input type = "search" name = "reccity" placeholder = "City / Town" value="<?php print isset($reccity) ? $reccity : ''; ?>"></td>
+            <td><input type = "search" name = "reccity" placeholder = "City / Town" value="<?php print isset($reccity) ? $reccity : ''; if (isset($required) and $required == "True") {echo 'required';} else { echo '';}?>" ></td>
           </tr>
           <tr>
             <td>State / Province: </td>
-            <td><input type = "search" name = "recregion" placeholder = "State / Province" value="<?php print isset($recregion) ? $recregion : ''; ?>"></td>
+            <td><input type = "search" name = "recregion" placeholder = "State / Province" value="<?php print isset($recregion) ? $recregion : ''; if (isset($required) and $required == "True") {echo 'required';} else { echo '';}?>"></td>
           </tr>
           <tr>
             <td>Country: </td>
-            <td><input type = "search" name = "reccountry" placeholder = "Country" value="<?php print isset($reccountry) ? $reccountry : ''; ?>"></td>
+            <td><input type = "search" name = "reccountry" placeholder = "Country" value="<?php print isset($reccountry) ? $reccountry : ''; if (isset($required) and $required == "True") {echo 'required';} else { echo '';}?>"></td>
           </tr>
         </table>
       </div>
 
       <script>
         $(document).ready(function() {
+          <?php $required = "False"; ?>
           $('#remote').on('change', function() {
             if (this.value == '0')
             {
               $("#reclocationinfo").show();
+              <?php $required = "True"; ?>
             }
             else
             {
               $("#reclocationinfo").hide();
+              <?php $required = "False"; ?>
             }
           });
         });
