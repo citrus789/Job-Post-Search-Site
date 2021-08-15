@@ -87,12 +87,15 @@
               <?php if (!is_null($region) and !empty($region)) { echo $region." "; } ?>
               <?php if (!is_null($country) and !empty($country)) { echo $country; } ?>
             </div>
-            <div class = "viewbio"><p style = "padding: 5px;">
+            <div class = "viewbio"><p style = "padding: 5px; overflow: visible">
               <?php if (!is_null($bio) and !empty($bio)) { echo $bio; } ?>
             </p></div>
           </div>
         </div>
-
+        <div class = "viewskillstitle" >
+          <div style = "font-size: 35px; padding: 0% 3%">Skills</div>
+          <hr style = "margin-left: 10px; width: 90%; margin-bottom: 15px; margin-top: -2px" color = "darkblue" size = "3">
+        </div>
         <div class = "viewskills">
           <?php
           $skll = $conn->query("SELECT Email, Skill1, Skill2, Skill3, Skill4, Skill5, Skill6, Skill7 FROM user_login");
@@ -103,12 +106,16 @@
                   continue;
                 }
                 else {
-                  echo "<div class = skilltag><div class = skillname>".unserialize($row[$i])->skill."</div><div class = skillyear>".unserialize($row[$i])->year."</div></div>";
+                  echo "<div class = skilltag><div class = eachskill>".unserialize($row[$i])->skill." ".unserialize($row[$i])->year."</div></div>";
                 }
               }
             }
           }
           ?>
+        </div>
+        <div class = "viewexperiencetitle" >
+          <div style = "font-size: 35px; padding: 0% 3%">Experience</div>
+          <hr style = "margin-left: 10px; width: 90%; margin-bottom: 15px; margin-top: -2px" color = "darkblue" size = "3">
         </div>
         <div class = "viewexperience">
           <?php
@@ -121,14 +128,67 @@
                   continue;
                 }
                 else {
-                  echo "<div class = experiencetag><div class = experiencerole>".unserialize($row[$i])->role."</div><div class = experiencecompany>".unserialize($row[$i])->company."</div><div class = experiencestartend>".unserialize($row[$i])->start." - ".unserialize($row[$i])->end."</div></div>";
+                  echo "<div class = experiencetag><div class = experiencerole>".unserialize($row[$i])->role."</div><div class = experiencestartend>".unserialize($row[$i])->start." - ".unserialize($row[$i])->end."</div><div class = experiencecompany>".unserialize($row[$i])->company."</div><div class = experiencedescription>".unserialize($row[$i])->description."</div></div>";
                 }
               }
             }
           }
           ?>
         </div>
+        <div class = "vieweducationtitle" >
+          <div style = "font-size: 35px; padding: 0% 3%">Education</div>
+          <hr style = "margin-left: 10px; width: 90%; margin-bottom: 15px; margin-top: -2px" color = "darkblue" size = "3">
+        </div>
         <div class = "vieweducation">
+          <?php
+          $edu = $conn->query("SELECT Email, Education1, Education2, Education3 FROM user_login");
+          while($row = $edu -> fetch_array(MYSQLI_NUM)) {
+            if($row[0] == $email) {
+              for ($i = 1; $i < 3; $i++) {
+                if (is_null($row[$i]) or empty($row[$i]) or $row[$i] == "NULL") {
+
+                  continue;
+                }
+                else {
+                  if (unserialize($row[$i])->year == '7') {
+                    $year = 'Graduated';
+                    if (isset(unserialize($row[$i])->gpa)) {
+                      $year = 'Graduated | GPA: '.unserialize($row[$i])->gpa;
+                    }
+                  }
+                  else if (unserialize($row[$i])->year == '0') {
+                    $year = '';
+                    if (isset(unserialize($row[$i])->gpa)) {
+                      $year = 'GPA: '.unserialize($row[$i])->gpa;
+                    }
+                  }
+                  else {
+                    $year = 'Year '.unserialize($row[$i])->year;
+                    if (isset(unserialize($row[$i])->gpa)) {
+                      $year = 'Year '.unserialize($row[$i])->year.'| GPA: '.unserialize($row[$i])->gpa;
+                    }
+                  }
+                  if (unserialize($row[$i])->level == '1') {
+                    $program = 'High School Diploma';
+                  }
+                  if (unserialize($row[$i])->level == '2') {
+                    $program = 'Associate of '.unserialize($row[$i])->program;
+                  }
+                  if (unserialize($row[$i])->level == '3') {
+                    $program = 'Bachelor of '.unserialize($row[$i])->program;
+                  }
+                  if (unserialize($row[$i])->level == '4') {
+                    $program = 'Master of '.unserialize($row[$i])->program;
+                  }
+                  if (unserialize($row[$i])->level == '5') {
+                    $program = 'Doctorate of '.unserialize($row[$i])->program;
+                  }
+                  echo "<div class = educationtag><div class = educationschool>".unserialize($row[$i])->school."</div><div class = educationyear>".$year."</div><div class = educationprogram>".$program."</div><div class = educationdescription>".unserialize($row[$i])->description."</div></div>";
+                }
+              }
+            }
+          }
+          ?>
         </div>
       </div>
     </div>
