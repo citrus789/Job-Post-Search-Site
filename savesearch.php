@@ -23,7 +23,7 @@ if (isset($_POST['search'])) {
   $recprog3 = $_POST["recprog3"];
   $recgpa = $_POST["recgpa"];
   $recremote = $_POST["recremote"];
-  if ($recremote == 0) {
+  if ($recremote == 3) {
     $recaddress = $_POST["recaddress"];
     $reccity = $_POST["reccity"];
     $recregion = $_POST["recregion"];
@@ -112,9 +112,7 @@ if (isset($_POST['search'])) {
   $recprog2 = formatString($recprog1);
   $recprog3 = formatString($recprog1);
 
-  $education1 = unpackEducationObject($row['Education1']);
-  $education2 = unpackEducationObject($row['Education2']);
-  $education3 = unpackEducationObject($row['Education3']);
+
 
   $column = mysqli_query($conn, "SHOW COLUMNS FROM `score` LIKE '$email'");
   $exists = (mysqli_num_rows($column))?TRUE:FALSE;
@@ -123,10 +121,29 @@ if (isset($_POST['search'])) {
     $stmt = $conn->prepare("ALTER TABLE score ADD `$email` VARCHAR(100)");
   }
   while($row = $result -> fetch_array(MYSQLI_ASSOC)) {
+    $education1 = unpackEducationObject($row['Education1']);
+    $education2 = unpackEducationObject($row['Education2']);
+    $education3 = unpackEducationObject($row['Education3']);
     $score = 0;
     //echo $row['Email'];
+
+    $positionwords = preg_split('/\s+/', $row['Position1']);
+    array_merge($positionwords, preg_split('/\s+/', $row['Position2']));
+    array_merge($positionwords, preg_split('/\s+/', $row['Position3']));
+
+    $numpositionwords = count($positionwords);
+    // echo $positionwords[0];
+
+
     if (strictlyEqualAndNotNull($recposition, formatString($row['Position1'])) or strictlyEqualAndNotNull($recposition, formatString($row['Position2'])) or strictlyEqualAndNotNull($recposition, formatString($row['Position3']))) {
-      $score += 15;
+      $score += 30;
+    }
+    else {
+      for ($i = 0; $i < $numpositionwords; $i++) {
+        if (strpos(formatString($positionwords[$i]), $recposition) == true) {
+            $score += 5;
+        }
+      }
     }
     if (strictlyEqualAndNotNull($rectype, $row['Type1']) or strictlyEqualAndNotNull($rectype, $row['Type2']) or strictlyEqualAndNotNull($rectype, $row['Type3'])) {
       $score += 5;
@@ -136,32 +153,35 @@ if (isset($_POST['search'])) {
       $score += 3;
     }
 
-    if ($education1->level >= $reclevel) {
-      $score += 10;
-      if ($education1->year >= $recyear) {
-        $score += 10;
-        if ($education1->gpa >= $recgpa) {
-          $score += 5;
-        }
-      }
+    if ($education1->level > $reclevel) {
+      $score += 20;
     }
-    else if ($education2->level >= $reclevel) {
-      $score += 10;
-      if ($education2->year >= $recyear) {
-        $score += 10;
-        if ($education2->gpa >= $recgpa) {
-          $score += 5;
-        }
-      }
+    if ($education1->level == $reclevel and $education1->year >= $recyear) {
+      $score += 20;
     }
-    else if ($education3->level >= $reclevel) {
-      $score += 10;
-      if ($education3->year >= $recyear) {
-        $score += 10;
-        if ($education3->gpa >= $recgpa) {
-          $score += 5;
-        }
-      }
+    if ($education1->level >= $reclevel and $education1->gpa >= $recgpa) {
+      $score += 5;
+    }
+
+
+    else if ($education2->level > $reclevel) {
+      $score += 20;
+    }
+    if ($education2->level == $reclevel and $education2->year >= $recyear) {
+      $score += 20;
+    }
+    if ($education2->level >= $reclevel and $education2->gpa >= $recgpa) {
+      $score += 5;
+    }
+
+    else if ($education3->level > $reclevel) {
+      $score += 20;
+    }
+    if ($education3->level == $reclevel and $education3->year >= $recyear) {
+      $score += 20;
+    }
+    if ($education3->level >= $reclevel and $education3->gpa >= $recgpa) {
+      $score += 5;
     }
 
     if (strictlyEqualAndNotNull($recprog1, formatString($education1->program)) or strictlyEqualAndNotNull($recprog2, formatString($education1->program)) or strictlyEqualAndNotNull($recprog1, formatString($education1->program)) or strictlyEqualAndNotNull($recprog1, formatString($education2->program)) or strictlyEqualAndNotNull($recprog2, formatString($education2->program)) or strictlyEqualAndNotNull($recprog1, formatString($education2->program)) or strictlyEqualAndNotNull($recprog1, formatString($education3->program)) or strictlyEqualAndNotNull($recprog2, formatString($education3->program)) or strictlyEqualAndNotNull($recprog1, formatString($education3->program))) {
