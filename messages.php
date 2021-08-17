@@ -8,23 +8,6 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
   if (mysqli_connect_errno()) {
     echo "Failed to connect to MySQL: " . mysqli_connect_error();
   }
-  $sql = "SELECT * FROM position";
-  if ($result = $conn->query($sql)) {
-    $numcolumns = $result->field_count;
-  }
-
-  $postinglist = array();
-  $postingcount = 0;
-  while($row = $result -> fetch_array(MYSQLI_NUM)) {
-    if($row[0] == $username) {
-      for ($i = 26; $i < $numcolumns; $i++) {
-        if ($row[$i] != "NULL" and !is_null($row[$i])) {
-          array_push($postinglist, $row[$i]);
-          $postingcount++;
-        }
-      }
-    }
-  }
 }?>
 <!DOCTYPE html>
 <html>
@@ -58,16 +41,57 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
       <div class = "postingslist">
         <h1 class = "postingstitle" style = "margin-left: 10px;">Your Postings</h1>
         <?php
-        $numcard = 0;
-        //echo $postingcount;
-        for ($i = 0; $i < $postingcount; $i++) {
+        function smaller($a, $b) {
+          if ($a < $b) {
+            return $a;
+          }
+          return $b;
+        }
 
-          if ($numcard == 0 or $numcard % 3 == 0) {
-          ?><div id = "messagecardpage" class = "messagecardpage">
-    <?php } ?>
+        function objecttoarray($data) {
+          if(is_array($data) || is_object($data)) {
+            $result = array();
+            foreach($data as $key => $value) {
+              $result[$key] = $this->object_to_array($value);
+            }
+            return $result;
+          }
+          return $data;
+        }
+
+        $sql = "SELECT * FROM position";
+        if ($result = $conn->query($sql)) {
+          $numcolumns = $result->field_count;
+        }
+
+        $postinglist = array();
+        $postingcount = 0;
+        while($row = $result -> fetch_array(MYSQLI_NUM)) {
+          if($row[0] == $username) {
+            for ($i = 26; $i < $numcolumns; $i++) {
+              if ($row[$i] != "NULL" and !is_null($row[$i])) {
+                array_push($postinglist, $row[$i]);
+                $postingcount++;
+              }
+            }
+          }
+        }
+
+        $numpages = ceil($postingcount / 3);
+        if (!isset($_GET['page'])) {
+          $page = 1;
+        }
+        else {
+          $page = $_GET['page'];
+        }
+        $pageresult = ($page - 1) * 3;
+
+
+        //echo $postingcount;
+        for ($i = $pageresult; $i < $pageresult + smaller(3, $postingcount - $pageresult); $i++) { ?>
 
           <div class = "postingcard">
-            <div>
+            <div style = "width: 100%">
               <div class = "maintitle">
                 <div class = "postingtitle"><?php echo unserialize($postinglist[$i])->position." at ".unserialize($postinglist[$i])->company;?></div>
               </div>
@@ -107,61 +131,59 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                   <div class = "remote?"><?php if (unserialize($postinglist[$i])->remote == 'In Person') { echo "".unserialize($postinglist[$i])->city.", ".unserialize($postinglist[$i])->region.", ".unserialize($postinglist[$i])->country; }?></div>
                 </div>
               </div>
+              <div class = "viewposting" style = "margin-top: 180px; padding: 20px; height: 35px">
+                <input type = "button" value = "View Posting" style = "width = 80%" onclick = "showposting('<?php echo $i; ?>');">
+              </div>
             </div>
           </div>
-          <?php $numcard ++;
-          if ($numcard % 3 == 0) {
-            $end = true;
-            ?> </div> <?php
-          }
-          else {
-            $end = false;
-          }
-        }
-        if ($end == false) {
-          ?> </div> <?php
-        }
-        if ($numcard > 3) { ?>
+  <?php }
+        if ($postingcount > 3) { ?>
           <table class = "searchnav" id = "searchnav" style = "height: 25px;">
             <tr></tr>
           </table>
+  <?php }
+        for ($i = 1; $i <= $numpages; $i++) { ?>
+          <script>
+          $("#searchnav").find('tr').each(function() {
+            $(this).append("<td <?php if ($page == $i) { echo "class = 'active'"; }?>><a style = 'padding: 20px;' href = 'messages.php?page=<?php echo $i; ?>'><?php echo $i; ?></a></td>");
+          });
+          </script>
+  <?php } ?>
       </div>
       <script>
-        <?php
-        //Warning: unreadable shit below!!!
-
-        for ($i = 1; $i <= ceil($numcard / 3); $i++) { ?>
-          console.log("loop");
-          $("#searchnav").find('tr').each(function() {
-            $(this).append("<td id = searchnav<?php echo $i; ?> name = <?php echo $i; ?> onclick = showpage(this)><?php echo $i; ?></td>");
-          });
-          <?php if ($i == 1) {?>
-            document.getElementById("searchnav1").setAttribute("class", "active");
-            var currentpage = document.getElementsByClassName("messagecardpage");
-            currentpage[0].style.display = "block";
-            <?php for ($j = 1; $j < ceil($numcard / 3); $j++) { ?>
-              currentpage[<?php echo $j;?>].style.display = "none";
-      <?php }
-          }
-        } ?>
-        function showpage(elem) {
-          var table = document.getElementById("searchnav");
-          var currentpage = document.getElementsByClassName("messagecardpage");
-
-          for (let row of searchnav.rows) {
-            for(let cell of row.cells) {
-              cell.removeAttribute("class");
-            }
-          }
-
-          <?php for ($j = 0; $j < ceil($numcard / 3); $j++) { ?>
-            currentpage[<?php echo $j; ?>].style.display = "none";
-          <?php } ?>
-          elem.setAttribute("class", "active");
-          currentpage[Number(elem.getAttribute("name") - 1)].style.display = "block";
-        }
+      function showposting(id) {
+        var postingindex = id;
+        var posting = document.getElementById("viewpostingscard"+id);
+        $('.viewpostingscard').each(function(i, obj) {
+          obj.style.display = 'none';
+        });
+        posting.style.display = 'block';
+      }
       </script>
-    <?php } ?>
+
+      <div class = "viewpostingdetails" id = "viewpostingdetails">
+        <?php for ($i = 0; $i < $postingcount; $i++) { ?>
+        <div class = "viewpostingscard" id = "viewpostingscard<?php echo $i; ?>"  style = "display: none;">
+          <div class = "viewpostingtitle">
+        <?php echo unserialize($postinglist[$i])->position." at ".unserialize($postinglist[$i])->company; ?>
+          </div>
+          <div class = "viewpostingsalary">
+            <?php
+            if (!empty(unserialize($postinglist[$i])->salarystart)) {
+              echo "$".unserialize($postinglist[$i])->salarystart;
+              if (!empty(unserialize($postinglist[$i])->salaryend)) {
+                echo " - $".unserialize($postinglist[$i])->salaryend;
+              }
+            }
+            else {
+              echo "$".unserialize($postinglist[$i])->wage." / hour";
+            }
+            echo " (".unserialize($postinglist[$i])->currency.")";
+            ?>
+          </div>
+        </div>
+  <?php } ?>
+      </div>
     </div>
   </body>
 </html>
