@@ -1,0 +1,57 @@
+$numcard = 0;
+if ($numcard == 0 or $numcard % 3 == 0) {
+          ?><div id = "messagecardpage" class = "messagecardpage">
+    <?php } ?>
+
+<?php $numcard ++;
+          if ($numcard % 3 == 0) {
+            $end = true;
+            ?> </div> <?php
+          }
+          else {
+            $end = false;
+          }
+        }
+        if ($end == false) {
+          ?> </div> <?php
+        }
+        if ($numcard > 3) { ?>
+          <table class = "searchnav" id = "searchnav" style = "height: 25px;">
+            <tr></tr>
+          </table>
+      </div>
+      <script>
+        <?php
+        //Warning: unreadable shit below!!!
+
+        for ($i = 1; $i <= ceil($numcard / 3); $i++) { ?>
+          console.log("loop");
+          $("#searchnav").find('tr').each(function() {
+            $(this).append("<td id = searchnav<?php echo $i; ?> name = <?php echo $i; ?> onclick = showpage(this)><?php echo $i; ?></td>");
+          });
+          <?php if ($i == 1) {?>
+            document.getElementById("searchnav1").setAttribute("class", "active");
+            var currentpage = document.getElementsByClassName("messagecardpage");
+            currentpage[0].style.display = "block";
+            <?php for ($j = 1; $j < ceil($numcard / 3); $j++) { ?>
+              currentpage[<?php echo $j;?>].style.display = "none";
+      <?php }
+          }
+        } ?>
+        function showpage(elem) {
+          var table = document.getElementById("searchnav");
+          var currentpage = document.getElementsByClassName("messagecardpage");
+
+          for (let row of searchnav.rows) {
+            for(let cell of row.cells) {
+              cell.removeAttribute("class");
+            }
+          }
+
+          <?php for ($j = 0; $j < ceil($numcard / 3); $j++) { ?>
+            currentpage[<?php echo $j; ?>].style.display = "none";
+          <?php } ?>
+          elem.setAttribute("class", "active");
+          currentpage[Number(elem.getAttribute("name") - 1)].style.display = "block";
+        }
+      </script>
