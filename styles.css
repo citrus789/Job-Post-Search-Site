@@ -208,6 +208,19 @@ li, a, .homebutton, .logoutbutton {
 .form, .viewprofilecontents {
   width: 60%;
 }
+.viewresumecontents {
+  width: 80%;
+}
+
+.viewresumecontents {
+  margin-top: 20px;
+  background-color: white;
+  border-radius: 14px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  max-width: 900px;
+  display: inline-block;
+  margin-bottom: 10px;
+}
 .viewprofilecontents {
   margin-top: 20px;
   background-color: white;
@@ -238,6 +251,10 @@ input[type=text], input[type=date], select, input[type=password], input[type=ema
 button {
   min-width: 110px;
 }
+input[type=button] .active {
+  background: lightgray;
+}
+
 #linklogin {
   border-radius: 7px;
   border: 2px solid darkblue;
@@ -288,14 +305,11 @@ input[type = "button"] {
   transition-duration: 0.4s;
 }
 input[type = "button"]:hover {
-  border-radius: 7px;
-  border: 2px solid darkblue;
-  width: 100%;
-  height: 35px;
   background-color: lightgray;
-  font-size: 20px;
-  font-family: 'Yanone Kaffeesatz', sans-serif;
   cursor: pointer;
+}
+input[type = "button"] .active {
+  background-color: lightgray;
 }
 
 #saveprofile, #search {
@@ -673,7 +687,7 @@ a.button, a.button:link {
 }
 
 /* Search results section */
-.userlist {
+.userlist, .viewpostingdetails {
   margin-left: 20px;
   width: 100%;
   padding: 20px;
@@ -682,6 +696,11 @@ a.button, a.button:link {
   font-size: 20px;
   border-radius: 7px;
   font-family: 'Yanone Kaffeesatz', sans-serif;
+}
+
+.viewpostingdetails {
+  margin-top: 10px;
+  width: 60%;
 }
 
 .usercard, .postingcard {
@@ -696,6 +715,21 @@ a.button, a.button:link {
   overflow:hidden;
   transition-duration: 0.2s;
 
+}
+.viewpostingscard {
+  height: 750px;
+  background-color: white;
+  border: solid darkblue;
+  border-width: 3px;
+  border-radius: 7px;
+  float: left;
+  display: flex;
+  width: 100%;
+}
+
+.viewpostingtitle {
+  padding: 20px;
+  font-size: 50px;
 }
 .usercard {
   width: 100%;
@@ -797,4 +831,33 @@ a.button, a.button:link {
 }
 .isremote, .moreinfo {
   width: auto;
+}
+
+.sendresume {
+  margin-left: 20%;
+  margin-right: 20%;
+  display: inline-block;
+  flex-wrap: nowrap;
+  margin-top: 20px;
+  width: 60%;
+}
+
+#uploadresume {
+  width: 49%;
+  min-width: 150px;
+  float: left;
+}
+
+@media (max-width: 1000px) {
+  .sendresume {
+    width: 90%;
+    margin-left: 5%;
+  }
+}
+
+.applybutton {
+  margin: 0 auto;
+  text-align: center;
+  width: 200px;
+  padding-top: 20px;
 }
