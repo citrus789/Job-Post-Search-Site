@@ -82,6 +82,11 @@ if (isset($_POST['sendmessage'])) {
   $savemessage->currency = $currency;
   $savemessage->remote = $remoteornah;
   $savemessage->type = $sendtype;
+  $savemessage->email = $email;
+
+  $date = date('Y-m-d H:i:s');
+  $savemessage->dateposted = $date;
+  
   if ($remoteornah = "In Person") {
     $savemessage->city = $jobcity;
     $savemessage->region = $jobregion;
