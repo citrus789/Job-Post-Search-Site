@@ -101,7 +101,7 @@
           $skll = $conn->query("SELECT Email, Skill1, Skill2, Skill3, Skill4, Skill5, Skill6, Skill7 FROM user_login");
           while($row = $skll -> fetch_array(MYSQLI_NUM)) {
             if($row[0] == $email) {
-              for ($i = 1; $i < 7; $i++) {
+              for ($i = 1; $i < 8; $i++) {
                 if (is_null($row[$i]) or empty($row[$i]) or $row[$i] == "NULL") {
                   continue;
                 }
@@ -122,7 +122,7 @@
           $exp = $conn->query("SELECT Email, Experience1, Experience2, Experience3, Experience4, Experience5 FROM user_login");
           while($row = $exp -> fetch_array(MYSQLI_NUM)) {
             if($row[0] == $email) {
-              for ($i = 1; $i < 5; $i++) {
+              for ($i = 1; $i < 6; $i++) {
                 if (is_null($row[$i]) or empty($row[$i]) or $row[$i] == "NULL") {
 
                   continue;
@@ -144,7 +144,7 @@
           $edu = $conn->query("SELECT Email, Education1, Education2, Education3 FROM user_login");
           while($row = $edu -> fetch_array(MYSQLI_NUM)) {
             if($row[0] == $email) {
-              for ($i = 1; $i < 3; $i++) {
+              for ($i = 1; $i < 4; $i++) {
                 if (is_null($row[$i]) or empty($row[$i]) or $row[$i] == "NULL") {
 
                   continue;
