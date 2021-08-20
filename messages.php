@@ -47,6 +47,25 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
     <link href="https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz&display=swap" rel="stylesheet">
   </head>
   <body>
+    <?php
+    if (!isset($_GET['page'])) {
+      $page = 1;
+    }
+    else {
+      $page = $_GET['page'];
+    }
+     ?>
+    <script>
+    window.history.replaceState("NULL", "Messages", 'messages.php?page=<?php echo $page; ?>');
+    var href = String(window.location.href);
+    var postingnumber = -1;
+    // console.log(href.indexOf('view-posting'));
+    if (href.indexOf('view-posting') != -1) {
+      var openposting = true;
+      var postingnumber = Number(href.slice(href.indexOf('view-posting') + 12));
+      // console.log(postingnumber);
+    }
+    </script>
     <header>
 
       <a href="home.html"><button class = "homebutton">Home</button></a>
@@ -101,11 +120,9 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
         }
 
         $numpages = ceil($postingcount / 3);
-        if (!isset($_GET['page'])) {
-          $page = 1;
-        }
-        else {
-          $page = $_GET['page'];
+        $position = strpos($page, 'view-posting');
+        if ($position) {
+          $page = substr($page, 0, $position);
         }
         $pageresult = ($page - 1) * 3;
 
@@ -168,8 +185,12 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
         for ($i = 1; $i <= $numpages; $i++) { ?>
           <script>
           $("#searchnav").find('tr').each(function() {
-            $(this).append("<td <?php if ($page == $i) { echo "class = 'active'"; }?>><a style = 'padding: 20px;' href = 'messages.php?page=<?php echo $i; ?>'><?php echo $i; ?></a></td>");
+            $(this).append("<td <?php if ($page == $i) { echo "class = 'active'"; }?>><a style = 'padding: 20px;' href = '?page=<?php echo $i; ?>' onclick = 'changeURL();'><?php echo $i; ?></a></td>");
           });
+
+          function changeURL() {
+            window.history.replaceState("Messages", "Messages", "/JobSite/messages.php");
+          }
           </script>
   <?php } ?>
       </div>
@@ -221,8 +242,10 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
             <h4>Job Description</h4>
             <?php echo nl2br("\n".unserialize($postinglist[$i])->message);?>
           </div>
-          <div class = "applybutton">
-            <input type = "button" class = "applytoposting" value = "Apply" onclick = "showsendresume('<?php echo $i; ?>');">
+          <div class = "applybuttonwrapper">
+            <div class = "applybutton">
+              <input type = "button" class = "applytoposting" value = "Apply" onclick = "showsendresume('<?php echo $i; ?>');">
+            </div>
           </div>
           <div class = "sendresume" style = "display: none" id = "sendresume<?php echo $i; ?>">
             <input id = "uploadresume" type = "button" class = "active" value = "Use Profile" onclick = "showprofile('<?php echo $i; ?>');">
@@ -358,21 +381,35 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
 
   <?php } ?>
         <script>
-          function showsendresume(index) {
-            var sendindex = "sendresume" + index;
-            var uploadresume = document.getElementById(sendindex);
-            uploadresume.style.display = 'block';
+        function showsendresume(index) {
+          var sendindex = "sendresume" + index;
+          var uploadresume = document.getElementById(sendindex);
+          uploadresume.style.display = 'block';
+        }
+        function showprofile(index) {
+          var resumeindex = "viewresumecontents" + index;
+          var profile = document.getElementById(resumeindex);
+          profile.style.display = 'block';
+        }
+
+        if (postingnumber > -1) {
+          var posting = document.getElementById("viewpostingscard"+postingnumber);
+          posting.style.display = 'block';
+        }
+
+        window.onpopstate = function(e){
+          if(e.state){
+            document.title = e.state.pageTitle;
           }
-          function showprofile(index) {
-            var resumeindex = "viewresumecontents" + index;
-            var profile = document.getElementById(resumeindex);
-            profile.style.display = 'block';
-          }
+        };
 
         function showposting(id) {
+
+          var page = Math.ceil((Number(id) + 1) / 3);
+
           var postingindex = id;
           var posting = document.getElementById("viewpostingscard"+id);
-          console.log(posting);
+          // console.log(posting);
           $('.viewpostingscard').each(function(i, obj) {
             obj.style.display = 'none';
           });
@@ -380,8 +417,9 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
           var sendindex = "sendresume" + id;
           var uploadresume = document.getElementById(sendindex);
           uploadresume.style.display = 'none';
-          var profile = document.getElementById("viewresumecontents");
+          var profile = document.getElementById("viewresumecontents" + id);
           profile.style.display = 'none';
+          window.history.pushState("Show Posting", "View Posting " + id, "/JobSite/messages.php?page="+page+"view-posting"+id);
         }
         </script>
       </div>
