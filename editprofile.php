@@ -46,10 +46,8 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
       else {
         $profilepic = "img/defaultprofile.PNG";
       }
-      //echo $profilepic;
 
-      //echo $row['Image'];
-      $bio = $row['Bio'];
+      $bio = str_replace('<br />', "",$row['Bio']);
     }
   }
 
@@ -106,14 +104,17 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
         <div class = "profileimage">
           <div class = "changeimage">
             <div class = "showimage">
-              <img src="<?php echo $profilepic; ?>" height="200" width="200" border-radius="50%" background-color="white" class="imgthumbnail" />
-              <div class="overlay"></div>
+              <img src="<?php echo $profilepic; ?>" height="200" width="200" border-radius="50%" background-color="white" class="imgthumbnail" id = "showuploadedfile"/>
+              <img id = "viewprofileimage" height="200" width="200" border-radius="50%" background-color="white" class="imgthumbnail" style = "display: none">
             </div>
             <div class = "imagefile">
               <label for="fileupload" class="customfileupload">
                 <i class="fa fa-cloud-upload" class = "customfileupload"></i> Change Image
               </label>
-              <input id="fileupload" type="file" name = "image"/>
+              <input id="fileupload" type="file" name = "image" onchange = "changeimage(this)"/>
+            </div>
+            <div id = "profileimageerror" style = "display: none">
+              File Type Invalid
             </div>
           </div>
           <div class = "bio">
@@ -121,6 +122,52 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
           </div>
           <div class="clear"></div>
         </div>
+
+        <script>
+          var image = document.getElementById("fileupload");
+          const extensions = ["jpg","jpeg","png","gif", "jfif"];
+          var invalidfile = false;
+          image.addEventListener('change', function () {
+
+            var image = document.getElementById("fileupload");
+            var fileextension = "";
+            document.getElementById("profileimageerror").style.display = 'none';
+            var filenamelength = image.value.length;
+            for (var i = filenamelength - 1; i >= 0; i--) {
+              if (image.value.charAt(i) == '.') {
+                break;
+              }
+              fileextension = image.value.charAt(i) + fileextension;
+              // console.log(fileextension);
+            }
+            if (!(extensions.includes(fileextension))) {
+              document.getElementById("profileimageerror").style.display = 'block';
+              invalidfile = true;
+            }
+            else {
+              document.getElementById("profileimageerror").style.display = 'none';
+              invalidfile = false;
+            }
+          });
+          var imagefile = document.getElementById("fileupload");
+          var viewfile = document.getElementById("viewprofileimage");
+          var viewuploadedfile = document.getElementById("showuploadedfile");
+
+          imagefile.addEventListener("change", function(elem) {
+
+            if (invalidfile == false) {
+              viewuploadedfile.style.display = 'none';
+              viewfile.style.display = 'block';
+            }
+
+            var reader = new FileReader();
+            reader.onload = function(elem) {
+              viewfile.src = elem.target.result;
+            };
+            reader.readAsDataURL(this.files[0]);
+          });
+        </script>
+
         <style type="text/css">
           .clear{clear:both;}
         </style>
