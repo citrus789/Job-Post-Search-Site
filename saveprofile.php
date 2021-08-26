@@ -99,28 +99,26 @@ if (isset($_POST['saveprofile'])) {
         $temp = explode(".", $_FILES["image"]["name"]);
         $newfilename = clean($email) . '.' . end($temp);
         echo $newfilename;
-      	if(move_uploaded_file($_FILES["image"]["tmp_name"],'img/'.$newfilename)){
-      		// Image db insert sql
-          echo "moved";
-          // Use unlink() function to delete a file
-          if (!unlink($image)) {
-            echo ("$image cannot be deleted due to an error");
+
+        if (!unlink($image)) {
+          echo ("$image cannot be deleted due to an error");
+        }
+        else {
+          echo ("$image has been deleted");
+
+        	if(move_uploaded_file($_FILES["image"]["tmp_name"],'img/'.$newfilename)) {
+        		$insert = "UPDATE user_login SET Image = '$newfilename' WHERE Email = '$email'";
+        		if($conn->query($insert)) {
+        		  echo 'Data inserted successfully';
+        		}
+        		else {
+        		  echo 'Error: '.mysqli_error($conn);
+        		}
           }
           else {
-            echo ("$image has been deleted");
-          }
-      		$insert = "UPDATE user_login SET Image = '$newfilename' WHERE Email = '$email'";
-      		if($conn->query($insert)) {
-      		  echo 'Data inserted successfully';
-      		}
-      		else {
-      		  echo 'Error: '.mysqli_error($conn);
-      		}
+        		echo 'Error in uploading file - '.$_FILES['image']['name'].'';
+        	}
         }
-
-        else {
-      		echo 'Error in uploading file - '.$_FILES['image']['name'].'';
-      	}
       }
   	}
     //echo "Current = ".$_POST['Current'][1];
@@ -141,7 +139,7 @@ if (isset($_POST['saveprofile'])) {
         $experience[$i]->role = $_POST['Role'][$i];
         $experience[$i]->company = $_POST['Company'][$i];
         $experience[$i]->start = $_POST['StartDate'][$i];
-        $experience[$i]->description = nl2br($_POST['ExperienceDescription'][$i]);
+        $experience[$i]->description = $_POST['ExperienceDescription'][$i];
         if ($_POST['Current'][$i] != "Present") {
           $experience[$i]->end = $_POST['EndDate'][$i];
         }
@@ -171,7 +169,7 @@ if (isset($_POST['saveprofile'])) {
         $education[$i]->program = $_POST['Program'][$i];
         $education[$i]->year = $_POST['Year'][$i];
         $education[$i]->gpa = $_POST['GPA'][$i];
-        $education[$i]->description = nl2br($_POST['EducationDescription'][$i]);
+        $education[$i]->description = $_POST['EducationDescription'][$i];
 
 
         $eduobject[$i] = serialize($education[$i]);
