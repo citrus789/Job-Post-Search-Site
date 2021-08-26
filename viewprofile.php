@@ -54,7 +54,7 @@
       <nav>
         <ul class = "topnavlinks">
           <li><a href="search.php">Search</a></li>
-          <li><a href="messages.php">Messages</a></li>
+          <li><a href="messages.php">Postings</a></li>
           <li><a class="active" href="editprofile.php">Profile</a></li>
         </ul>
       </nav>
@@ -129,6 +129,27 @@
                 }
                 else {
                   echo "<div class = experiencetag><div class = experiencerole>".unserialize($row[$i])->role."</div><div class = experiencestartend>".unserialize($row[$i])->start." - ".unserialize($row[$i])->end."</div><div class = experiencecompany>".unserialize($row[$i])->company."</div><div class = experiencedescription>".unserialize($row[$i])->description."</div></div>";
+                }
+              }
+            }
+          }
+          ?>
+        </div>
+        <div class = "viewawardstitle" >
+          <div style = "font-size: 35px; padding: 0% 3%">Accomplishments</div>
+          <hr style = "margin-left: 10px; width: 90%; margin-bottom: 15px; margin-top: -2px" color = "darkblue" size = "3">
+        </div>
+        <div class = "viewawards">
+          <?php
+          $awrd = $conn->query("SELECT Email, Award1, Award2, Award3, Award4, Award5, Award6, Award7 FROM user_login");
+          while($row = $awrd -> fetch_array(MYSQLI_NUM)) {
+            if($row[0] == $email) {
+              for ($i = 1; $i < 8; $i++) {
+                if (is_null($row[$i]) or empty($row[$i]) or $row[$i] == "NULL") {
+                  continue;
+                }
+                else {
+                  echo "<div class = awardtag><div class = eachaward>".$row[$i]."</div></div>";
                 }
               }
             }
