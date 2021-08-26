@@ -19,7 +19,7 @@ if (isset($_POST['sendmessage'])) {
   if ($conn->connect_error) {
       die('Could not connect to database.');
   }
-
+  $postingid = rand(10000, 99999);
   $postinginfo = "SELECT * FROM position WHERE Email = '$email'";
   if ($select = $conn->query($postinginfo)) {
     if ($row = $select -> fetch_array(MYSQLI_ASSOC)) {
@@ -83,10 +83,11 @@ if (isset($_POST['sendmessage'])) {
   $savemessage->remote = $remoteornah;
   $savemessage->type = $sendtype;
   $savemessage->email = $email;
+  $savemessage->id = $postingid;
 
   $date = date('Y-m-d H:i:s');
   $savemessage->dateposted = $date;
-  
+
   if ($remoteornah = "In Person") {
     $savemessage->city = $jobcity;
     $savemessage->region = $jobregion;
@@ -108,7 +109,7 @@ if (isset($_POST['sendmessage'])) {
       echo "Email added";
     }
   }
-  $postings = $conn->query("SELECT Posting1, Posting2, Posting3, Posting4, Posting5, Posting6, Posting7 FROM sent_postings WHERE Email = '$email'");
+  $postings = $conn->query("SELECT Posting1, Posting2, Posting3, Posting4, Posting5, Posting6, Posting7, Posting8, Posting9, Posting10 FROM sent_postings WHERE Email = '$email'");
   $row = $postings -> fetch_array(MYSQLI_NUM);
   $postingerror = "True";
 
@@ -118,8 +119,8 @@ if (isset($_POST['sendmessage'])) {
 
   for ($i = 1; $i <= 7; $i++) {
     $column = "Posting".$i;
-    if ($row[$i] != "NULL") {
-      if (formatString(unserialize($row[$i])->position) == formatString($sendposition) and formatString(unserialize($row[$i])->company) == formatString($sendcompany)) {
+    if ($row[$i - 1] != "NULL") {
+      if (formatString(unserialize($row[$i - 1])->position) == formatString($sendposition) and formatString(unserialize($row[$i - 1])->company) == formatString($sendcompany) and formatString(unserialize($row[$i - 1])->message) == formatString($sendmessage)) {
         $conn->query("UPDATE sent_postings SET `$column` = '$messageobject' WHERE Email = '$email'");
         $postingerror = "False";
         break;
