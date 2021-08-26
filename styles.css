@@ -87,13 +87,16 @@ li, a, .homebutton, .logoutbutton {
  #searchnav td.active {
    background-color: #003380;
  }
-.bottomnavcontents {
+.bottomnavcontents, .bottomnavcontentspostings {
   width: auto;
   height: 60px;
   margin-top: 0px;
   background: azure;
   width: 410px;
   margin: 0 auto;
+}
+.bottomnavcontentspostings {
+  width: 610px;
 }
 #editprofile, #loginbutton, #signupbutton, #viewprofile {
   margin-top: 10px;
@@ -208,10 +211,52 @@ li, a, .homebutton, .logoutbutton {
 .form, .viewprofilecontents {
   width: 60%;
 }
-.viewresumecontents {
+.viewresumecontents, .sentpostingscontents {
   width: 80%;
 }
 
+.sentpostingscontainer {
+  margin-top: 0px;
+  width: 100%;
+  display: inline-block;
+  background-color: azure;
+}
+.sentpostingscontents {
+  margin-left: auto;
+  margin-right: auto;
+
+  font-family: 'Yanone Kaffeesatz', sans-serif;
+
+}
+.eachsentposting {
+  width: 100%;
+  background-color: white;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+
+  margin-top: 20px;
+  border-left: 2px solid darkblue;
+  border-right: 2px solid darkblue;
+  border-top: 2px solid darkblue;
+
+}
+.eachsentpostingheader {
+  width: 100%;
+  height: auto;
+  display: inline-block;
+}
+.applicantslist {
+  margin-top: 0px;
+  margin-bottom: 20px;
+  background-color: lightblue;
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
+  border-left: 2px solid darkblue;
+  border-right: 2px solid darkblue;
+  border-bottom: 2px solid darkblue;
+  width: 100%;
+
+}
 .viewresumecontents {
   margin-top: 20px;
   background-color: white;
@@ -219,15 +264,26 @@ li, a, .homebutton, .logoutbutton {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   max-width: 900px;
   display: inline-block;
-  margin-bottom: 10px;
+  margin-bottom: 25px;
+  margin-left: 10%;
+  margin-right: 10%;
 }
-.viewprofilecontents {
+
+@media (max-width: 900px) {
+  .viewresumecontents {
+    width: 95%;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+  }
+}
+.viewprofilecontents, .viewresumecontents {
   margin-top: 20px;
   background-color: white;
   border-radius: 14px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   max-width: 900px;
 }
+
 table {
   font-size: 1.3rem;
   display: 100%;
@@ -238,7 +294,7 @@ table {
 }
 
 /*Input field and buttons and checkboxes*/
-input[type=text], input[type=date], select, input[type=password], input[type=email], input[type=search], input[type=number], button {
+input[type=text], input[type=date], select, input[type=password], input[type=email], input[type=search], input[type=number], input[type = url], button {
   border-radius: 7px;
   border: 2px solid darkblue;
   width: 100%;
@@ -312,7 +368,7 @@ input[type = "button"] .active {
   background-color: lightgray;
 }
 
-#saveprofile, #search {
+#saveprofile, #search, #sendapplication {
   border-radius: 7px;
   border: 2px solid darkblue;
   background: WhiteSmoke;
@@ -323,8 +379,16 @@ input[type = "button"] .active {
   font-size: 20px;
   transition-duration: 0.4s;
 }
-
-#saveprofile:hover, #search:hover {
+.sendapplication {
+  width: 170px;
+  display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
+}
+#sendapplication {
+  margin-top: 15px;
+}
+#saveprofile:hover, #search:hover, #sendapplication:hover {
   background-color: lightgray;
   cursor: pointer;
 }
@@ -419,7 +483,7 @@ a.button, a.button:link {
   font-family: 'Yanone Kaffeesatz';
   overflow: scroll;
   /* flex-wrap: wrap; */
-
+  white-space: pre-wrap;
   width: 100%;
   height: 200px;
   margin-bottom: 30px;
@@ -435,6 +499,7 @@ a.button, a.button:link {
   height: 150px;
   margin-top: 10px;
   overflow: scroll;
+  white-space: pre-wrap;
 }
 
 @media (min-width: 700px) {
@@ -500,6 +565,8 @@ a.button, a.button:link {
   float: left;
   margin-left: 10px;
   margin-bottom: 20px;
+  justify-content: center;
+  text-align: center;
 }
 
 .imgthumbnail {
@@ -507,7 +574,7 @@ a.button, a.button:link {
   background-color: white;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
-.viewbasicinfo {
+.viewbasicinfo, .viewbasicresume {
   float: left;
   min-height: 250px;
   height: auto;
@@ -523,7 +590,7 @@ a.button, a.button:link {
   float: left;
 
 }
-.viewbasicinfocontents {
+.viewbasicinfocontents, .viewbasicresumecontents {
   float: left;
   overflow: hidden;
   margin-right: 10px;
@@ -537,6 +604,7 @@ a.button, a.button:link {
     overflow: hidden;
     min-width: 250px;
     margin: 0 auto;
+    width: 100%;
   }
   .viewprofilecontents {
     width: 90%;
@@ -556,7 +624,52 @@ a.button, a.button:link {
   .viewbio {
     float: left;
   }
+}
 
+@media (max-width: 1100px) {
+  .viewbasicresumecontents {
+    display: inline-block;
+    overflow: hidden;
+    min-width: 250px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .viewresumecontents {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .viewbasicresume {
+    display: inline-block;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    margin: 0 auto;
+  }
+  .writecv {
+    width: 90%;
+  }
+}
+.resumeuploadfail, .resumeuploadsuccess {
+  margin-right: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: auto;
+  width: 200px;
+  border: 2px;
+  border-radius: 7px;
+  text-align: center;
+  padding: 7px;
+}
+.resumeuploadfail {
+  border: solid #ff4d4d;
+  background-color: #FFCCCB;
+}
+.resumeuploadsuccess {
+  border: solid #00e64d;
+  background-color: palegreen;
 }
 .viewname {
   float: left;
@@ -584,7 +697,7 @@ a.button, a.button:link {
   padding: 5px 0px;
   overflow: visible;
 }
-.viewskillstitle, .viewexperiencetitle, .vieweducationtitle {
+.viewskillstitle, .viewexperiencetitle, .vieweducationtitle, .viewawardstitle {
   padding-left: 3%;
   height: 50px;
   width: 98%;
@@ -592,7 +705,7 @@ a.button, a.button:link {
   padding-right: 5px;
 }
 
-.viewskills {
+.viewskills, .viewawards {
   font-size: 30px;
   width: 100%;
   display: flex;
@@ -611,7 +724,7 @@ a.button, a.button:link {
   margin-left: 10px;
   margin-bottom: 15px;
 }
-.skilltag {
+.skilltag, .awardtag {
   background-color: azure;
   border-radius: 7px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -621,7 +734,10 @@ a.button, a.button:link {
   margin-right: 15px;
   margin-bottom: 10px;
 }
-.eachskill {
+.awardtag {
+  background-color:  #ffd699;
+}
+.eachskil, .eachaward {
   display: inline-block;
   justify-content: center;
   padding-right: 15px;
@@ -654,13 +770,27 @@ a.button, a.button:link {
   float: left;
   margin-top: 10px;
   margin-bottom: 10px;
+  white-space: pre-wrap;
 }
 
 .imagefile {
   align-self: center;
   margin-top: 15px;
-  margin-left: -5px;
+  margin-left: auto;
+  margin-right: auto;
   width: 100%;
+}
+#profileimageerror {
+  background: #FFCCCB;
+  color: darkred;
+  padding: 5px;
+  width: 150px;
+  border-radius: 7px;
+  margin-top: 10px;
+  border: 2px solid darkred;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 .customfileupload {
   border-radius: 7px;
@@ -670,14 +800,39 @@ a.button, a.button:link {
   font-size: 20px;
   font-family: 'Yanone Kaffeesatz', sans-serif;
   transition-duration: 0.4s;
-  background-color: white;
+  background-color: WhiteSmoke;
   display: inline-block;
   text-align: center;
-  padding: 7px;
-  margin-left: 30px;
+  padding: 5.7px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.resumeupload {
+  border-radius: 7px;
+  border: 2px solid darkblue;
+  width: 130px;
+  /*height: 35px;*/
+  font-size: 20px;
+  font-family: 'Yanone Kaffeesatz', sans-serif;
+  transition-duration: 0.4s;
+  background-color: WhiteSmoke;
+  width: 100%;
+
+  float: left;
+  height: 30px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
 }
 
-.customfileupload:hover {
+.uploadresumecontainer {
+  display: inline-block;
+  width: 48%;
+
+}
+.customfileupload:hover, .resumeupload:hover {
     background-color: lightgray;
 }
 
@@ -717,7 +872,7 @@ a.button, a.button:link {
 
 }
 .viewpostingscard {
-  height: 750px;
+  height: auto;
   background-color: white;
   border: solid darkblue;
   border-width: 3px;
@@ -834,17 +989,18 @@ a.button, a.button:link {
 }
 
 .sendresume {
-  margin-left: 20%;
-  margin-right: 20%;
   display: inline-block;
   flex-wrap: nowrap;
   margin-top: 20px;
-  width: 60%;
+  width: 300px;
+  height: 45px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #uploadresume {
-  width: 49%;
-  min-width: 150px;
+  width: 100%;
+  min-width: 100px;
   float: left;
 }
 
@@ -856,8 +1012,130 @@ a.button, a.button:link {
 }
 
 .applybutton {
-  margin: 0 auto;
   text-align: center;
   width: 200px;
-  padding-top: 20px;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 40px;
+  display: inline-block;
+}
+.applybuttonwrapper {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  height: 50px;
+  margin-bottom: 10px;
+}
+.writecv, .additionaldocuments {
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  height: 150px;
+  margin-bottom: 25px;
+  display: inline-block;
+}
+.writecvtextarea {
+  font-size: 20px;
+  border-radius: 7px;
+  font-family: 'Yanone Kaffeesatz', sans-serif;
+  width: 100%;
+  height: 100%;
+  border: 2px solid darkblue;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 15px;
+
+  overflow: scroll;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+}
+
+.websitelink, .transcriptfile {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 15px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  display: inline-block;
+  height: 30px;
+  border-radius: 7px;
+}
+
+.sentpostingtitle {
+  float: left;
+  display: inline-block;
+  margin: 10px;
+  font-size: 25px;
+  height: 35px;
+  width: 100%;
+}
+
+.eachsentpostingdetails {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  font-size: 20px;
+  float: left;
+  margin-bottom: 10px;
+  margin-left: 10px;
+}
+
+.ispostingremote {
+  margin-right: 10px;
+}
+
+.singleapplicant {
+  display: inline-block;
+  width: 96%;
+  margin-left: 2%;
+  margin-right: 2%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 7px;
+  height: auto;
+  background-color: white;
+}
+
+.singleapplicantname {
+  float: left;
+  padding: 10px;
+  font-size: 15px;
+  height: 30px;
+  width: 50px;
+}
+.singleapplicantdocs {
+  display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
+  float: right;
+  width: auto;
+  height: auto;
+  margin-bottom: 10px;
+}
+.singleapplicantdocscontainer {
+  width: auto;
+  height: auto;
+  overflow: hidden;
+  float: none;
+}
+.applicantresume {
+  float: right;
+  width: 100px;
+  background-color: palegreen;
+  height: 30px;
+  font-size: 15px;
+  display: flex;
+  padding: 10px;
+  text-align: center;
+  justify-content: center;
+  border: none;
+  margin-right: 10px;
+  margin-top: 10px;
+
+}
+
+.applicantresume:hover {
+  background-color: #53f953;
 }
