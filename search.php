@@ -65,7 +65,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
       <nav>
         <ul class = "topnavlinks">
           <li><a class="active" href="search.php">Search</a></li>
-          <li><a href="messages.php">Messages</a></li>
+          <li><a href="messages.php">Postings</a></li>
           <li><a href="editprofile.php">Profile</a></li>
         </ul>
       </nav>
