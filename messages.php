@@ -42,18 +42,24 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
     }
   }
   $applicationarray = array();
-  $sentapplications = "SELECT * FROM sent_application WHERE Email = '$username'";
+  $applicationids = array();
+  $sentapplications = "SELECT * FROM sent_application";
 
 
   $exists = $conn->query($sentapplications);
   $numfields = $exists->field_count;
 
   $numapps = 0;
-  $row = $exists->fetch_array(MYSQLI_NUM);
-  for ($i = 1; $i < $numfields; $i++) {
-    if (!empty($row[$i]) && $row[$i] != "NULL") {
-      array_push($applicationarray, $row[$i]);
-      $numapps++;
+  while ($row = $exists->fetch_array(MYSQLI_NUM)) {
+    if ($row[0] == $email) {
+      for ($i = 1; $i < $numfields; $i++) {
+        if (!empty($row[$i]) && $row[$i] != "NULL") {
+          array_push($applicationarray, $row[$i]);
+          array_push($applicationids, unserialize($row[$i])->id);
+          $numapps++;
+        }
+      }
+      break;
     }
   }
   if ($numapps > 0) {
@@ -205,6 +211,16 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                 <div class = "isremote">
                   <div class = "remote?"><?php if (unserialize($postinglist[$i])->remote == 'In Person') { echo "".unserialize($postinglist[$i])->city.", ".unserialize($postinglist[$i])->region.", ".unserialize($postinglist[$i])->country; }?></div>
                 </div>
+                <div class = "isremote">
+                  <div class = "remote?">Posting ID:<?php echo " ".unserialize($postinglist[$i])->id; ?></div>
+                </div>
+              </div>
+              <div class = "appliedtoposting">
+                <?php
+                if (in_array(unserialize($postinglist[$i])->id, $applicationids)) {
+                  echo "<div class = 'applied'>Applied</div>";
+                }
+                 ?>
               </div>
               <div class = "viewposting" style = "margin-top: 180px; padding: 20px; height: 35px">
                 <input type = "button" value = "View Posting" style = "width = 80%" onclick = "showposting('<?php echo $i; ?>');">
@@ -268,6 +284,9 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
             </div>
             <div class = "isremote" style = "font-size: 30px">
               <div class = "remote?"><?php if (unserialize($postinglist[$i])->remote == 'In Person') { echo "".unserialize($postinglist[$i])->city.", ".unserialize($postinglist[$i])->region.", ".unserialize($postinglist[$i])->country; }?></div>
+            </div>
+            <div class = "isremote" style = "font-size: 30px">
+              <div class = "remote?"><?php echo "Id: ".unserialize($postinglist[$i])->id; ?></div>
             </div>
             <div class = "postingdetails" style = "display: inline-block; float: left; margin-left: 20px; width: 80%">
               <h4>Job Description</h4>
