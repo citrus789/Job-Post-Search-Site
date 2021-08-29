@@ -75,232 +75,256 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
     </header>
     <div class = "searchresultscontainer">
       <form action="savesearch.php" method = "POST" class = "previoussearch"> <!--previous search form-->
-        <h3 class = "recjob">Position</h3>
-        <table>
-          <tr>
-            <td>Position: </td>
-            <td><input type = "search" name = "recposition" placeholder = "Position" value="<?php print isset($recposition) ? $recposition : ''; ?>"></td>
-          </tr>
-          <tr>
-            <td>Type: </td>
-            <td>
-              <?php
-                if (is_null($rectype) or empty($rectype)) {
-              ?>
-              <select id="rectype" name="rectype">
-                <option value="NULL">Select</option>
-                <option value="Full Time">Full Time</option>
-                <option value="Part Time">Part Time</option>
-                <option value="Casual">Casual</option>
-                <option value="Temporary">Temporary</option>
-                <option value="Seasonal">Seasonal</option>
-                <option value="Internship">Internship</option>
-                <option value="Contract">Contract</option>
-              </select>
-              <?php } else {?>
-              <select id="rectype" name="rectype">
-                <option value="NULL"<?php if ($rectype== "NULL"): ?> selected="selected"<?php endif; ?>>Select</option>
-                <option value="Full Time"<?php if ($rectype== "Full Time"): ?> selected="selected"<?php endif; ?>>Full Time</option>
-                <option value="Part Time"<?php if ($rectype== "Part Time"): ?> selected="selected"<?php endif; ?>>Part Time</option>
-                <option value="Casual"<?php if ($rectype== "Casual"): ?> selected="selected"<?php endif; ?>>Casual</option>
-                <option value="Temporary"<?php if ($rectype== "Temporary"): ?> selected="selected"<?php endif; ?>>Temporary</option>
-                <option value="Seasonal"<?php if ($rectype== "Seasonal"): ?> selected="selected"<?php endif; ?>>Seasonal</option>
-                <option value="Internship"<?php if ($rectype== "Internship"): ?> selected="selected"<?php endif; ?>>Internship</option>
-                <option value="Contract"<?php if ($rectype== "Contract"): ?> selected="selected"<?php endif; ?>>Contract</option>
-              </select>
-              <?php } ?>
-            </td>
-          </tr>
-          <tr class="blank_row"><td bgcolor="lightblue" colspan="3">&nbsp;</tr>
-            <td>Skills</td>
-            <td>Minumum Years Experience</td>
-          </tr>
-          <tr>
-            <td><input type = "search" name = "recskill1" placeholder = "Skill 1" value="<?php print isset($recskill1) ? $recskill1 : ''; ?>"></td>
-            <td><input type = "number" name = "skillyear1" placeholder = "Years of Experience" value="<?php print isset($skillyear1) ? $skillyear1 : ''; ?>"></td>
-          </tr>
-          <tr>
-            <td><input type = "search" name = "recskill2" placeholder = "Skill 2" value="<?php print isset($recskill2) ? $recskill2 : ''; ?>"></td>
-            <td><input type = "number" name = "skillyear2" placeholder = "Years of Experience" value="<?php print isset($skillyear2) ? $skillyear2 : ''; ?>"></td>
+        <div class = "previoussearchmaincontainer">
+          <div class = "previoussearchcontainer">
+            <div style = "height: auto; width: auto;">
+              <h3 class = "recjob">Position</h3>
+              <table>
 
-          </tr>
-          <tr>
-            <td><input type = "search" name = "recskill3" placeholder = "Skill 3" value="<?php print isset($recskill3) ? $recskill3 : ''; ?>"></td>
-            <td><input type = "number" name = "skillyear3" placeholder = "Years of Experience" value="<?php print isset($skillyear3) ? $skillyear3 : ''; ?>"></td>
+                <tr>
+                  <td>Position: </td>
+                  <td><input type = "search" name = "recposition" placeholder = "Position" value="<?php print isset($recposition) ? $recposition : ''; ?>"></td>
+                </tr>
+                <tr>
+                  <td>Type: </td>
+                  <td>
+                    <?php
+                      if (is_null($rectype) or empty($rectype)) {
+                    ?>
+                    <select id="rectype" name="rectype">
+                      <option value="NULL">Select</option>
+                      <option value="Full Time">Full Time</option>
+                      <option value="Part Time">Part Time</option>
+                      <option value="Casual">Casual</option>
+                      <option value="Temporary">Temporary</option>
+                      <option value="Seasonal">Seasonal</option>
+                      <option value="Internship">Internship</option>
+                      <option value="Contract">Contract</option>
+                    </select>
+                    <?php } else {?>
+                    <select id="rectype" name="rectype">
+                      <option value="NULL"<?php if ($rectype== "NULL"): ?> selected="selected"<?php endif; ?>>Select</option>
+                      <option value="Full Time"<?php if ($rectype== "Full Time"): ?> selected="selected"<?php endif; ?>>Full Time</option>
+                      <option value="Part Time"<?php if ($rectype== "Part Time"): ?> selected="selected"<?php endif; ?>>Part Time</option>
+                      <option value="Casual"<?php if ($rectype== "Casual"): ?> selected="selected"<?php endif; ?>>Casual</option>
+                      <option value="Temporary"<?php if ($rectype== "Temporary"): ?> selected="selected"<?php endif; ?>>Temporary</option>
+                      <option value="Seasonal"<?php if ($rectype== "Seasonal"): ?> selected="selected"<?php endif; ?>>Seasonal</option>
+                      <option value="Internship"<?php if ($rectype== "Internship"): ?> selected="selected"<?php endif; ?>>Internship</option>
+                      <option value="Contract"<?php if ($rectype== "Contract"): ?> selected="selected"<?php endif; ?>>Contract</option>
+                    </select>
+                    <?php } ?>
+                  </td>
+                </tr>
+                <tr class="blank_row"><td bgcolor="lightblue" colspan="3">&nbsp;</tr>
+                  <td>Skills</td>
+                  <td>Minumum Years Experience</td>
+                </tr>
+                <tr>
+                  <td><input type = "search" name = "recskill1" placeholder = "Skill 1" value="<?php print isset($recskill1) ? $recskill1 : ''; ?>"></td>
+                  <td><input type = "number" name = "skillyear1" placeholder = "Years of Experience" value="<?php print isset($skillyear1) ? $skillyear1 : ''; ?>"></td>
+                </tr>
+                <tr>
+                  <td><input type = "search" name = "recskill2" placeholder = "Skill 2" value="<?php print isset($recskill2) ? $recskill2 : ''; ?>"></td>
+                  <td><input type = "number" name = "skillyear2" placeholder = "Years of Experience" value="<?php print isset($skillyear2) ? $skillyear2 : ''; ?>"></td>
 
-          </tr>
-          <tr>
-            <td><input type = "search" name = "recskill4" placeholder = "Skill 4" value="<?php print isset($recskill4) ? $recskill4 : ''; ?>"></td>
-            <td><input type = "number" name = "skillyear4" placeholder = "Years of Experience" value="<?php print isset($skillyear4) ? $skillyear4 : ''; ?>"></td>
+                </tr>
+                <tr>
+                  <td><input type = "search" name = "recskill3" placeholder = "Skill 3" value="<?php print isset($recskill3) ? $recskill3 : ''; ?>"></td>
+                  <td><input type = "number" name = "skillyear3" placeholder = "Years of Experience" value="<?php print isset($skillyear3) ? $skillyear3 : ''; ?>"></td>
 
-          </tr>
-          <tr>
-            <td><input type = "search" name = "recskill5" placeholder = "Skill 5" value="<?php print isset($recskill5) ? $recskill5 : ''; ?>"></td>
-            <td><input type = "number" name = "skillyear5" placeholder = "Years of Experience" value="<?php print isset($skillyear5) ? $skillyear5 : ''; ?>"></td>
+                </tr>
+                <tr>
+                  <td><input type = "search" name = "recskill4" placeholder = "Skill 4" value="<?php print isset($recskill4) ? $recskill4 : ''; ?>"></td>
+                  <td><input type = "number" name = "skillyear4" placeholder = "Years of Experience" value="<?php print isset($skillyear4) ? $skillyear4 : ''; ?>"></td>
 
-          </tr>
-          <tr class="blank_row"><td bgcolor="lightblue" colspan="3">&nbsp;</tr>
+                </tr>
+                <tr>
+                  <td><input type = "search" name = "recskill5" placeholder = "Skill 5" value="<?php print isset($recskill5) ? $recskill5 : ''; ?>"></td>
+                  <td><input type = "number" name = "skillyear5" placeholder = "Years of Experience" value="<?php print isset($skillyear5) ? $skillyear5 : ''; ?>"></td>
 
-          <tr>
-          <td>Starting Date:</td>
-          <td><input type = "date" name = "recdate" value = "<?php print isset($recdate) ? $recdate : ''; ?>"></td>
-          </tr>
-        </table>
-        <h3 class = "receducation">Education</h3>
-        <table>
-          <tr>
-            <td>Minimum Education: </td>
-            <td>
-              <?php
-                if (is_null($reclevel) or empty($reclevel)) {
-              ?>
-              <select id="lev" name="reclevel">
-                <option value="" disabled selected>Select</option>
-                <option value="1">High School</option>
-                <option value="2">Associates</option>
-                <option value="3">Bachelor's</option>
-                <option value="4">Master's</option>
-                <option value="5">Doctorate</option>
-              </select>
-              <?php } else {?>
-              <select id="lev" name="reclevel">
-                <option value=""<?php if ($reclevel== ""): ?> selected="selected"<?php endif; ?>>Select</option>
-                <option value="1"<?php if ($reclevel== "1"): ?> selected="selected"<?php endif; ?>>High School</option>
-                <option value="2"<?php if ($reclevel== "2"): ?> selected="selected"<?php endif; ?>>Associates</option>
-                <option value="3"<?php if ($reclevel== "3"): ?> selected="selected"<?php endif; ?>>Bachelor's</option>
-                <option value="4"<?php if ($reclevel== "4"): ?> selected="selected"<?php endif; ?>>Master's</option>
-                <option value="5"<?php if ($reclevel== "5"): ?> selected="selected"<?php endif; ?>>Doctorate</option>
-              </select>
-              <?php } ?>
-            </td>
-          </tr>
-          <tr>
-            <td>Year:</td>
-            <td>
-              <?php
-                if ($recyear == 0) {
-              ?>
-              <select id="yr" name="recyear">
-                <option value="0" disabled selected>Select</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">Graduated</option>
-              </select>
-              <?php } else {?>
-              <select id="yr" name="recyear">
-                <option value="0"<?php if ($recyear== "0"): ?> selected="selected"<?php endif; ?>>Select</option>
-                <option value="1"<?php if ($recyear== "1"): ?> selected="selected"<?php endif; ?>>1</option>
-                <option value="2"<?php if ($recyear== "2"): ?> selected="selected"<?php endif; ?>>2</option>
-                <option value="3"<?php if ($recyear== "3"): ?> selected="selected"<?php endif; ?>>3</option>
-                <option value="4"<?php if ($recyear== "4"): ?> selected="selected"<?php endif; ?>>4</option>
-                <option value="5"<?php if ($recyear== "5"): ?> selected="selected"<?php endif; ?>>5</option>
-                <option value="6"<?php if ($recyear== "6"): ?> selected="selected"<?php endif; ?>>6</option>
-                <option value="7"<?php if ($recyear== "7"): ?> selected="selected"<?php endif; ?>>Graduated</option>
-              </select>
-              <?php } ?>
-            </td>
-          </tr>
-          <tr>
-            <td>Top 3 Program / Major: </td>
-            <td><input type = "search" name = "recprog1" placeholder = "1" value="<?php print isset($recprog1) ? $recprog1 : ''; ?>"></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td><input type = "search" name = "recprog2" placeholder = "2" value="<?php print isset($recprog2) ? $recprog2 : ''; ?>"></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td><input type = "search" name = "recprog3" placeholder = "3" value="<?php print isset($recprog3) ? $recprog3 : ''; ?>"></td>
-          </tr>
-          <tr>
-            <td>Minimum GPA:</td>
-            <td><input type = "search" name = "recgpa" placeholder = "GPA / 4.00" value="<?php print isset($recgpa) ? $recgpa : ''; ?>"></td>
-          </tr>
-        </table>
-        <h3 class = "reclocation">Job Location</h3>
-        <table class = "recremote" id = "recremote">
-          <tr>
-            <td>Remote?</td><td width = "20%"></td>
-            <td>
-              <?php
-              if ($recremote == "") {
-               ?>
-              <select id="remote" name="recremote" required>
-                <option value="" disabled selected>Select</option>
-                <option value="1">Yes</option>
-                <option value="2">Temporarily</option>
-                <option value="3">No</option>
-              </select>
-              <?php
-            } else {
-               ?>
-             <select id="remote" name="recremote" required>
-               <option value=""<?php if ($recremote == ""): ?> selected="selected"<?php endif; ?>>Select</option>
-               <option value="1"<?php if ($recremote == "1"): ?> selected="selected"<?php endif; ?>>Yes</option>
-               <option value="2"<?php if ($recremote == "2"): ?> selected="selected"<?php endif; ?>>Temporarily</option>
-               <option value="3"<?php if ($recremote == "3"): ?> selected="selected"<?php endif; ?>>No</option>
-             </select>
-           <?php } ?>
-            </td>
-          </tr>
-        </table>
-        <div class = "reclocationinfo" id = "reclocationinfo">
-          <table>
-            <tr>
-              <td>Address: </td>
-              <td><input type ="search" name ="recaddress" placeholder = "Line 1" value="<?php print isset($recaddress) ? $recaddress : ''; ?>"></td>
-            </tr>
-            <tr>
-              <td>City / Town: </td>
-              <td><input type = "search" id = reccity name = "reccity" placeholder = "City / Town" value="<?php print isset($reccity) ? $reccity : ''; ?>" required></td>
-            </tr>
-            <tr>
-              <td>State / Province: </td>
-              <td><input type = "search" id = recregion name = "recregion" placeholder = "State / Province" value="<?php print isset($recregion) ? $recregion : ''; ?>" required></td>
-            </tr>
-            <tr>
-              <td>Country: </td>
-              <td><input type = "search" id = reccountry name = "reccountry" placeholder = "Country" value="<?php print isset($reccountry) ? $reccountry : ''; ?>" required></td>
-            </tr>
-          </table>
-        </div>
+                </tr>
+                <tr class="blank_row"><td bgcolor="lightblue" colspan="3">&nbsp;</tr>
 
-        <script>
-          $(document).ready(function() {
-            $('#remote').on('change', function() {
-              if (this.value == '3')
-              {
-                $("#reclocationinfo").show();
-                $('#reccity').attr('required',true);
-                $('#recregion').attr('required',true);
-                $('#reccountry').attr('required',true);
-              }
-              else
-              {
-                $("#reclocationinfo").hide();
-                $('#reccity').attr('required',false);
-                $('#recregion').attr('required',false);
-                $('#reccountry').attr('required',false);
-              }
-            });
-          });
+                <tr>
+                  <td>Starting Date:</td>
+                  <td><input type = "date" name = "recdate" value = "<?php print isset($recdate) ? $recdate : ''; ?>"></td>
+                </tr>
 
-          var check50 = "FALSE";
-          var check25 = "FALSE";
-          var check10 = "FALSE";
-          var sendcount = 0;
+              </table>
+            </div>
+            <div class = previouseducation style = "height: auto; width: auto;">
+              <h3 class = "receducation">Education</h3>
+              <table>
+                <tr>
+                  <td>Minimum Education: </td>
+                  <td>
+                    <?php
+                      if (is_null($reclevel) or empty($reclevel)) {
+                    ?>
+                    <select id="lev" name="reclevel">
+                      <option value="" disabled selected>Select</option>
+                      <option value="1">High School</option>
+                      <option value="2">Associates</option>
+                      <option value="3">Bachelor's</option>
+                      <option value="4">Master's</option>
+                      <option value="5">Doctorate</option>
+                    </select>
+                    <?php } else {?>
+                    <select id="lev" name="reclevel">
+                      <option value=""<?php if ($reclevel== ""): ?> selected="selected"<?php endif; ?>>Select</option>
+                      <option value="1"<?php if ($reclevel== "1"): ?> selected="selected"<?php endif; ?>>High School</option>
+                      <option value="2"<?php if ($reclevel== "2"): ?> selected="selected"<?php endif; ?>>Associates</option>
+                      <option value="3"<?php if ($reclevel== "3"): ?> selected="selected"<?php endif; ?>>Bachelor's</option>
+                      <option value="4"<?php if ($reclevel== "4"): ?> selected="selected"<?php endif; ?>>Master's</option>
+                      <option value="5"<?php if ($reclevel== "5"): ?> selected="selected"<?php endif; ?>>Doctorate</option>
+                    </select>
+                    <?php } ?>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Year:</td>
+                  <td>
+                    <?php
+                      if ($recyear == 0) {
+                    ?>
+                    <select id="yr" name="recyear">
+                      <option value="0" disabled selected>Select</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">Graduated</option>
+                    </select>
+                    <?php } else {?>
+                    <select id="yr" name="recyear">
+                      <option value="0"<?php if ($recyear== "0"): ?> selected="selected"<?php endif; ?>>Select</option>
+                      <option value="1"<?php if ($recyear== "1"): ?> selected="selected"<?php endif; ?>>1</option>
+                      <option value="2"<?php if ($recyear== "2"): ?> selected="selected"<?php endif; ?>>2</option>
+                      <option value="3"<?php if ($recyear== "3"): ?> selected="selected"<?php endif; ?>>3</option>
+                      <option value="4"<?php if ($recyear== "4"): ?> selected="selected"<?php endif; ?>>4</option>
+                      <option value="5"<?php if ($recyear== "5"): ?> selected="selected"<?php endif; ?>>5</option>
+                      <option value="6"<?php if ($recyear== "6"): ?> selected="selected"<?php endif; ?>>6</option>
+                      <option value="7"<?php if ($recyear== "7"): ?> selected="selected"<?php endif; ?>>Graduated</option>
+                    </select>
+                    <?php } ?>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Top 3 Program / Major: </td>
+                  <td><input type = "search" name = "recprog1" placeholder = "1" value="<?php print isset($recprog1) ? $recprog1 : ''; ?>"></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td><input type = "search" name = "recprog2" placeholder = "2" value="<?php print isset($recprog2) ? $recprog2 : ''; ?>"></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td><input type = "search" name = "recprog3" placeholder = "3" value="<?php print isset($recprog3) ? $recprog3 : ''; ?>"></td>
+                </tr>
+                <tr>
+                  <td>Minimum GPA:</td>
+                  <td><input type = "search" name = "recgpa" placeholder = "GPA / 4.00" value="<?php print isset($recgpa) ? $recgpa : ''; ?>"></td>
+                </tr>
+              </table>
+              <h3 class = "reclocation">Job Location</h3>
+              <table class = "recremote" id = "recremote">
+                <tr>
+                  <td>Remote?</td><td width = "20%"></td>
+                  <td>
+                    <?php
+                    if ($recremote == "") {
+                     ?>
+                    <select id="remote" name="recremote" required>
+                      <option value="" disabled selected>Select</option>
+                      <option value="1">Yes</option>
+                      <option value="2">Temporarily</option>
+                      <option value="3">No</option>
+                    </select>
+                    <?php
+                  } else {
+                     ?>
+                   <select id="remote" name="recremote" required>
+                     <option value=""<?php if ($recremote == ""): ?> selected="selected"<?php endif; ?>>Select</option>
+                     <option value="1"<?php if ($recremote == "1"): ?> selected="selected"<?php endif; ?>>Yes</option>
+                     <option value="2"<?php if ($recremote == "2"): ?> selected="selected"<?php endif; ?>>Temporarily</option>
+                     <option value="3"<?php if ($recremote == "3"): ?> selected="selected"<?php endif; ?>>No</option>
+                   </select>
+                 <?php } ?>
+                  </td>
+                </tr>
+              </table>
+              <div class = "reclocationinfo" id = "reclocationinfo">
+                <table>
+                  <tr>
+                    <td>Address: </td>
+                    <td><input type ="search" name ="recaddress" placeholder = "Line 1" value="<?php print isset($recaddress) ? $recaddress : ''; ?>"></td>
+                  </tr>
+                  <tr>
+                    <td>City / Town: </td>
+                    <td><input type = "search" id = reccity name = "reccity" placeholder = "City / Town" value="<?php print isset($reccity) ? $reccity : ''; ?>" required></td>
+                  </tr>
+                  <tr>
+                    <td>State / Province: </td>
+                    <td><input type = "search" id = recregion name = "recregion" placeholder = "State / Province" value="<?php print isset($recregion) ? $recregion : ''; ?>" required></td>
+                  </tr>
+                  <tr>
+                    <td>Country: </td>
+                    <td><input type = "search" id = reccountry name = "reccountry" placeholder = "Country" value="<?php print isset($reccountry) ? $reccountry : ''; ?>" required></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
 
-        </script>
+            <script>
 
-        <div style="text-align:center">
-          <input id = "search" type="submit" value="Search Users" name="search" onclick="submitted()">
+              $(document).ready(function() {
+                <?php $required = "False"; ?>
+                $('#remote').on('change', function() {
+                  if (this.value == '3')
+                  {
+                    $("#reclocationinfo").show();
+                    <?php $required = "True"; ?>
+                  }
+                  else
+                  {
+                    $("#reclocationinfo").hide();
+                    <?php $required = "False"; ?>
+                  }
+                });
+              });
+              $(document).ready(function() {
+                $('#remote').on('change', function() {
+                  if (this.value == '3')
+                  {
+                    $("#reclocationinfo").show();
+                    $('#reccity').attr('required',true);
+                    $('#recregion').attr('required',true);
+                    $('#reccountry').attr('required',true);
+                  }
+                  else
+                  {
+                    $("#reclocationinfo").hide();
+                    $('#reccity').attr('required',false);
+                    $('#recregion').attr('required',false);
+                    $('#reccountry').attr('required',false);
+                  }
+                });
+              });
+
+              var check50 = "FALSE";
+              var check25 = "FALSE";
+              var check10 = "FALSE";
+              var sendcount = 0;
+
+            </script>
+          </div>
+          <div class = submitprevioussearch style="text-align:center">
+            <input id = "search" type="submit" value="Search Users" name="search" onclick="submitted()">
+          </div>
         </div>
       </form><!--previous search form-->
-
 
       <div class = "userlist" id = "userlist"> <!--list of search results-->
         <form action="sendmessage.php" method = "POST" class = "sendmessage"> <!--job posting form-->
@@ -308,11 +332,11 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
             <h3>Send Job Posting</h3>
             <div class = "positioninfo">
               <div class = "positionrole">
-                <input type = "text" name = "positionrole" placeholder = "Position" required = "required" value = "<?php print isset($previousmessage->position) ? $previousmessage->position : ''; ?>">
+                <input type = "text" name = "positionrole" id = "positionrole" placeholder = "Position" required = "required" value = "<?php print isset($previousmessage->position) ? $previousmessage->position : ''; ?>">
               </div>
               <div class = "separator">&nbsp;</div>
               <div class = "companyinfo">
-                <input type = "text" name = "companyinfo" placeholder = "Company" required = "required" value = "<?php print isset($previousmessage->company) ? $previousmessage->company : ''; ?>">
+                <input type = "text" name = "companyinfo" id = "companyinfo" placeholder = "Company" required = "required" value = "<?php print isset($previousmessage->company) ? $previousmessage->company : ''; ?>">
               </div>
               <div class = "separator">&nbsp;</div>
               <div class = "typeinfo">
@@ -345,11 +369,11 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
             <!-- </div> -->
             <!-- <div class = "salaryrange"> -->
               <div class = "salarystart">
-                <input type = "text" name = "salarystart" id = "salary" placeholder = "Min Salary" required value = "<?php print isset($previousmessage->salarystart) ? $previousmessage->salarystart : ''; ?>">
+                <input type = "text" name = "salarystart" id = "salarystart" placeholder = "Min Salary" required value = "<?php print isset($previousmessage->salarystart) ? $previousmessage->salarystart : ''; ?>">
               </div>
               <div class = "separator">&nbsp;</div>
               <div class = "salaryend">
-                <input type = "text" name = "salaryend" id = "salary" placeholder = "Max Salary" value = "<?php print isset($previousmessage->salaryend) ? $previousmessage->salaryend : ''; ?>">
+                <input type = "text" name = "salaryend" id = "salaryend" placeholder = "Max Salary" value = "<?php print isset($previousmessage->salaryend) ? $previousmessage->salaryend : ''; ?>">
               </div>
               <div class = "separator">&nbsp;</div>
               <div class = currency style = "height: 30px; text-align: center; margin-top: 7px; display: inline-block; width: 25px">Or</div>
@@ -380,27 +404,37 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
               <textarea type = "text" id = "writemessage" name = "writemessage" placeholder = "Write a job posting you want to send to users" required = "required"><?php print isset($previousmessage->message) ? $previousmessage->message : ''; ?></textarea>
             </div>
             <div class = "sendmessage">
+              <div class = "sendbutton">
+                <button type = 'button' id = "previewmessage" onclick="previewposting()">Preview Posting</button>
+              </div>
+            </div>
+            <div class = "viewpostingscard" id = "viewpostingscard"  style = "display: none; margin-top: 10px; margin-bottom: 10px;">
+              <div class = "viewpostingtitle" id = "previewtitle" style = " font-size: 35px;">
+                <!-- This part needs to be updated dynamically-->
+              </div>
+              <div class = "moreinfo" style = "margin-left: 10px; font-size: 30px" id = "previewsalary">
+                <!-- This part needs to be updated dynamically-->
+              </div>
+
+              <div class = "isremote" style = "font-size: 30px">
+                <div class = "remote?" id = "previewremote"> </div> <!-- This part needs to be updated dynamically-->
+              </div>
+
+              <div class = "isremote" style = "font-size: 30px">
+                <div class = "remote?" id = "previewtype"> </div> <!-- This part needs to be updated dynamically-->
+              </div>
+              <div class = "isremote" style = "font-size: 30px">
+                <div class = "remote?" id = "previewlocation"> </div> <!-- This part needs to be updated dynamically-->
+              </div>
+              <div class = "postingdetails" style = "display: inline-block; float: left; margin-left: 20px; width: 80%; margin-bottom: 10px;">
+                <h4>Job Description</h4>
+                <div id = "previewdesc"></div><!-- This part needs to be updated dynamically-->
+              </div>
+            </div>
+            <div class = "sendmessage" id = "selectusersendmessage" style = "display: none">
 
               <div class = "sendbutton">
                 <input id = "sendmessage" type="submit" value="Send Posting (0)" name="sendmessage" onclick="submitted()">
-                <script>
-                  var submit = document.getElementById("sendmessage");
-                  submit.value = ("Send Posting (").concat(sendcount).concat(")");
-                  if (sendcount == 0) {
-                    submit.style.color = "gray";
-                    submit.disabled = true;
-                  }
-                  else {
-                    submit.style.color = "black";
-                    submit.disabled = false;
-                  }
-                  jQuery(function ($) {
-                    var $inputs = $('input[name=salarystart],input[name=hourlywage]');
-                    $inputs.on('input', function () {
-                      $inputs.not(this).prop('required', !$(this).val().length);
-                    });
-                  });
-                </script>
               </div>
               <div class = "selectnumber">
                 <select id="selectnumber" name="selectnumber">
@@ -419,11 +453,84 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
             </div>
           </div> <!--send message container-->
 
+          <script>
+            var submit = document.getElementById("sendmessage");
+            submit.value = ("Send Posting (").concat(sendcount).concat(")");
+            if (sendcount == 0) {
+              submit.style.color = "gray";
+              submit.disabled = true;
+            }
+            else {
+              submit.style.color = "black";
+              submit.disabled = false;
+            }
+            jQuery(function ($) {
+              var $inputs = $('input[name=salarystart],input[name=hourlywage]');
+              $inputs.on('input', function () {
+                $inputs.not(this).prop('required', !$(this).val().length);
+              });
+            });
+
+            function previewposting() {
+              var previewposting = document.getElementById("viewpostingscard");
+              var previewmessage = document.getElementById("previewmessage");
+
+              var previewtitle = document.getElementById("previewtitle");
+              var previewsalary = document.getElementById("previewsalary");
+              var previewremote = document.getElementById("previewremote");
+              var previewtype = document.getElementById("previewtype");
+              var previewlocation = document.getElementById("previewlocation");
+              var previewid = document.getElementById("previewid");
+              var previewdesc = document.getElementById("previewdesc");
+              var send = document.getElementById("selectusersendmessage");
+
+              if (previewposting.style.display == 'none') {
+                previewposting.style.display = 'block';
+                previewmessage.innerHTML = 'Hide Posting';
+                send.style.display = 'block';
+                previewtitle.innerHTML = document.getElementById("positionrole").value + " at " + document.getElementById("companyinfo").value;
+                if (document.getElementById("salarystart").value && document.getElementById("salaryend").value) {
+                  previewsalary.innerHTML = "$ " + document.getElementById("salarystart").value + " - " + document.getElementById("salaryend").value;
+                }
+                else if (document.getElementById("salarystart").value) {
+                  previewsalary.innerHTML = "$ " + document.getElementById("salarystart").value;
+                }
+                else {
+                  previewsalary.innerHTML = "$ " + document.getElementById("wage").value;
+                }
+                if (document.getElementById("currency").value) {
+                  previewsalary.innerHTML += " " + document.getElementById("currency").value;
+                }
+                if (document.getElementById("remote") == 1) {
+                  previewremote.innerHTML = "Remote";
+                }
+                else if (document.getElementById("remote") == 2) {
+                  previewremote.innerHTML = "Temporarily Remote";
+                }
+                else {
+                  previewremote.innerHTML = "In Person";
+                  previewlocation.innerHTML = document.getElementById("reccity").value + " " + document.getElementById("recregion").value + " " + document.getElementById("reccountry").value;
+                }
+                previewtype.innerHTML = document.getElementById("rectype").value;
+                previewdesc.innerHTML = document.getElementById("writemessage").value;
+
+              }
+              else {
+                previewposting.style.display = 'none';
+                previewmessage.innerHTML = 'Preview Posting';
+                send.style.display = 'none';
+              }
+            }
+          </script>
+
           <?php
           $user = "SELECT Email, FirstName, LastName, Bio, Image, Education1, Education2, Education3, Experience1, Experience2, Experience3, Experience4, Experience5, Skill1, Skill2, Skill3, Skill4, Skill5, Skill6, Skill7, City, Region, Country FROM user_login ORDER BY (SELECT score.`$username` FROM score WHERE score.Email = user_login.Email) DESC";
+          $scores = "SELECT * FROM score ORDER BY `$username` DESC";
+          $scoreselect = $conn->query($scores);
           $select = $conn->query($user);
           $numcard = 0;
-          while($row = $select->fetch_array(MYSQLI_ASSOC)) {
+          $i = 0;
+          while($row = $select->fetch_array(MYSQLI_ASSOC) and $score = $scoreselect->fetch_array(MYSQLI_ASSOC)) {
             if (!isset($row['Image']) or empty($row['Image'])) {
               $profilepic = "img/defaultprofile.PNG";
             }
@@ -561,8 +668,14 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                     ?>
                 </div>
               </div>
-              <div class = "usermatch">
-                <input type="checkbox" onchange="isChecked(this,'elem')" name = "send[]" class = "sendcheckbox" value = "<?php print isset($row['Email']) ? $row['Email'] : ''; ?>">
+              <div class = userstat>
+                <div class = "usermatch">
+                  <input type="checkbox" onchange="isChecked(this,'elem')" name = "send[]" class = "sendcheckbox" value = "<?php print isset($row['Email']) ? $row['Email'] : ''; ?>">
+                </div>
+
+                <div class = "matchscore">
+                  <?php echo "".(string)$score["$username"].""; ?>
+                </div>
               </div>
               <script>
               jQuery(document).ready(function($) {
@@ -570,11 +683,13 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                   var submit = document.getElementById('sendmessage');
                   var container = document.getElementById("userlist");
                   var divs = container.getElementsByClassName("usercard");
+                  var divs2 = container.getElementsByClassName("userstat");
                   if(this.value == "NULL") {
                     // if (check25 == "TRUE" || check50 == "TRUE" || check10 == "TRUE") {
                     $('[name="send[]"]').slice(0, 200).prop("checked", false);
                     for (var i = 0; i < divs.length; i++) {
                       divs[i].setAttribute('style', 'background-color: white');
+                      divs2[i].setAttribute('style', 'background-color: white');
                     }
                     check50 = "FALSE";
                     check25 = "FALSE";
@@ -588,6 +703,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                     for (var i = 2; i < divs.length; i++) {
                       // console.log(divs);
                       divs[i].setAttribute('style', 'background-color: white');
+                      divs2[i].setAttribute('style', 'background-color: white');
                     }
                     check50 = "FALSE";
                     check25 = "FALSE";
@@ -595,6 +711,8 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                     $('[name="send[]"]').slice(0, 2).prop("checked", true);
                     for (var i = 0; i < 2; i++) {
                       divs[i].setAttribute('style', 'background-color: palegreen');
+                      divs2[i].setAttribute('style', 'background-color: palegreen');
+
                     }
                     sendcount += 10;
                     check10 = "TRUE";
@@ -604,12 +722,16 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                     $('[name="send[]"]').slice(3, 200).prop("checked", false);
                     for (var i = 3; i < divs.length; i++) {
                       divs[i].setAttribute('style', 'background-color: white');
+                      divs2[i].setAttribute('style', 'background-color: white');
+
                     }
                     check50 = "FALSE";
                     // }
                     $('[name="send[]"]').slice(0, 3).prop("checked", true);
                     for (var i = 0; i < 3; i++) {
                       divs[i].setAttribute('style', 'background-color: palegreen');
+                      divs2[i].setAttribute('style', 'background-color: palegreen');
+
                     }
                     check25 = "TRUE";
                   }
@@ -617,6 +739,8 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                     $('[name="send[]"]').slice(0, 5).prop("checked", true);
                     for (var i = 0; i < 5; i++) {
                       divs[i].setAttribute('style', 'background-color: palegreen');
+                      divs2[i].setAttribute('style', 'background-color: palegreen');
+
                     }
                     check50 = "TRUE";
                   }
@@ -637,6 +761,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
               });
               function isChecked(elem) {
                 elem.parentNode.parentNode.style.background = (elem.checked) ? 'palegreen' : 'white';
+                elem.parentNode.parentNode.parentNode.style.background = (elem.checked) ? 'palegreen' : 'white';
                 sendcount = document.querySelectorAll('input[type="checkbox"]:checked').length;
                 var submitvalue = ("Send Posting (").concat(sendcount).concat(")");
                 // console.log(submitvalue);
