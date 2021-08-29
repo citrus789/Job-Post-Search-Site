@@ -69,13 +69,14 @@ if (isset($_POST['sendapplication'.$_SESSION['index']])) {
   }
 
   $application = new stdClass();
-  $sendtoname = unserialize($postinglist[$index])->position.unserialize($postinglist[$index])->company;
+  $sendtoname = unserialize($postinglist[$index])->position." ".unserialize($postinglist[$index])->company." ".unserialize($postinglist[$index])->id;
+  $application->id = unserialize($postinglist[$index])->id;
   // $application->id = unserialize($postinglist[$index])->id;
   // Check extension
   if(!empty($resumefile) and in_array($resumetype, $extensions)) {
     //resume time!
     $temp = explode(".", $resumefile);
-    $newfilename = unserialize($postinglist[$index])->position.unserialize($postinglist[$index])->company. '.' . end($temp);
+    $newfilename = "resume ".$email." - ".unserialize($postinglist[$index])->position. ' '.unserialize($postinglist[$index])->id. '.' . end($temp);
     // echo $newfilename;
     if (!file_exists('resume/'.$email)) {
       mkdir('resume/'.$email, 0777, true);
@@ -103,7 +104,7 @@ if (isset($_POST['sendapplication'.$_SESSION['index']])) {
   if (!empty($cvfile) and in_array($cvtype, $extensions) and $uploaded == "true") {
     //cv time!
     $temp = explode(".", $cvfile);
-    $newfilename = unserialize($postinglist[$index])->position.unserialize($postinglist[$index])->company. '.' . end($temp);
+    $newfilename = "cv ".$email." - ".unserialize($postinglist[$index])->position. ' '.unserialize($postinglist[$index])->id. '.' . end($temp);
     // echo $newfilename;
     // chdir("..");
     if (!file_exists('coverletter/'.$email)) {
@@ -126,7 +127,7 @@ if (isset($_POST['sendapplication'.$_SESSION['index']])) {
   if (!empty($transcript) and in_array($transcripttype, $extensions) and $uploaded == "true") {
     //cv time!
     $temp = explode(".", $transcript);
-    $newfilename = unserialize($postinglist[$index])->position.unserialize($postinglist[$index])->company. '.' . end($temp);
+    $newfilename = "file ".$email." - ".unserialize($postinglist[$index])->position. ' '.unserialize($postinglist[$index])->id. '.' . end($temp);
     // echo $newfilename;
     // chdir("..");
     if (!file_exists('otherfile/'.$email)) {
