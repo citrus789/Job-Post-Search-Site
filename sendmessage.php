@@ -19,11 +19,11 @@ if (isset($_POST['sendmessage'])) {
   if ($conn->connect_error) {
       die('Could not connect to database.');
   }
-  $postingid = rand(10000, 99999);
-  $postinginfo = "SELECT * FROM position WHERE Email = '$email'";
+  $postingid = rand(100000, 999999);
+  $postinginfo = "SELECT * FROM position";
   if ($select = $conn->query($postinginfo)) {
-    if ($row = $select -> fetch_array(MYSQLI_ASSOC)) {
-      if (!is_null($row['Remote'])) {
+    while ($row = $select -> fetch_array(MYSQLI_ASSOC)) {
+      if ($row['Email'] == $email and !is_null($row['Remote'])) {
         if ($row['Remote'] == '1') {
           $remoteornah = "Remote";
           $jobcity = NULL;
@@ -109,33 +109,40 @@ if (isset($_POST['sendmessage'])) {
       echo "Email added";
     }
   }
-  $postings = $conn->query("SELECT Posting1, Posting2, Posting3, Posting4, Posting5, Posting6, Posting7, Posting8, Posting9, Posting10 FROM sent_postings WHERE Email = '$email'");
-  $row = $postings -> fetch_array(MYSQLI_NUM);
   $postingerror = "True";
 
   function formatString($var) {
     return (strtolower(preg_replace('/\s+/', '', $var)));
   }
+  $postings = $conn->query("SELECT * FROM sent_postings");
+  while ($row = $postings -> fetch_array(MYSQLI_NUM)) {
+    if ($row[0] == $email) {
+      for ($i = 1; $i <= 10; $i++) {
+        $column = "Posting".$i;
+        if ($row[$i] != "NULL") {
+          if (formatString(unserialize($row[$i])->position) == formatString($sendposition) and formatString(unserialize($row[$i])->company) == formatString($sendcompany) and formatString(unserialize($row[$i])->message) == formatString($sendmessage)) {
+            $conn->query("UPDATE sent_postings SET `$column` = '$messageobject' WHERE Email = '$email'");
+            $postingerror = "False";
+            echo "updated posting".$i;
+            break;
+          }
+        }
 
-  for ($i = 1; $i <= 7; $i++) {
-    $column = "Posting".$i;
-    if ($row[$i - 1] != "NULL") {
-      if (formatString(unserialize($row[$i - 1])->position) == formatString($sendposition) and formatString(unserialize($row[$i - 1])->company) == formatString($sendcompany) and formatString(unserialize($row[$i - 1])->message) == formatString($sendmessage)) {
-        $conn->query("UPDATE sent_postings SET `$column` = '$messageobject' WHERE Email = '$email'");
-        $postingerror = "False";
-        break;
+        if (empty($row[$i]) or is_null($row[$i]) or $row[$i] == "NULL") {
+          $conn->query("UPDATE sent_postings SET `$column` = '$messageobject' WHERE Email = '$email'");
+          $postingerror = "False";
+          echo "updated posting".$i;
+          break;
+        }
+        else {
+          $postingerror = "True";
+        }
       }
     }
-
-    if (empty($row[$i - 1]) or is_null($row[$i - 1]) or $row[$i - 1] == "NULL") {
-      $conn->query("UPDATE sent_postings SET `$column` = '$messageobject' WHERE Email = '$email'");
-      $postingerror = "False";
-      break;
-    }
-    else {
-      $postingerror = "True";
-    }
   }
+
+
+
   if ($postingerror == "False") {
     $updated = True;
     if (!empty($_POST['send'])) {
@@ -158,7 +165,7 @@ if (isset($_POST['sendmessage'])) {
       array_push($sendtousers, NULL);
     }
   }
-  $postingname = $sendposition . $sendcompany;
+  $postingname = $sendposition. " " .$sendcompany. " " .$postingid;
   // echo $messageobject;
 
   // echo $email;
@@ -175,8 +182,15 @@ if (isset($_POST['sendmessage'])) {
     }
     // echo "prepared";
   }
+  $recentmessage = "UPDATE position SET SentMessage = '$messageobject' WHERE Email = '$email'";
+  if ($conn->query($recentmessage)) {
+    echo "recent message updated";
+  }
+  else {
+    echo "not updated for some reason";
+  }
   foreach ($sendtousers as $useremail) {
-    if ($useremail != NULL) {
+    if ($useremail != "NULL") {
       // echo $useremail;
       if ($exists) {
         $send = "UPDATE position SET `$postingname` = '$messageobject' WHERE Email = '$useremail'";
@@ -196,7 +210,7 @@ if (isset($_POST['sendmessage'])) {
   }
   if ($updated) {
     echo "Success";
-    header("Location: messages.php");
+    // header("Location: messages.php");
   }
   else {
     header("Location: searchresults.php?senderror=Could Not Send Posting");
@@ -204,5 +218,4 @@ if (isset($_POST['sendmessage'])) {
   }
 }
 $conn->close();
-$insert->close();
 ?>
