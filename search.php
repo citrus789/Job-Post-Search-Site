@@ -226,17 +226,17 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
             <select id="remote" name="recremote" required>
               <option value="" disabled selected>Select</option>
               <option value="1">Yes</option>
-              <option value="0">Temporarily</option>
-              <option value="0">No</option>
+              <option value="2">Temporarily</option>
+              <option value="3">No</option>
             </select>
             <?php
           } else {
              ?>
            <select id="remote" name="recremote">
-           <option value=""<?php if ($recremote == ""): ?> selected="selected"<?php endif; ?>>Select</option>
-           <option value="1"<?php if ($recremote == "1"): ?> selected="selected"<?php endif; ?>>Yes</option>
-           <option value="0"<?php if ($recremote == "0"): ?> selected="selected"<?php endif; ?>>Temporarily</option>
-           <option value="0"<?php if ($recremote == "0"): ?> selected="selected"<?php endif; ?>>No</option>
+             <option value=""<?php if ($recremote == ""): ?> selected="selected"<?php endif; ?>>Select</option>
+             <option value="1"<?php if ($recremote == "1"): ?> selected="selected"<?php endif; ?>>Yes</option>
+             <option value="2"<?php if ($recremote == "2"): ?> selected="selected"<?php endif; ?>>Temporarily</option>
+             <option value="3"<?php if ($recremote == "3"): ?> selected="selected"<?php endif; ?>>No</option>
            </select>
          <?php } ?>
           </td>
@@ -250,15 +250,15 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
           </tr>
           <tr>
             <td>City / Town: </td>
-            <td><input type = "search" name = "reccity" placeholder = "City / Town" value="<?php print isset($reccity) ? $reccity : ''; if (isset($required) and $required == "True") {echo 'required';} else { echo '';}?>" ></td>
+            <td><input type = "search" name = "reccity" id = reccity placeholder = "City / Town" value="<?php print isset($reccity) ? $reccity : ''; if (isset($required) and $required == "True") {echo 'required';} else { echo '';}?>" ></td>
           </tr>
           <tr>
             <td>State / Province: </td>
-            <td><input type = "search" name = "recregion" placeholder = "State / Province" value="<?php print isset($recregion) ? $recregion : ''; if (isset($required) and $required == "True") {echo 'required';} else { echo '';}?>"></td>
+            <td><input type = "search" name = "recregion" id = recregion placeholder = "State / Province" value="<?php print isset($recregion) ? $recregion : ''; if (isset($required) and $required == "True") {echo 'required';} else { echo '';}?>"></td>
           </tr>
           <tr>
             <td>Country: </td>
-            <td><input type = "search" name = "reccountry" placeholder = "Country" value="<?php print isset($reccountry) ? $reccountry : ''; if (isset($required) and $required == "True") {echo 'required';} else { echo '';}?>"></td>
+            <td><input type = "search" name = "reccountry" id = reccountry placeholder = "Country" value="<?php print isset($reccountry) ? $reccountry : ''; if (isset($required) and $required == "True") {echo 'required';} else { echo '';}?>"></td>
           </tr>
         </table>
       </div>
@@ -267,7 +267,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
         $(document).ready(function() {
           <?php $required = "False"; ?>
           $('#remote').on('change', function() {
-            if (this.value == '0')
+            if (this.value == '3')
             {
               $("#reclocationinfo").show();
               <?php $required = "True"; ?>
@@ -276,6 +276,26 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
             {
               $("#reclocationinfo").hide();
               <?php $required = "False"; ?>
+            }
+          });
+        });
+
+
+        $(document).ready(function() {
+          $('#remote').on('change', function() {
+            if (this.value == '3')
+            {
+              $("#reclocationinfo").show();
+              $('#reccity').attr('required',true);
+              $('#recregion').attr('required',true);
+              $('#reccountry').attr('required',true);
+            }
+            else
+            {
+              $("#reclocationinfo").hide();
+              $('#reccity').attr('required',false);
+              $('#recregion').attr('required',false);
+              $('#reccountry').attr('required',false);
             }
           });
         });
