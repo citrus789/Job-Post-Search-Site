@@ -123,7 +123,7 @@ if (isset($_POST['sendmessage'])) {
           if (formatString(unserialize($row[$i])->position) == formatString($sendposition) and formatString(unserialize($row[$i])->company) == formatString($sendcompany) and formatString(unserialize($row[$i])->message) == formatString($sendmessage)) {
             $conn->query("UPDATE sent_postings SET `$column` = '$messageobject' WHERE Email = '$email'");
             $postingerror = "False";
-            echo "updated posting".$i;
+            echo "updated posting ".$i;
             break;
           }
         }
@@ -165,7 +165,7 @@ if (isset($_POST['sendmessage'])) {
       array_push($sendtousers, NULL);
     }
   }
-  $postingname = $sendposition. " " .$sendcompany. " " .$postingid;
+  $postingname = $postingid;
   // echo $messageobject;
 
   // echo $email;
@@ -210,7 +210,7 @@ if (isset($_POST['sendmessage'])) {
   }
   if ($updated) {
     echo "Success";
-    // header("Location: messages.php");
+    header("Location: messages.php?editsuccess=Posting Posted");
   }
   else {
     header("Location: searchresults.php?senderror=Could Not Send Posting");

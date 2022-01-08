@@ -55,11 +55,29 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
 
 
         if ($row[0] == $username) {
+          if (isset($_GET['editerror'])) { ?>
+            <p class = "editerror" style = "text-align: center"><?php echo $_GET['editerror']; ?></p>
+            <script>
+            $(document).ready(function() {
+                $(".editerror").delay(3000).fadeOut(1000);
+            });
+            </script>
+          <?php }
+          else if (isset($_GET['editsuccess'])) { ?>
+            <p class = "editsuccess" style = "text-align: center"><?php echo $_GET['editsuccess']; ?></p>
+            <script>
+            $(document).ready(function() {
+                $(".editsuccess").delay(3000).fadeOut(1000);
+            });
+            </script>
+          <?php }
+          else { ?>
+            <div style = "height: 55px">&nbsp;</div>
+          <?php }
           for ($i = 1; $i < $numcolumns; $i++) {
             // echo $row[$i];
             if ($row[$i] != "NULL" and !is_null($row[$i]) and !empty($row[$i])) {
-               ?>
-
+              ?>
               <div class = "eachsentposting" id = "sentposting<?php echo $i;?>">
                 <div class = "eachsentpostingheader">
                   <div class = "eachsentpostingheaderinfo">
@@ -69,7 +87,16 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                     <div class = eachsentpostingdetails>
                       <?php
                       if (isset(unserialize($row[$i])->remote)) {
-                        echo "<div class = ispostingremote><div class = postingremote>".unserialize($row[$i])->remote."</div></div>";
+                        if (unserialize($row[$i])->remote == 1) {
+                          $type = "Remote";
+                        }
+                        else if (unserialize($row[$i])->remote == 2) {
+                          $type = "Temporarily Remote";
+                        }
+                        else {
+                          $type = "In Person";
+                        }
+                        echo "<div class = ispostingremote><div class = postingremote>".$type."</div></div>";
                       }
 
                       if (isset(unserialize($row[$i])->type)) {
@@ -92,136 +119,150 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                   </div>
                   <div class = "postingeditdelete">
                     <div class = "editposting">
-                      <button type = "button" class = postingedit onclick = "editposting('<?php echo $i;?>');">Edit</button>
+                      <button type = "button" class = postingedit onclick = "editposting('<?php echo $i; ?>');">Edit</button>
                     </div>
-                    <div class = "deleteposting">
-                      <a href = "deleteposting.php"><button type = "button" class = postingdelete>Delete</button></a>
-                    </div>
+                    <form action = "deleteposting.php" method = "POST">
+                      <input type = "text" name = index value = '<?php echo $i;?>' style = "display: none">
+                      <input type = "text" name = postingid<?php echo $i; ?> value = '<?php echo unserialize($row[$i])->id;?>' style = "display: none">
+                      <input type = "text" name = previouspostingname<?php echo $i; ?> value = '<?php echo unserialize($row[$i])->position." ".unserialize($row[$i])->company." ".unserialize($row[$i])->id; ?>' style = "display: none">
+                      <div class = "deleteposting">
+                        <button type = "submit" name = "deleteposting" class = postingdelete>Delete</button>
+                      </div>
+                    </form>
                   </div>
                 </div>
               </div>
               <div class = "editpostingcontainer" id = editpostingcontainer<?php echo $i;?> style = "display: none">
-                <div class = "editpostinginfo">
-                  <div class = "positionrole">
-                    <input type = "text" name = "positionrole" id = "positionrole" placeholder = "Position" required = "required" value = "<?php print isset(unserialize($row[$i])->position) ? unserialize($row[$i])->position : ''; ?>">
-                  </div>
-                  <div class = "separator">&nbsp;</div>
-                  <div class = "companyinfo">
-                    <input type = "text" name = "companyinfo" id = "companyinfo" placeholder = "Company" required = "required" value = "<?php print isset(unserialize($row[$i])->company) ? unserialize($row[$i])->company : ''; ?>">
-                  </div>
-                  <div class = "separator">&nbsp;</div>
-                  <div class = "typeinfo">
-                    <?php
-                    $rectype = unserialize($row[$i])->type;
-                      if (is_null($rectype) or empty($rectype)) {
-                    ?>
-                    <select id="rectype" name="positiontype" required>
-                      <option value="" disabled selected>Select</option>
-                      <option value="Full Time">Full Time</option>
-                      <option value="Part Time">Part Time</option>
-                      <option value="Casual">Casual</option>
-                      <option value="Temporary">Temporary</option>
-                      <option value="Seasonal">Seasonal</option>
-                      <option value="Internship">Internship</option>
-                      <option value="Contract">Contract</option>
-                    </select>
-                    <?php } else {?>
-                    <select id="rectype" name="positiontype" required>
-                      <option value=""<?php if ($rectype== ""): ?> selected="selected"<?php endif; ?>>Select</option>
-                      <option value="Full Time"<?php if ($rectype== "Full Time"): ?> selected="selected"<?php endif; ?>>Full Time</option>
-                      <option value="Part Time"<?php if ($rectype== "Part Time"): ?> selected="selected"<?php endif; ?>>Part Time</option>
-                      <option value="Casual"<?php if ($rectype== "Casual"): ?> selected="selected"<?php endif; ?>>Casual</option>
-                      <option value="Temporary"<?php if ($rectype== "Temporary"): ?> selected="selected"<?php endif; ?>>Temporary</option>
-                      <option value="Seasonal"<?php if ($rectype== "Seasonal"): ?> selected="selected"<?php endif; ?>>Seasonal</option>
-                      <option value="Internship"<?php if ($rectype== "Internship"): ?> selected="selected"<?php endif; ?>>Internship</option>
-                      <option value="Contract"<?php if ($rectype== "Contract"): ?> selected="selected"<?php endif; ?>>Contract</option>
-                    </select>
+                <form action="editposting.php" method = "POST" class = "sendmessage"> <!--job posting form-->
+                  <div class = "editpostinginfo">
+                    <div class = "positionrole">
+                      <input type = "text" name = "positionrole<?php echo $i; ?>" id = "positionrole" placeholder = "Position" required = "required" value = "<?php print isset(unserialize($row[$i])->position) ? unserialize($row[$i])->position : ''; ?>">
+                    </div>
+                    <div class = "separator">&nbsp;</div>
+                    <div class = "companyinfo">
+                      <input type = "text" name = "companyinfo<?php echo $i; ?>" id = "companyinfo" placeholder = "Company" required = "required" value = "<?php print isset(unserialize($row[$i])->company) ? unserialize($row[$i])->company : ''; ?>">
+                    </div>
+                    <div class = "separator">&nbsp;</div>
+                    <div class = "typeinfo">
+                      <?php
+                      $rectype = unserialize($row[$i])->type;
+                        if (is_null($rectype) or empty($rectype)) {
+                      ?>
+                      <select id="rectype" name="positiontype<?php echo $i; ?>" required>
+                        <option value="" disabled selected>Select</option>
+                        <option value="Full Time">Full Time</option>
+                        <option value="Part Time">Part Time</option>
+                        <option value="Casual">Casual</option>
+                        <option value="Temporary">Temporary</option>
+                        <option value="Seasonal">Seasonal</option>
+                        <option value="Internship">Internship</option>
+                        <option value="Contract">Contract</option>
+                      </select>
+                      <?php } else {?>
+                      <select id="rectype" name="positiontype<?php echo $i; ?>" required>
+                        <option value=""<?php if ($rectype== ""): ?> selected="selected"<?php endif; ?>>Select</option>
+                        <option value="Full Time"<?php if ($rectype== "Full Time"): ?> selected="selected"<?php endif; ?>>Full Time</option>
+                        <option value="Part Time"<?php if ($rectype== "Part Time"): ?> selected="selected"<?php endif; ?>>Part Time</option>
+                        <option value="Casual"<?php if ($rectype== "Casual"): ?> selected="selected"<?php endif; ?>>Casual</option>
+                        <option value="Temporary"<?php if ($rectype== "Temporary"): ?> selected="selected"<?php endif; ?>>Temporary</option>
+                        <option value="Seasonal"<?php if ($rectype== "Seasonal"): ?> selected="selected"<?php endif; ?>>Seasonal</option>
+                        <option value="Internship"<?php if ($rectype== "Internship"): ?> selected="selected"<?php endif; ?>>Internship</option>
+                        <option value="Contract"<?php if ($rectype== "Contract"): ?> selected="selected"<?php endif; ?>>Contract</option>
+                      </select>
+                      <?php } ?>
+                    </div>
+                  <!-- </div> -->
+                  <!-- <div class = "salaryrange"> -->
+                    <div class = "salarystart">
+                      <input type = "text" name = "salarystart<?php echo $i; ?>" id = "salarystart" placeholder = "Min Salary" required value = "<?php print isset(unserialize($row[$i])->salarystart) ? unserialize($row[$i])->salarystart : ''; ?>">
+                    </div>
+                    <div class = "separator">&nbsp;</div>
+                    <div class = "salaryend">
+                      <input type = "text" name = "salaryend<?php echo $i; ?>" id = "salaryend" placeholder = "Max Salary" value = "<?php print isset(unserialize($row[$i])->salaryend) ? unserialize($row[$i])->salaryend : ''; ?>">
+                    </div>
+                    <div class = "separator">&nbsp;</div>
+                    <div class = currency style = "height: 30px; text-align: center; margin-top: 7px; display: inline-block; width: 25px">Or</div>
+                    <div class = "separator">&nbsp;</div>
+                    <div class = "salarystart">
+                      <input type = "text" name = "hourlywage<?php echo $i; ?>" id = "wage" placeholder = "Hourly Wage" required value = "<?php print isset(unserialize($row[$i])->wage) ? unserialize($row[$i])->wage : ''; ?>">
+                    </div>
+                    <div class = "separator">&nbsp;</div>
+                    <div class = "currency">
+                      <?php if (!property_exists(unserialize($row[$i]), 'currency') or unserialize($row[$i])->currency == "") { ?>
+                      <select id="currency" name="currency<?php echo $i; ?>" required = "required">
+                        <option value="" selected disabled>Currency</option>
+                        <option value="USD">USD</option>
+                        <option value="CAD">CAD</option>
+                        <option value="EUR">EUR</option>
+                      </select>
+                    <?php } else { ?>
+                      <select id="currency" name="currency<?php echo $i; ?>" required = "required">
+                        <option value="NULL" selected disabled>Currency</option>
+                        <option value="USD"<?php if (unserialize($row[$i])->currency == "USD"): ?> selected="selected"<?php endif; ?>>USD</option>
+                        <option value="CAD"<?php if (unserialize($row[$i])->currency == "CAD"): ?> selected="selected"<?php endif; ?>>CAD</option>
+                        <option value="EUR"<?php if (unserialize($row[$i])->currency == "EUR"): ?> selected="selected"<?php endif; ?>>EUR</option>
+                      </select>
                     <?php } ?>
-                  </div>
-                <!-- </div> -->
-                <!-- <div class = "salaryrange"> -->
-                  <div class = "salarystart">
-                    <input type = "text" name = "salarystart" id = "salarystart" placeholder = "Min Salary" required value = "<?php print isset(unserialize($row[$i])->salarystart) ? unserialize($row[$i])->salarystart : ''; ?>">
-                  </div>
-                  <div class = "separator">&nbsp;</div>
-                  <div class = "salaryend">
-                    <input type = "text" name = "salaryend" id = "salaryend" placeholder = "Max Salary" value = "<?php print isset(unserialize($row[$i])->salaryend) ? unserialize($row[$i])->salaryend : ''; ?>">
-                  </div>
-                  <div class = "separator">&nbsp;</div>
-                  <div class = currency style = "height: 30px; text-align: center; margin-top: 7px; display: inline-block; width: 25px">Or</div>
-                  <div class = "separator">&nbsp;</div>
-                  <div class = "salarystart">
-                    <input type = "text" name = "hourlywage" id = "wage" placeholder = "Hourly Wage" required value = "<?php print isset(unserialize($row[$i])->wage) ? unserialize($row[$i])->wage : ''; ?>">
-                  </div>
-                  <div class = "separator">&nbsp;</div>
-                  <div class = "currency">
-                    <?php if (!property_exists(unserialize($row[$i]), 'currency') or unserialize($row[$i])->currency == "") { ?>
-                    <select id="currency" name="currency" required = "required">
-                      <option value="" selected disabled>Currency</option>
-                      <option value="USD">USD</option>
-                      <option value="CAD">CAD</option>
-                      <option value="EUR">EUR</option>
-                    </select>
-                  <?php } else { ?>
-                    <select id="currency" name="currency" required = "required">
-                      <option value="NULL" selected disabled>Currency</option>
-                      <option value="USD"<?php if (unserialize($row[$i])->currency == "USD"): ?> selected="selected"<?php endif; ?>>USD</option>
-                      <option value="CAD"<?php if (unserialize($row[$i])->currency == "CAD"): ?> selected="selected"<?php endif; ?>>CAD</option>
-                      <option value="EUR"<?php if (unserialize($row[$i])->currency == "EUR"): ?> selected="selected"<?php endif; ?>>EUR</option>
-                    </select>
-                  <?php } ?>
-                  </div>
-                  <div class = "postinglocationinfo" style = "display: inline-block; width: 100%">
+                    </div>
+                    <div class = "postinglocationinfo" style = "display: inline-block; width: 100%">
 
-                    <div class = "location">Remote:
-                      <?php
-                      $recremote = unserialize($row[$i])->remote;
-                      if ($recremote == NULL) {
-                       ?>
-                      <select id="remote<?php echo $i;?>" name="recremote" required>
-                        <option value="" disabled selected>Remote?</option>
-                        <option value="1">Yes</option>
-                        <option value="2">Temporarily</option>
-                        <option value="3">No</option>
-                      </select>
+                      <div class = "location">Remote:
                         <?php
-                      } else {
+                        $recremote = unserialize($row[$i])->remote;
+                        if ($recremote == NULL) {
                          ?>
-                      <select id="remote<?php echo $i;?>" name="recremote">
-                        <option value=""<?php if ($recremote == ""): ?> selected="selected"<?php endif; ?>>Remote?</option>
-                        <option value="1"<?php if ($recremote == "1"): ?> selected="selected"<?php endif; ?>>Yes</option>
-                        <option value="2"<?php if ($recremote == "2"): ?> selected="selected"<?php endif; ?>>Temporarily</option>
-                        <option value="3"<?php if ($recremote == "3"): ?> selected="selected"<?php endif; ?>>No</option>
-                      </select>
-                     <?php } ?>
-                   </div>
-                   <div class = "separator">&nbsp;</div>
+                        <select id="remote<?php echo $i;?>" name="recremote<?php echo $i; ?>" required>
+                          <option value="" disabled selected>Remote?</option>
+                          <option value="1">Yes</option>
+                          <option value="2">Temporarily</option>
+                          <option value="3">No</option>
+                        </select>
+                          <?php
+                        } else {
+                           ?>
+                        <select id="remote<?php echo $i;?>" name="recremote<?php echo $i; ?>">
+                          <option value=""<?php if ($recremote == ""): ?> selected="selected"<?php endif; ?>>Remote?</option>
+                          <option value="1"<?php if ($recremote == "1"): ?> selected="selected"<?php endif; ?>>Yes</option>
+                          <option value="2"<?php if ($recremote == "2"): ?> selected="selected"<?php endif; ?>>Temporarily</option>
+                          <option value="3"<?php if ($recremote == "3"): ?> selected="selected"<?php endif; ?>>No</option>
+                        </select>
+                       <?php } ?>
+                     </div>
+                     <div class = "separator">&nbsp;</div>
 
-                    <div class = "reclocationinfo" id = "reclocationinfo<?php echo $i;?>">
+                      <div class = "reclocationinfo" id = "reclocationinfo<?php echo $i;?>">
 
-                      <?php
-                      $reccity = unserialize($row[$i])->city;
-                      $recregion = unserialize($row[$i])->region;
-                      $reccountry = unserialize($row[$i])->country; ?>
-                      <div class = "location">
-                        City / Town: <input type = "search" name = "reccity" id = reccity placeholder = "City / Town" value="<?php print isset($reccity) ? $reccity : ''; if (isset($required) and $required == "True") {echo 'required';} else { echo '';}?>" >
-                      </div>
-                      <div class = "separator">&nbsp;</div>
+                        <?php
+                        $reccity = unserialize($row[$i])->city;
+                        $recregion = unserialize($row[$i])->region;
+                        $reccountry = unserialize($row[$i])->country; ?>
+                        <div class = "location">
+                          City / Town: <input type = "search" name = "reccity<?php echo $i; ?>" id = reccity placeholder = "City / Town" value="<?php print isset($reccity) ? $reccity : ''; if (isset($required) and $required == "True") {echo 'required';} else { echo '';}?>" >
+                        </div>
+                        <div class = "separator">&nbsp;</div>
 
-                      <div class = "location">
-                        State / Province: <input type = "search" name = "recregion" id = recregion placeholder = "State / Province" value="<?php print isset($recregion) ? $recregion : ''; if (isset($required) and $required == "True") {echo 'required';} else { echo '';}?>">
-                      </div>
-                      <div class = "separator">&nbsp;</div>
+                        <div class = "location">
+                          State / Province: <input type = "search" name = "recregion<?php echo $i; ?>" id = recregion placeholder = "State / Province" value="<?php print isset($recregion) ? $recregion : ''; if (isset($required) and $required == "True") {echo 'required';} else { echo '';}?>">
+                        </div>
+                        <div class = "separator">&nbsp;</div>
 
-                      <div class = "location">
-                        Country: <input type = "search" name = "reccountry" id = reccountry placeholder = "Country" value="<?php print isset($reccountry) ? $reccountry : ''; if (isset($required) and $required == "True") {echo 'required';} else { echo '';}?>">
+                        <div class = "location">
+                          Country: <input type = "search" name = "reccountry<?php echo $i; ?>" id = reccountry placeholder = "Country" value="<?php print isset($reccountry) ? $reccountry : ''; if (isset($required) and $required == "True") {echo 'required';} else { echo '';}?>">
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div class = "editpostingmessage">
-                  <textarea type = "text" id = "writemessage" name = "writemessage" placeholder = "Write a job posting you want to send to users" required = "required"><?php print isset(unserialize($row[$i])->message) ? unserialize($row[$i])->message : ''; ?></textarea>
-                </div>
+                  <div class = "editpostingmessage">
+                    <textarea type = "text" id = "writemessage" name = "writemessage<?php echo $i; ?>" placeholder = "Write a job posting you want to send to users" required = "required"><?php print isset(unserialize($row[$i])->message) ? unserialize($row[$i])->message : ''; ?></textarea>
+                  </div>
+                  <input type = "text" name = index value = '<?php echo $i;?>' style = "display: none">
+                  <input type = "text" name = postingid<?php echo $i; ?> value = '<?php echo unserialize($row[$i])->id;?>' style = "display: none">
+                  <input type = "text" name = previouspostingname<?php echo $i; ?> value = '<?php echo unserialize($row[$i])->position." ".unserialize($row[$i])->company." ".unserialize($row[$i])->id; ?>' style = "display: none">
+                  <div class = "savepostingedit">
+                    <input id = "savepostingedit" type="submit" value="Save Changes" name="saveedits" onclick = "submitted('<?php echo $i; ?>')">
+                  </div>
+                  <br style="clear: both" />
+                </form>
               </div>
               <div class = "applicantslist">
                <?php
@@ -458,9 +499,13 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
         var container = document.getElementById("editpostingcontainer" + index);
         if (container.style.display == 'none') {
           container.style.display = 'block';
+          window.history.pushState("Edit Posting", "Edit Posting " + index, "/JobSite/sentpostings.php?edit-posting=" + index);
+          // console.log(index);
         }
         else {
           container.style.display = 'none';
+          window.history.back();
+
         }
       }
       function showcv(email) {
@@ -475,6 +520,17 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
           button.innerHTML = 'Hide Cover Letter';
         }
       }
+      function submitted(index) {
+        $.ajax({
+         method: 'POST',
+         data: {'index' : index},
+         url: 'localhost/JobSite/editposting.php',
+         cache:  true,
+         success: function(data) {console.log(index);},
+         error: function() {console.log("error")}
+       });
+      }
+
       </script>
     </div>
   </body>

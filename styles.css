@@ -321,6 +321,7 @@ li, a, .homebutton, .logoutbutton {
   border-left: 2px solid darkblue;
   border-right: 2px solid darkblue;
   width: 100%;
+  height: auto;
 }
 .applicantslist {
   margin-top: 0px;
@@ -508,6 +509,32 @@ input[type = "button"] .active {
   border: 2px solid darkred;
 }
 
+.editsuccess {
+  border: 2px solid #00e64d;
+  background: palegreen;
+  color: darkgreen;
+  width: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 7px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.editerror {
+  background: #FFCCCB;
+  color: darkred;
+  border: 2px solid darkred;
+  width: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 7px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
 .senderror {
   background: #FFCCCB;
   color: darkred;
@@ -533,7 +560,7 @@ input[type = "button"] .active {
   font-size: 20px;
   transition-duration: 0.4s;
 }
-#sendmessage, #selectnumber {
+#sendmessage, #selectnumber, #savepostingedit {
   border-radius: 7px;
   border: 2px solid darkblue;
   background-color: WhiteSmoke;
@@ -569,7 +596,7 @@ a.button, a.button:link {
   transition-duration: 0.4s;
 }
 
-#submit:hover, #sendmessage:hover, a.button:hover {
+#submit:hover, #sendmessage:hover, a.button:hover, #savepostingedit:hover {
   background-color: lightgray;
   cursor: pointer;
 }
@@ -661,6 +688,7 @@ a.button, a.button:link {
   width: 90%;
   margin-left: auto;
   margin-right: auto;
+  display: block;
 }
 .basicinfo {
   margin-bottom: 50px;
@@ -1280,4 +1308,30 @@ a.button, a.button:link {
   font-size: 25px;
   height: 25px;
   padding: 10px;
+}
+
+.savepostingedit {
+  float: right;
+  margin-left: 5%;
+  margin-right: 5%;
+  width: 90%;
+  height: 35px;
+  display: block;
+  margin-bottom: 15px;
+}
+#savepostingedit {
+  margin-right: 0px;
+}
+.sendmessage {
+  margin-bottom: 0px;
+}
+.sentapplicationscontainer, .sentapplicationstable, .sentapplicationrow {
+  font-family: 'Yanone Kaffeesatz';
+  border-spacing: 10px;
+  font-size: 20px;
+  text-align: center;
+  padding: 10px;
+  width: 100%;
+  border: 2px solid darkblue;
+  border-collapse: collapse;
 }

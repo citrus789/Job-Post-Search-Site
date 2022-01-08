@@ -343,7 +343,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                 <?php
                   if (is_null($rectype) or empty($rectype)) {
                 ?>
-                <select id="rectype" name="positiontype" required>
+                <select id="rectype2" name="positiontype" required>
                   <option value="">Select</option>
                   <option value="Full Time">Full Time</option>
                   <option value="Part Time">Part Time</option>
@@ -354,7 +354,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                   <option value="Contract">Contract</option>
                 </select>
                 <?php } else {?>
-                <select id="rectype" name="positiontype" required>
+                <select id="rectype2" name="positiontype" required>
                   <option value=""<?php if ($rectype== ""): ?> selected="selected"<?php endif; ?>>Select</option>
                   <option value="Full Time"<?php if ($rectype== "Full Time"): ?> selected="selected"<?php endif; ?>>Full Time</option>
                   <option value="Part Time"<?php if ($rectype== "Part Time"): ?> selected="selected"<?php endif; ?>>Part Time</option>
@@ -511,7 +511,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
                   previewremote.innerHTML = "In Person";
                   previewlocation.innerHTML = document.getElementById("reccity").value + " " + document.getElementById("recregion").value + " " + document.getElementById("reccountry").value;
                 }
-                previewtype.innerHTML = document.getElementById("rectype").value;
+                previewtype.innerHTML = document.getElementById("rectype2").value;
                 previewdesc.innerHTML = document.getElementById("writemessage").value;
 
               }

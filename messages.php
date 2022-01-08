@@ -497,8 +497,9 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
               </div>
               <div class = "resumeuploadfail" id = "transcriptuploadfail<?php echo $i; ?>" style = "display: none;">Invalid File Type</div>
               <div class = "resumeuploadsuccess" id = "transcriptuploadsuccess<?php echo $i; ?>" style = "display: none;">Valid File Type</div>
+              <input type = "text" name = "index" value = "<?php echo $i; ?>" style = "display: none">
               <div class = "sendapplication">
-                <input type = "submit" id = "sendapplication" name = sendapplication<?php echo $i; ?> value = "Send Application">
+                <input type = "submit" id = "sendapplication" name = sendapplication value = "Send Application">
               </div>
             </div>
           </form>
@@ -541,7 +542,7 @@ if(isset($_SESSION["Email"]) || $_SESSION['loggedin'] == true) {
           $(".writecvtextarea").on('change', function() {
             document.getElementById("applystepthree"+index).style.display = 'block';
             document.getElementById("additionaldocuments"+index).style.display = 'block';
-            <?php $_SESSION['index'] = substr($_SERVER['REQUEST_URI'], -1); ?>
+
           });
         }
 

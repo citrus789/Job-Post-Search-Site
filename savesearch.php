@@ -54,6 +54,42 @@ if (isset($_POST['search'])) {
   $select = "SELECT * FROM user_login";
   $result = $conn-> query($select);
 
+  //functions!
+
+  function editDistance($s, $t) {
+    if (strlen($s) < strlen($t)) {
+      return editDistance($t, $s);
+    }
+
+    if (strlen($t) == 0) {
+      return strlen($s);
+    }
+
+    $s = str_split(substr_replace($s, "0", 0, 0));
+    $t = str_split(substr_replace($t, "0", 0, 0));
+
+    $dpArray = [[]];
+
+    for ($i = 0; $i < sizeof($t); $i++) {
+      for ($j = 0; $j < sizeof($s); $j++) {
+        if ($i == 0) {
+          $dpArray[$i][$j] = $j;
+        }
+        else if ($j == 0) {
+          $dpArray[$i][$j] = $i;
+        }
+        else if ($t[$i] == $s[$j]) {
+          $dpArray[$i][$j] = $dpArray[$i - 1][$j - 1];
+        }
+        else {
+          $dpArray[$i][$j] = min($dpArray[$i][$j - 1], $dpArray[$i - 1][$j - 1], $dpArray[$i - 1][$j]) + 1;
+
+        }
+
+      }
+    }
+    return (sizeof($s) - $dpArray[sizeof($t) - 1][sizeof($s) - 1]) * 10 / sizeof($s);
+  }
 
   function strictlyEqualAndNotNull($var1, $var2) {
     return (!empty($var1) && !is_null($var2) && $var1 === $var2);
@@ -144,6 +180,10 @@ if (isset($_POST['search'])) {
             $score += 5;
         }
       }
+    }
+    for ($i = 1; $i <= 3; $i++) {
+
+      $score += editDistance(formatString($recposition), formatString($row['Position'.$i]));
     }
     if (strictlyEqualAndNotNull($rectype, $row['Type1']) or strictlyEqualAndNotNull($rectype, $row['Type2']) or strictlyEqualAndNotNull($rectype, $row['Type3'])) {
       $score += 5;
